@@ -1,0 +1,89 @@
+<html lang="de"></html>
+{% extends "otree/Page.html" %}
+{% load otree static %}
+
+{% block global_styles  %}
+    <link href="{{ static 'global/nouislider/dist/nouislider.css' }}" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ static 'global/styles.css' }}">
+{% endblock %}
+
+{% block global_scripts  %}
+    <!--jQuery-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- no UI slider-->
+    <script src="{{ static 'global/nouislider/dist/nouislider.js' }}"></script>
+
+    <script>
+
+    function filterPipsPercentage(value) {
+        if (value % 50 == 0) {
+            return 1
+        } else {
+            return value % 25 ? 0 : 2;
+        }
+    }
+
+    function toEncoderPol(value) {
+        if (parseInt(value) == 100) {
+            return "Rechts"
+        } else if (parseInt(value) == 0) {
+            return "Links"
+        } else if (parseInt(value) == 50) {
+            return "Mitte"
+        }
+    }
+
+    function toEncoderPercentage(value) {
+        perc = parseInt(value) + "%";
+        return perc
+    }
+    function fromDecoder(value) {
+        return parseInt(value);
+    }
+    function createSliderPol(slider) {
+        noUiSlider.create(slider, {
+            start: [50],
+            tooltips: false,
+            range: {
+                'min': 0,
+                'max': 100
+            },
+            pips: {
+                mode: "positions",
+                values: [0,  50,  100],
+                density: 100,
+                format: {
+                    from: fromDecoder,
+                    to: toEncoderPol,
+                }
+            },
+        });
+    }
+    function createSlider(slider) {
+        noUiSlider.create(slider, {
+            start: [0],
+            tooltips: true,
+            range: {
+                'min': 0,
+                'max': 100
+            },
+            pips: {
+                mode: "range",
+                filter: filterPipsPercentage,
+                // values: [0,  50,  100],
+                density: 5,
+                format: {
+                    from: fromDecoder,
+                    to: toEncoderPercentage,
+                }
+            },
+            format: {
+                from: fromDecoder,
+                to: toEncoderPercentage,
+            }
+        });
+    }
+    </script>
+{% endblock %}

@@ -1,0 +1,49 @@
+div {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.wide {
+    width: 300px;
+}
+
+.likert th, .likert td {
+    width: auto;
+    border: 1px solid #dddddd;
+    text-align: center;
+    margin:20px;
+    padding: 8px;
+}
+td.likert_label {
+    text-align: justify;
+    word-break: break-word;
+    hyphens: auto;
+}
+td.likert_label:first-child{
+    min-width: 200px;
+}
+td:hover.likert_choice {
+    background-color: #ddd;
+}
+.likert tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.importance-table td, .importance-table th {
+    width: auto;
+    border: 1px solid #dddddd;
+    text-align: left;
+    vertical-align: text-top;
+    margin: 20px;
+    padding: 8px;
+}
+.importance-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+td.importance-slider {
+    vertical-align: middle;
+    width: 500px;
+    height: 130px;
+    padding: 30px;
+}
