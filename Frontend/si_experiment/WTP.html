@@ -5,12 +5,72 @@
 
 {{ block content }}
 <script>
+        $(document).ready(function() {
+            var slider = document.getElementById('slider_wtp');
+                // WTP slider
+            function filterPipsWTP(value) {
+                if (value == 80 || value == 20 || value == 50) {
+                    return 1;
+                } else {
+                    return value % 10 == 0 ? 2 : -1;
+                }
+            }
+                function toEncoderMoney(value) {
+                    if (value == 50) {
+                        return "0€"
+                    } else if (value == 40 || parseInt(value) == 60) {
+                        return "0,50€"
+                    } else if (value == 30 || value == 70){
+                        return "1€"
+                    } else {
+                        return "1,50€"
+                    }
+                }
+            function createSliderWTP(slider) {
+                noUiSlider.create(slider, {
+                    start: [50],
+                    step: 10,
+                    tooltips: true,
+                    range: {
+                        'min': [20],
+                        'max': [80]
+                    },
+                    pips: {
+                        mode: 'steps',
+                        filter: filterPipsWTP,
+                        format: {
+                            from: fromDecoder,
+                            to: toEncoderPercentage,
+                        }
+                    },
+                    format: {
+                        from: fromDecoder,
+                        to: toEncoderMoney,
+                    }
+                });
+            }
+            createSliderWTP(slider)
+            // write slider results into form field for data export
+            document.getElementById("next-button").addEventListener("click", function (){
+                document.getElementById("wtp").value = parseInt(slider.noUiSlider.get(true))
+            });
 
+        })
 </script>
 <div>
-    <b>Aufgabe:</b> Sie haben nun die Möglichkeit, ihr Geld einzusetzen, um entweder die Wahrscheinlichkeit zu erhöhen, eine KI-Vorhersage für den Preis der Wohnung zu sehen, oder um die Wahrscheinlichkeit zu verringern. Wenn Sie z.B. 80% wählen, besteht eine 80%ige Chance, dass Sie die KI-Vorhersage sehen. Wenn Sie 20% wählen, besteht umgekehrt eine 20%ige Chance, dass Sie die KI-Vorhersage sehen werden.
+    <b>Aufgabe:</b> Sie haben nun die Möglichkeit, ihr Geld einzusetzen, um entweder die Wahrscheinlichkeit zu erhöhen, eine KI-Vorhersage für den Preis der Wohnung zu sehen, oder um diese Wahrscheinlichkeit zu verringern. Wenn Sie z.B. 80% wählen, besteht eine 80%ige Chance, dass Sie die KI-Vorhersage sehen. Wenn Sie 20% wählen, besteht umgekehrt eine 20%ige Chance, dass Sie die KI-Vorhersage sehen werden. In beiden Fällen bezahlen Sie 1,50€.
 </div>
 
+<br>
+<br>
+<div style="padding-left: 50px; padding-right: 50px" >
+    <div id="slider_wtp" ></div>
+</div>
+<br>
+<br>
+<br>
+
+<br>
 <button id="next-button" class="otree-btn-next btn btn-primary">
     Weiter
 </button>

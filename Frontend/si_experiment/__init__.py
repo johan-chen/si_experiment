@@ -45,8 +45,16 @@ def creating_session(subsession):
     for player in subsession.get_players():
         participant = player.participant
         pers_inno = ["pers_inno1", "pers_inno2", "pers_inno3", "pers_inno4"]
+        post_questions = [
+            "anthro1", "anthro2", "anthro3",
+            "cog_trust1", "cog_trust2", "cog_trust3",
+            "integ_trust1", "integ_trust2", "integ_trust3",
+            "emo_trust1", "emo_trust2", "emo_trust3",
+        ]
         random.shuffle(pers_inno)
+        post_questions = shuffle_form_fields(post_questions, 3, True)
         participant.pers_inno_order = pers_inno
+        participant.post_questions_order = post_questions
 
 class Player(BasePlayer):
     # Treatments: Baseline, Accuracy, Developer and Accuracy
@@ -91,20 +99,20 @@ class Player(BasePlayer):
 
     # todo immobilien-expertise, risikoaversion
     immo_exp = models.IntegerField(choices=[[0, "Keine Erfahrungen"],[1,"Wenige Erfahrungen"],[2,"Einige Erfahrungen"],[3,"Viel Erfahrungen"]],
-                            label="TBD: Bitte geben Sie an, wie gut Ihre Erfahrungen mit Immobilien sind.")
+                            label="TBD: Bitte geben Sie an, wie gut Ihre Erfahrungen mit Immobilien sind.", blank=True)
     risk_aver = models.IntegerField(choices=[[0, "Keine Erfahrungen"],[1,"Wenige Erfahrungen"],[2,"Einige Erfahrungen"],[3,"Viel Erfahrungen"]],
-                            label="TBD: Wie risikoavers sind Sie?")
+                            label="TBD: Wie risikoavers sind Sie?", blank=True)
+
+    wtp = models.IntegerField()
 
     ###################
     # algorithm items #
     ###################
     transparency = make_field("Ich verstehe, wie der Algorithmus zu seiner Empfehlung kommt.")
 
-    anthro_natural = make_field("Der Algorithmus ist für mich natürlich.")
-    anthro_human = make_field("Der Algorithmus ist für mich menschenähnlich.")
-    # attention check
-    anthro_conscious = make_field("Der Algorithmus ist für mich ohne Bewusstsein.")
-    anthro_lifelike = make_field("Der Algorithmus ist für mich lebensähnlich.")
+    anthro1 = make_field("Der Algorithmus ist für mich natürlich.")
+    anthro2 = make_field("Der Algorithmus ist für mich menschenähnlich.")
+    anthro3 = make_field("Der Algorithmus ist für mich lebensähnlich.")
 
     # trust
     cog_trust1 = make_field("Der Algorithmus ist kompetent und effektiv bei der Vorhersage der Immobilienpreise.")
@@ -146,13 +154,20 @@ class Task(Page):
     pass
 
 class WTP(Page):
-    pass
+    form_model = "player"
+    form_fields = ["wtp"]
 
 class Revision(Page):
     pass
 
 class PostQuestions(Page):
-    pass
+    form_model = "player"
+
+    @staticmethod
+    def get_form_fields(player: Player):
+        form_fields = ["transparency"]
+        form_fields += player.participant.post_questions_order
+        return form_fields
 
 class End(Page):
     pass

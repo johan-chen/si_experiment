@@ -25,11 +25,6 @@
                     document.getElementById(imp).value = parseInt(slider_importances[i].noUiSlider.get(true))
             }
             });
-
-            // When players click on table cell radio button gets selected
-            $(document).on("click","td",function(){
-                $(this).find("input:radio").prop("checked", true);
-            });
         })
     </script>
 </head>
