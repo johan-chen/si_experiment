@@ -90,6 +90,10 @@ class Player(BasePlayer):
     confidence_rev = make_field("Bitte sagen Sie uns, wie sicher Sie sich bei der soeben getroffenen Vorhersage des Immobilienpreises fühlen. ")
 
     # todo immobilien-expertise, risikoaversion
+    immo_exp = models.IntegerField(choices=[[0, "Keine Erfahrungen"],[1,"Wenige Erfahrungen"],[2,"Einige Erfahrungen"],[3,"Viel Erfahrungen"]],
+                            label="TBD: Bitte geben Sie an, wie gut Ihre Erfahrungen mit Immobilien sind.")
+    risk_aver = models.IntegerField(choices=[[0, "Keine Erfahrungen"],[1,"Wenige Erfahrungen"],[2,"Einige Erfahrungen"],[3,"Viel Erfahrungen"]],
+                            label="TBD: Wie risikoavers sind Sie?")
 
     ###################
     # algorithm items #
@@ -127,13 +131,13 @@ class PreQuestions(Page):
     @staticmethod
     def get_form_fields(player: Player):
         form_fields = ["importance_sex", "importance_migration_bg", "importance_pol_views",
-                       "age", "sex", "nationality", "migration_bg", "student", "job", "pol_views", "soc_norms"]
+                       "age", "sex", "nationality", "migration_bg", "student", "job", "immo_exp", "risk_aver", "pol_views", "soc_norms"]
         form_fields += player.participant.pers_inno_order
         return form_fields
 
     @staticmethod
     def vars_for_template(player: Player):
-        demo = ["age", "sex", "nationality", "migration_bg", "student", "job"]
+        demo = ["age", "sex", "nationality", "migration_bg", "student", "job", "immo_exp", "risk_aver",]
         return dict(
             demo=demo,
         )

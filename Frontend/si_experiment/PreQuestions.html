@@ -84,7 +84,7 @@
     </tr>
     {{ for field in form }}
 <!--    counter starts at 1 / skip non-Likert formfields -->
-    {{ if forloop.counter > 10 }}
+    {{ if forloop.counter > 12 }}
     <tr>
         <td class="likert_label">{{ field.label }}</td>
         {{ for choice in field }}
