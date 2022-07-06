@@ -36,6 +36,37 @@
 <br>
 {{ endfor }}
 
+<hr style="border-top:3px dashed black; background: transparent; opacity: 1 ">
+<br>
+
+<!-- otree hidden form field for slider -->
+<!--<input type="hidden" name="pol_views" id="pol_views" />-->
+
+<!-- importance table -->
+<table class="importance-table">
+    <tr>
+        <th>Aufgabe: Beantworten Sie bitte folgende Fragen. </th>
+        <th>Antwortmöglichkeit</th>
+        <th>Aufgabe: Auf einer Skala von 0% bis 100% in Schritten von einem Prozentpunkt: Geben Sie bitte an, wie wichtig Ihnen persönlich die entsprechenden Faktoren sind.
+        <p style="font-weight:normal">(Legende: 100%: Der Faktor ist für mich sehr wichtig. 0%: Der Faktor ist für mich überhaupt nicht wichtig.)</p></th>
+    </tr>
+    <tr>
+        <td style="vertical-align: middle">{{ form.sex.label }}</td>
+        <td style="vertical-align: middle">{{ form.sex }}</td>
+        <td class="importance-slider"><div id="slider_importance_sex"></div></td>
+    </tr>
+    <tr>
+        <td style="vertical-align: middle">{{ form.migration_bg.label }}</td>
+        <td style="vertical-align: middle">{{ form.migration_bg }}</td>
+        <td class="importance-slider"><div id="slider_importance_migration_bg"></div></td>
+    </tr>
+    <tr>
+        <td style="vertical-align: middle">{{ form.pol_views.label }}</td>
+        <td style="vertical-align: middle">{{ form.pol_views }}</td>
+        <td class="importance-slider"><div id="slider_importance_pol_views"></div></td>
+    </tr>
+</table>
+<br>
 <div>
     <p>
         <b>Aufgabe:</b> In der Politik reden die Leute oft von 'Links' und 'Rechts', wenn es darum geht, unterschiedliche politische Einstellungen zu kennzeichnen.
@@ -49,11 +80,11 @@
     <div id="slider_pol_views" ></div>
 </div>
 <br>
-<br>
-<br>
 
-<!-- otree hidden form field -->
-<input type="hidden" name="pol_views" id="pol_views" />
+<br>
+<br>
+<hr style="border-top:3px dashed black; background: transparent; opacity: 1 ">
+<br>
 
 <p>
     <b>Aufgabe:</b> Bitte geben Sie Ihre persönliche Einstellung zu folgenden Aussagen an.
@@ -89,38 +120,17 @@
     {{ endif }}
     {{ endfor }}
 </table>
-<br>
-<br>
-<hr style="border-top:3px dashed black; background: transparent; opacity: 1 ">
-<br>
-<div>
-    <b>Aufgabe:</b> Auf einer Skala von 0% bis 100% in Schritten von einem Prozentpunkt:
-    Geben Sie bitte an, wie wichtig Ihnen persönlich die folgenden Faktoren sind.
-</div>
-<div>
-    <b>Legende:</b>
-</div>
-<table>
-    <tr>
-        <td style="padding-right:4px">0%:</td>
-        <td>Ich beziehe diesen Faktor gar nicht ein.</td>
-    </tr>
-    <tr>
-        <td style="padding-right:4px">100%:</td>
-        <td>Ich beziehe diesen Faktor voll und ganz ein.</td>
-    </tr>
-</table>
-<br>
-<table class="importance-table">
-    {{ for args in form}}
-    {{ if forloop.counter < 4 }}
-    <tr>
-        <td style="vertical-align: middle">{{ args.label }}</td>
-        <td class="importance-slider"><div id="slider_{{ args.name }}"></div></td>
-    </tr>
-    {{ endif }}
-    {{ endfor }}
-</table>
+<!--<table class="importance-table">-->
+<!--    {{ for args in form}}-->
+<!--    {{ if forloop.counter < 4 }}-->
+<!--   sequence: sex, migration_bg, pol_views -->
+<!--    <tr>-->
+<!--        <td style="vertical-align: middle">{{ args.label }}</td>-->
+<!--        <td class="importance-slider"><div id="slider_{{ args.name }}"></div></td>-->
+<!--    </tr>-->
+<!--    {{ endif }}-->
+<!--    {{ endfor }}-->
+<!--</table>-->
 <br>
 <button id="next-button" class="otree-btn-next btn btn-primary">
     Weiter

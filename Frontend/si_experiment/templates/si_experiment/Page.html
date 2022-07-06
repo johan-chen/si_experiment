@@ -17,7 +17,7 @@
 
     <script>
     // When players click on table cell radio button gets selected
-    $(document).on("click","td",function(){
+    $(document).on("click",".likert_choice",function(){
         $(this).find("input:radio").prop("checked", true);
     });
     function filterPipsPercentage(value) {

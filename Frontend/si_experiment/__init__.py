@@ -63,7 +63,7 @@ class Player(BasePlayer):
     # Preliminary Questions
     age = models.IntegerField(label="Bitte geben Sie Ihr Alter an.", min=18, max=99, blank=True)
     sex = models.IntegerField(choices=[[0, "Divers"], [1, "Weiblich"], [2, "Männlich"]],
-                              widget=widgets.RadioSelectHorizontal, label="Bitte geben Sie Ihr Geschlecht an.", blank=True)
+                              widget=widgets.RadioSelect, label="Bitte geben Sie Ihr Geschlecht an.", blank=True)
     nationality = models.BooleanField(choices=[[True, "Deutsch"], [False, "Nichtdeutsch"]],
                               widget=widgets.RadioSelectHorizontal, label="Bitte geben Sie an, ob Ihre Nationalität Deutsch ist.", blank=True)
     migration_bg = models.BooleanField(choices=[[True, "Ja, ich habe einen Migrationshintergrund"],
@@ -79,7 +79,11 @@ class Player(BasePlayer):
                                           [12,"Sachsen-Anhalt"],[13,"Sachsen"],[14,"Schleswig-Holstein"],[15,"Thüringen"]],
                                  label="TBD: Bitte geben Sie an, in welchem Arbeitsbereich Sie arbeiten bzw. studieren.", blank=True)
 
-    pol_views = models.IntegerField(blank=True)
+    pol_views = models.IntegerField(choices=[[0,"ganz links"],[1,1],[2,2],[3,3],
+                                          [4,4],[5,5],[6,6],[7,7],
+                                          [8,8],[9,9],[10,"ganz rechts"]],widget=widgets.RadioSelect,
+                                        label="In der Politik reden die Leute oft von 'links' und 'rechts', wenn es darum geht, unterschiedliche politische Einstellungen zu kennzeichnen. "
+                                          "Wenn Sie an Ihre eigenen politischen Ansichten denken: Wo würden Sie diese Ansichten einstufen?",blank=True)
 
     importance_sex = models.IntegerField(label="Das Geschlecht", blank=True)
     importance_migration_bg = models.IntegerField(label="Der Migrationshintergrund", blank=True)
@@ -145,7 +149,8 @@ class PreQuestions(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-        demo = ["age", "sex", "nationality", "migration_bg", "student", "job", "immo_exp", "risk_aver",]
+        # removed "sex", "migration_bg"
+        demo = ["age", "nationality", "student", "job", "immo_exp", "risk_aver",]
         return dict(
             demo=demo,
         )
