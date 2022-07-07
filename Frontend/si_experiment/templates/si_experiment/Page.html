@@ -133,5 +133,43 @@
             }
             });
         }
+
+            // estimator slider
+    function createSliderPerAcc(slider) {
+        noUiSlider.create(slider, {
+            start: [0],
+            tooltips: true,
+            range: {
+                'min': [0, 5],
+                '20%': [20, 5],
+                '40%': [40, 5],
+                '60%': [60, 5],
+                '80%': [80, 5],
+                'max': [100]
+            },
+
+           format: {
+               to: function (value) {
+                   return "" + value + "%"
+               },
+               from: function (value) {
+                   return Number(value.replace('%', ''))
+               }
+           },
+
+            pips: {
+                mode: "range",
+                density: 5,
+                format: {
+               to: function (value) {
+                   return "" + value + "%"
+               },
+               from: function (value) {
+                   return Number(value.replace('%', ''))
+                   }
+               }
+            }
+        });
+    }
     </script>
 {% endblock %}

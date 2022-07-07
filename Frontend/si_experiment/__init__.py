@@ -108,6 +108,9 @@ class Player(BasePlayer):
     confEstimate = models.IntegerField(label="", widget=widgets.RadioSelectHorizontal,
                                         choices=[1, 2, 3, 4, 5])
 
+    # perceived accuracy of AI
+    perc_acc = models.FloatField()
+
     # todo immobilien-expertise, risikoaversion
     immo_exp = models.IntegerField(
         choices=[[0, "Keine Erfahrungen"], [1, "Wenige Erfahrungen"], [2, "Einige Erfahrungen"],
@@ -181,7 +184,9 @@ class Task(Page):
     form_model = 'player'
     form_fields = ["estimate", "confEstimate"]
 
-
+class PercAccuracy(Page):
+    form_model = 'player'
+    form_fields = ["perc_acc"]
 
 class WTP(Page):
     form_model = "player"
@@ -208,6 +213,7 @@ class End(Page):
 page_sequence = [Intro,
                  PreQuestions,
                  Task,
+                 PercAccuracy,
                  WTP,
                  Revision,
                  PostQuestions,

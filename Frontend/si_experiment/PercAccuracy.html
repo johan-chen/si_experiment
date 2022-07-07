@@ -1,0 +1,54 @@
+{{ extends "si_experiment/Page.html" }}
+{{ block title }}
+    KI zur Preisvorhersage
+{{ endblock }}
+
+{{ block content }}
+
+<head>
+    <script>
+
+        $(document).ready(function() {
+            // create slider
+            var slider = document.getElementById('slider_per_acc');
+            createSliderPerAcc(slider)
+
+            // write slider results into form field for data export
+            document.getElementById("next-button").addEventListener("click", function (){
+                document.getElementById("perc_acc").value = parseInt(slider.noUiSlider.get(true))
+            });
+        })
+    </script>
+</head>
+
+
+Wir stellen Ihnen nun eine <b>Künstliche Intelligenz (KI)</b> vor, die darauf trainiert ist, den Verkaufspreis von auf der
+Plattform gelisteten Immobilien vorherzusagen.
+<br><br>
+Die KI nutzt die gleichen <b style="color: red">11</b> Eigenschaften von Wohnungen, um den angebotenen Preis
+vorherzusagen. Die KI basiert auf einem Random Forest, eine der einfachsten, aber auch eine der
+leistungsfähigsten KI-Methoden. Ein Random Forest nutzt eine Vielzahl unterschiedlicher Entscheidungsbäume,
+die jeweils einen einzelnen Wert vorhersagen (hier: den Verkaufspreis). Die Mehrheitsvorhersage alle
+Entscheidungsbäume bestimmt dann die endgültige Vorhersage. Mit anderen Worten: Der Random Forest nutzt die
+"Weisheit der Menge".
+<br><br>
+
+Wie hoch schätzen Sie die Genauigkeit der KI ein, um Immobilienpreise vorherzusagen?
+
+<br><br><br>
+
+<table id="perc_acc_tab" class="tab_slider">
+    <tr>
+        <th><div id="slider_per_acc"></div></th>
+    </tr>
+</table>
+
+<input type="hidden" name="perc_acc" id="perc_acc" />
+
+<br><br><br>
+<button id="next-button" class="otree-btn-next btn btn-primary">
+    Weiter
+</button>
+{{ endblock }}
+
+
