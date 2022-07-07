@@ -3,6 +3,39 @@
     Revision Ihrer Schätzung
 {{ endblock }}
 {{ block content }}
+<script>
+    var c_open = 0;
+    var c_close = 0;
+
+    function showDivAndCount(){
+    var div = document.getElementById("Sachverhalt");
+
+    if (div.style.display == "none") {
+        div.style.display = "block";
+        c_open += 1;
+        document.getElementById("click_open").value = c_open;
+    } else {
+        div.style.display = "none";
+        c_close += 1;
+        document.getElementById("click_close").value = c_close;
+    }
+    }
+</script>
+
+<div>
+    <i>(Hinweis: Klicken Sie auf die Taste “Sachverhalt“, um sich den Sachverhalt der letzten Seite anzuschauen.)</i>
+</div>
+<br>
+<div style="text-align:center" >
+    <button type="button"  class="btn btn-secondary" onclick="showDivAndCount('Sachverhalt')" style="margin:10px">
+        Sachverhalt
+    </button>
+</div>
+<input type="hidden" name="click_open" id="click_open" />
+{{ formfield_errors "click_open" }}
+<input type="hidden" name="click_close" id="click_close" />
+{{ formfield_errors "click_close" }}
+
 
 <head>
     <script>

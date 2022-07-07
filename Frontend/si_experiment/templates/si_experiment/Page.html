@@ -16,7 +16,10 @@
     <script src="{{ static 'global/nouislider/dist/nouislider.js' }}"></script>
 
     <script>
-
+    // When players click on table cell radio button gets selected
+    $(document).on("click",".likert_choice",function(){
+        $(this).find("input:radio").prop("checked", true);
+    });
     function filterPipsPercentage(value) {
         if (value % 50 == 0) {
             return 1
@@ -60,31 +63,6 @@
                     to: toEncoderPol,
                 }
             },
-        });
-    }
-    // WTP slider
-    function createSliderWTP(slider) {
-        noUiSlider.create(slider, {
-            start: [0],
-            tooltips: true,
-            range: {
-                'min': [0,20],
-                'max': [80,100]
-            },
-            pips: {
-                mode: "range",
-                filter: filterPipsPercentage,
-                // values: [0,  50,  100],
-                density: 5,
-                format: {
-                    from: fromDecoder,
-                    to: toEncoderPercentage,
-                }
-            },
-            format: {
-                from: fromDecoder,
-                to: toEncoderPercentage,
-            }
         });
     }
     // importance slider (0 - 100%)

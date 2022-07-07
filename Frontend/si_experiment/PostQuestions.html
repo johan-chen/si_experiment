@@ -1,10 +1,46 @@
+{{ extends "si_experiment/Page.html" }}
 {{ block title }}
-    Page title
+    Fragen
 {{ endblock }}
 
 {{ block content }}
+<p>
+    <b>Aufgabe:</b> Bitte geben Sie Ihre persönliche Einstellung zu folgenden Aussagen an.
+</p>
+<table class="likert">
+    <col span="1" class="wide">
+    <tr>
+        <th></th>
+        <th>Stimme gar nicht zu</th>
+        <th>Stimme nicht zu</th>
+        <th>Stimme eher nicht zu</th>
+        <th>Neutral</th>
+        <th>Stimme eher zu</th>
+        <th>Stimme zu</th>
+        <th>Stimme voll und ganz zu</th>
+    </tr>
 
-    {{ next_button }}
+    <tr>
+        <th></th>
+        {{for choice in form.anthro1.choices}}
+            <th>{{choice}}</th>
+        {{endfor}}
+    </tr>
+    {{ for field in form }}
+    <tr>
+        <td class="likert_label">{{ field.label }}</td>
+        {{ for choice in field }}
+            <td class="likert_choice">{{ choice }}</td>
+        {{ endfor }}
+    </tr>
+    {{ endfor }}
+</table>
+<br>
+
+<br>
+<button id="next-button" class="otree-btn-next btn btn-primary">
+    Weiter
+</button>
 {{ endblock }}
 
 

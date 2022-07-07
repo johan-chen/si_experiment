@@ -88,3 +88,20 @@ td.importance-slider {
     height: 130px;
     padding: 30px;
 }
+.treatment {
+    /*margin: 20px;*/
+    padding: 20px;
+    text-align: justify;
+    background: orange;
+    border-radius: 25px;
+}
+
+td.treatment_elem {
+    padding: 10px;
+    vertical-align: top;
+}
+
+td ul, td li {
+    margin:0;
+
+}
