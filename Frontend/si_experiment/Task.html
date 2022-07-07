@@ -12,6 +12,13 @@
             var slider = document.getElementById('slider_estimator');
             createSliderEstimate(slider)
 
+            // duplicates for showcasing
+            var slider = document.getElementById('slider_estimator2');
+            createSliderEstimate2(slider)
+
+            var slider = document.getElementById('slider_estimator3');
+            createSliderEstimate3(slider)
+
             // write slider results into form field for data export
             document.getElementById("next-button").addEventListener("click", function (){
                 document.getElementById("estimate").value = parseInt(slider.noUiSlider.get(true))
@@ -22,7 +29,7 @@
 
 In diesem Schritt sollen Sie den Verkäuferpreis einer Immobilie schätzen, die auf einer großen Online Plattform gelistet ist.
 Bitte beachten Sie, dass es sich dabei nicht um den endgültigen Kaufpreis, sondern um den auf der Plattform inserierten
-Preis handelt. Um diesen Preis zu schätzen, können Sie sich die unten gelisteten Eigenschaften der Immobilie ansehen und
+Preis handelt. <b>(Optional: Der Preis befindet sich zwischen 400.000€ und 600.000€)</b> Um diesen Preis zu schätzen, können Sie sich die unten gelisteten Eigenschaften der Immobilie ansehen und
 anschließend den Schieberegler auf die entsprechende Position bewegen.
 
 <br><br>
@@ -81,23 +88,66 @@ anschließend den Schieberegler auf die entsprechende Position bewegen.
 <br><br>
 
 Bewegen Sie den Schieberegler, um Ihre Schätzung abzugeben:
-
+<h3>Option 1:</h3>
 <br><br><br>
+
 <table id="estimator_original" class="tab_slider">
     <tr>
         <th><div id="slider_estimator"></div></th>
     </tr>
 </table>
+<br><br><br>
+<h3>Option 2:</h3>
+<br><br><br>
 
+<table class="tab_slider">
+    <tr>
+        <th><div id="slider_estimator2"></div></th>
+    </tr>
+</table>
+<br><br><br>
+<h3>Option 3:</h3>
+<br><br><br>
+
+<table class="tab_slider">
+    <tr>
+        <th><div id="slider_estimator3"></div></th>
+    </tr>
+</table>
 <input type="hidden" name="estimate" id="estimate" />
 
 <br><br><br>
+<h3>Option 4:</h3>
+{{ formfield 'estimate_box' }}
 
-Wie sicher sind Sie sich mit dieser Entscheidung? Angabe von 1 (unsicher) bis 5 (sicher).
-
-<table id="confidence_revise" class="tab_slider">
+<br>
+<p>
+    <b>Aufgabe:</b> Bitte geben Sie Ihre persönliche Einstellung zur folgenden Aussage an.
+</p>
+<table class="likert">
+    <col span="1" class="wide">
     <tr>
-        <td><div>{{ formfield "confEstimate" }} </div></td>
+        <th></th>
+        <th>Stimme gar nicht zu</th>
+        <th>Stimme nicht zu</th>
+        <th>Stimme eher nicht zu</th>
+        <th>Neutral</th>
+        <th>Stimme eher zu</th>
+        <th>Stimme zu</th>
+        <th>Stimme voll und ganz zu</th>
+    </tr>
+
+    <tr>
+        <th></th>
+        {{for choice in form.confEstimate.choices}}
+            <th>{{choice}}</th>
+        {{endfor}}
+    </tr>
+    <tr>
+        <td class="likert_label">{{ form.confEstimate.label }}</td>
+        {{ for choice in form.confEstimate }}
+            <td class="likert_choice">{{ choice }}</td>
+        {{ endfor }}
     </tr>
 </table>
 

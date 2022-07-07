@@ -30,11 +30,11 @@
 
     function toEncoderPol(value) {
         if (parseInt(value) == 100) {
-            return "Rechts"
+            return "ganz rechts"
         } else if (parseInt(value) == 0) {
-            return "Links"
+            return "ganz links"
         } else if (parseInt(value) == 50) {
-            return "Mitte"
+            return "mitte"
         }
     }
 
@@ -93,13 +93,96 @@
     // estimator slider
     function createSliderEstimate(slider) {
         noUiSlider.create(slider, {
-            start: [0],
+            start: [400000],
+            tooltips: true,
+            step: 10000,
+            range: {
+                'min': [400000,10000],
+                '50%': [500000,10000],
+                'max': [600000]
+            },
+
+           format: {
+               to: function (value) {
+                   return value.toLocaleString('de-DE', {
+                        style: 'currency',
+                        currency: 'EUR',
+                        minimumFractionDigits: 2
+                });
+               },
+               from: function (value) {
+                   return Number(value.replace(' €', '').replace(',', '').replace('.', ','))
+               }
+           },
+
+            pips: {
+                mode: "range",
+                density: 5,
+                format: {
+               to: function (value) {
+                   return value.toLocaleString('de-DE', {
+                        style: 'currency',
+                        currency: 'EUR',
+                        minimumFractionDigits: 2
+                });
+               },
+               from: function (value) {
+                   return Number(value.replace(' €', '').replace(',', '').replace('.', ','))
+               }
+                }
+            }
+            });
+        }
+            function createSliderEstimate2(slider) {
+        noUiSlider.create(slider, {
+            start: [300000],
+            tooltips: true,
+            step: 20000,
+            range: {
+                'min': [300000, 20000],
+                '50%': [500000, 20000],
+                'max': [700000]
+            },
+
+           format: {
+               to: function (value) {
+                   return value.toLocaleString('de-DE', {
+                        style: 'currency',
+                        currency: 'EUR',
+                        minimumFractionDigits: 2
+                });
+               },
+               from: function (value) {
+                   return Number(value.replace(' €', '').replace(',', '').replace('.', ','))
+               }
+           },
+
+            pips: {
+                mode: "range",
+                density: 5,
+                format: {
+               to: function (value) {
+                   return value.toLocaleString('de-DE', {
+                        style: 'currency',
+                        currency: 'EUR',
+                        minimumFractionDigits: 2
+                });
+               },
+               from: function (value) {
+                   return Number(value.replace(' €', '').replace(',', '').replace('.', ','))
+               }
+                }
+            }
+            });
+        }
+                        function createSliderEstimate3(slider) {
+        noUiSlider.create(slider, {
+            start: [100000],
             tooltips: true,
             range: {
-                'min': [0, 10_000],
-                '33%': [500_000, 10_000],
-                '67%': [1_000_000, 10_000],
-                'max': [1500000]
+                'min': [100000, 50000],
+                '50%': [500000, 50000],
+                'max': [1000000]
             },
 
            format: {

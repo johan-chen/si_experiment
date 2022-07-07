@@ -9,7 +9,7 @@ SESSION_CONFIGS = [
     dict(
         name="si_experiment",
         app_sequence=['si_experiment'],
-        num_demo_participants=5,
+        num_demo_participants=10,
     )
 ]
 

@@ -61,7 +61,7 @@ class Player(BasePlayer):
     # intro data
     is_mobile = models.BooleanField()
     consent = models.BooleanField(choices=["Ich möchte an der Studie teilnehmen."],
-                                  label="Durch das Ankreuzen des Kästchens erkläre ich mich mit der Teilnahme an der Studie einverstanden.")
+                                  label="Durch das Ankreuzen des Kästchens erkläre ich mich mit der Teilnahme an der Studie einverstanden.", blank=True)
 
     # Treatments: Baseline, Accuracy, Developer and Accuracy
     treatment = models.IntegerField()
@@ -105,8 +105,10 @@ class Player(BasePlayer):
 
     # task
     estimate = models.FloatField()
-    confEstimate = models.IntegerField(label="", widget=widgets.RadioSelectHorizontal,
-                                        choices=[1, 2, 3, 4, 5])
+
+    # for showcasing
+    estimate_box = models.IntegerField(label="Bitte geben Sie eine Schätzung ein.", blank=True)
+    confEstimate = make_field("Ich bin von meiner Schätzung überzeugt.")
 
     # perceived accuracy of AI
     perc_acc = models.FloatField()
@@ -123,9 +125,10 @@ class Player(BasePlayer):
 
     # Revision
     revision = models.FloatField()
-    confRevision = models.IntegerField(label="", widget=widgets.RadioSelectHorizontal,
-                                        choices=[1, 2, 3, 4, 5])
-    click_dev_open, click_dev_close = models.IntegerField(), models.IntegerField()
+    confRevision = make_field("Ich bin von meiner Schätzung überzeugt.")
+    click_sex_open, click_sex_close = models.IntegerField(), models.IntegerField()
+    click_migration_bg_open, click_migration_bg_close = models.IntegerField(), models.IntegerField()
+    click_pol_views_open, click_pol_views_close = models.IntegerField(), models.IntegerField()
     click_acc_open, click_acc_close = models.IntegerField(), models.IntegerField()
 
     ###################
@@ -182,7 +185,8 @@ class PreQuestions(Page):
 
 class Task(Page):
     form_model = 'player'
-    form_fields = ["estimate", "confEstimate"]
+    form_fields = ["estimate", "confEstimate",
+                   "estimate_box"]
 
 class PercAccuracy(Page):
     form_model = 'player'
@@ -194,7 +198,11 @@ class WTP(Page):
 
 class Revision(Page):
     form_model = 'player'
-    form_fields = ["revision", "confRevision", "click_dev_open", "click_dev_close", "click_acc_open", "click_acc_close"]
+    form_fields = ["revision", "confRevision",
+                   "click_sex_open", "click_sex_close",
+                   "click_migration_bg_open", "click_migration_bg_close",
+                   "click_pol_views_open", "click_pol_views_close",
+                   "click_acc_open", "click_acc_close"]
 
 
 

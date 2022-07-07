@@ -6,8 +6,8 @@
 
 <head>
     <script>
-        var c_open = {"dev": 0, "acc": 0};
-        var c_close = {"dev": 0, "acc": 0};
+        var c_open = {"sex": 0, "migration_bg": 0, "pol_views": 0, "acc": 0};
+        var c_close = {"sex": 0, "migration_bg": 0, "pol_views": 0, "acc": 0};
 
 
         function showDivAndCount(my_button){
@@ -27,8 +27,12 @@
 
         $(document).ready(function() {
             // count clicks
-            document.getElementById("click_dev_open").value = c_open["dev"];
-            document.getElementById("click_dev_close").value = c_close["dev"];
+            document.getElementById("click_sex_open").value = c_open["sex"];
+            document.getElementById("click_sex_close").value = c_close["sex"];
+            document.getElementById("click_migration_bg_open").value = c_open["migration_bg"];
+            document.getElementById("click_migration_bg_close").value = c_close["migration_bg"];
+            document.getElementById("click_pol_views_open").value = c_open["pol_views"];
+            document.getElementById("click_pol_views_close").value = c_close["pol_views"];
             document.getElementById("click_acc_open").value = c_open["acc"];
             document.getElementById("click_acc_close").value = c_close["acc"];
 
@@ -55,8 +59,22 @@ entsprechenden Button.
     <tr>
         <td>
             <div style="text-align:center" >
-                <button type="button"  class="btn btn-secondary" onclick="showDivAndCount('dev')" style="margin:10px">
-                    Profil KI Entwickler
+                <button type="button"  class="btn btn-secondary" onclick="showDivAndCount('sex')" style="margin:10px">
+                    KI Entwickler: Geschlecht
+                </button>
+            </div>
+        </td>
+        <td>
+            <div style="text-align:center" >
+                <button type="button"  class="btn btn-secondary" onclick="showDivAndCount('migration_bg')" style="margin:10px">
+                    KI Entwickler: Migrationshintergrund
+                </button>
+            </div>
+        </td>
+        <td>
+            <div style="text-align:center" >
+                <button type="button"  class="btn btn-secondary" onclick="showDivAndCount('pol_views')" style="margin:10px">
+                    KI Entwickler: Politische Ansichten
                 </button>
             </div>
         </td>
@@ -70,20 +88,32 @@ entsprechenden Button.
     </tr>
     <tr>
         <td>
-            <div id="dev" style="display:none; border: 1px solid grey; padding: 10px">
+            <div id="sex" style="display:none; border: 1px solid grey; padding: 10px">
                  <table>
-                                <tr>
-                                    <td><ul><li>Geschlecht:</li></ul></td>
-                                    <td style="padding-left:10px">männlich</td>
-                                </tr>
-                                <tr>
-                                    <td><ul><li>Migrationshintergrund:</li></ul></td>
-                                    <td style="padding-left:10px">keinen</td>
-                                </tr>
-                                <tr>
-                                    <td><ul><li>Politische Ansicht:</li></ul></td>
-                                    <td style="padding-left:10px">eher rechts</td>
-                                </tr>
+                        <tr>
+                            <td class="treatment_elem">Geschlecht:</td>
+                            <td style="padding-left:10px">männlich</td>
+                        </tr>
+                 </table>
+            </div>
+        </td>
+        <td>
+            <div id="migration_bg" style="display:none; border: 1px solid grey; padding: 10px">
+                 <table>
+                        <tr>
+                            <td class="treatment_elem">Migrationshintergrund:</td>
+                            <td style="padding-left:10px">keinen</td>
+                        </tr>
+                 </table>
+            </div>
+        </td>
+        <td>
+            <div id="pol_views" style="display:none; border: 1px solid grey; padding: 10px">
+                 <table>
+                        <tr>
+                            <td class="treatment_elem">Politische Ansicht:</td>
+                            <td style="padding-left:10px">eher rechts</td>
+                        </tr>
                  </table>
             </div>
         </td>
@@ -102,10 +132,18 @@ entsprechenden Button.
 </table>
 
 
-<input type="hidden" name="click_dev_open" id="click_dev_open" />
-{{ formfield_errors "click_dev_open" }}
-<input type="hidden" name="click_dev_close" id="click_dev_close" />
-{{ formfield_errors "click_dev_close" }}
+<input type="hidden" name="click_sex_open" id="click_sex_open" />
+{{ formfield_errors "click_sex_open" }}
+<input type="hidden" name="click_sex_close" id="click_sex_close" />
+{{ formfield_errors "click_sex_close" }}
+<input type="hidden" name="click_migration_bg_open" id="click_migration_bg_open" />
+{{ formfield_errors "click_migration_bg_open" }}
+<input type="hidden" name="click_migration_bg_close" id="click_migration_bg_close" />
+{{ formfield_errors "click_migration_bg_close" }}
+<input type="hidden" name="click_pol_views_open" id="click_pol_views_open" />
+{{ formfield_errors "click_pol_views_open" }}
+<input type="hidden" name="click_pol_views_close" id="click_pol_views_close" />
+{{ formfield_errors "click_pol_views_close" }}
 <input type="hidden" name="click_acc_open" id="click_acc_open" />
 {{ formfield_errors "click_acc_open" }}
 <input type="hidden" name="click_acc_close" id="click_acc_close" />
@@ -188,11 +226,34 @@ Falls Sie Ihre Schätzung revidieren möchten, ziehen Sie den Schieberegler an d
 
 <br><br><br>
 
-Wie sicher sind Sie sich mit dieser Entscheidung? Angabe von 1 (unsicher) bis 5 (sicher).
-
-<table id="confidence_revise" class="tab_slider">
+<br>
+<p>
+    <b>Aufgabe:</b> Bitte geben Sie Ihre persönliche Einstellung zur folgenden Aussage an.
+</p>
+<table class="likert">
+    <col span="1" class="wide">
     <tr>
-        <td><div>{{ formfield "confRevision" }} </div></td>
+        <th></th>
+        <th>Stimme gar nicht zu</th>
+        <th>Stimme nicht zu</th>
+        <th>Stimme eher nicht zu</th>
+        <th>Neutral</th>
+        <th>Stimme eher zu</th>
+        <th>Stimme zu</th>
+        <th>Stimme voll und ganz zu</th>
+    </tr>
+
+    <tr>
+        <th></th>
+        {{for choice in form.confRevision.choices}}
+            <th>{{choice}}</th>
+        {{endfor}}
+    </tr>
+    <tr>
+        <td class="likert_label">{{ form.confRevision.label }}</td>
+        {{ for choice in form.confRevision }}
+            <td class="likert_choice">{{ choice }}</td>
+        {{ endfor }}
     </tr>
 </table>
 
