@@ -121,7 +121,7 @@ class Player(BasePlayer):
     # trust
     cog_trust1 = make_field("Der Algorithmus ist kompetent und effektiv bei der Vorhersage der Immobilienpreise.")
     cog_trust2 = make_field("Der Algorithmus erfüllt seine Aufgabe, die Immobilienpreise vorherzusagen, sehr gut.")
-    cog_trust3 = make_field("Insgesamt ist Der Algorithmus ein fähiges und kompetentes Werkzeug für die Vorhersage der Immobilienpreise.")
+    cog_trust3 = make_field("Insgesamt ist der Algorithmus ein fähiges und kompetentes Werkzeug für die Vorhersage der Immobilienpreise.")
     integ_trust1 = make_field("Der Algorithmus gibt unvoreingenommene Empfehlungen.")
     # attention check 1
     integ_trust2 = make_field("Der Algorithmus ist unehrlich.")
@@ -160,7 +160,7 @@ class Task(Page):
 
 class WTP(Page):
     form_model = "player"
-    form_fields = ["wtp"]
+    # form_fields = ["wtp"]
 
 class Revision(Page):
     pass

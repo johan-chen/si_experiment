@@ -4,6 +4,121 @@
 {{ endblock }}
 
 {{ block content }}
+<head>
+    <script>
+        var slider_social_distances = ["slider_soc_distance_sex", "slider_soc_distance_migration_bg", "slider_soc_distance_pol_views"]
+        var soc_distances = ["soc_distance_sex", "soc_distance_migration_bg", "soc_distance_pol_views"]
+        $(document).ready(function() {
+            // create slider for social distances
+            for (let [i, slid] of slider_social_distances.entries()) {
+                slider_social_distances[i] = document.getElementById(slid)
+                createSlider(slider_social_distances[i])
+            }
+
+            // write slider results into form field for data export
+            // document.getElementById("next-button").addEventListener("click", function (){
+            //     for (let [i, imp] of importances.entries()) {
+            //         document.getElementById(imp).value = parseInt(slider_importances[i].noUiSlider.get(true))
+            // }
+            // });
+        })
+    </script>
+</head>
+<div>
+    Reihenfolge und Attributreihenfolge randomisiert:
+</div>
+<br>
+<div class="treatment">
+    <table>
+        <tr>
+            <td style="width:15%;vertical-align: top"><img src="{{ static 'global/expert.png' }}" style="width: 20%" /></td>
+            <td style="width:15%;vertical-align: top"><img src="{{ static 'global/KI.png' }}" style="width: 30%" /></td>
+        </tr>
+        <tr>
+            <td class="treatment_elem">
+                Der <b>Entwickler</b> des Algorithmus besitzt folgende Eigenschaften:
+                <table>
+                    <tr>
+                        <td><ul><li>Geschlecht:</li></ul></td>
+                        <td style="padding-left:10px">männlich</td>
+                    </tr>
+                    <tr>
+                        <td><ul><li>Migrationshintergrund:</li></ul></td>
+                        <td style="padding-left:10px">keinen</td>
+                    </tr>
+                    <tr>
+                        <td><ul><li>Politische Ansicht:</li></ul></td>
+                        <td style="padding-left:10px">eher rechts</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="treatment_elem">
+                Die <b>Genauigkeit</b> des Algorithmus: 80 %
+            </td>
+        </tr>
+    </table>
+</div>
+<br>
+<div class="treatment">
+    Die <b>Entwicklerin</b> des Algorithmus besitzt folgende Eigenschaften:
+    <table>
+        <tr>
+            <td><ul><li>Geschlecht:</li></ul></td>
+            <td style="padding-left:10px">weiblich</td>
+        </tr>
+        <tr>
+            <td><ul><li>Migrationshintergrund:</li></ul></td>
+            <td style="padding-left:10px">keinen</td>
+        </tr>
+        <tr>
+            <td><ul><li>Politische Ansicht:</li></ul></td>
+            <td style="padding-left:10px">mitte</td>
+        </tr>
+    </table>
+</div>
+<br>
+<div class="treatment">
+    Der <b>Entwickler</b> des Algorithmus besitzt folgende Eigenschaften:
+    <table>
+        <tr>
+            <td><ul><li>Geschlecht:</li></ul></td>
+            <td style="padding-left:10px">männlich</td>
+        </tr>
+        <tr>
+            <td><ul><li>Migrationshintergrund:</li></ul></td>
+            <td style="padding-left:10px">hat einen</td>
+        </tr>
+        <tr>
+            <td><ul><li>Politische Ansicht:</li></ul></td>
+            <td style="padding-left:10px">eher links</td>
+        </tr>
+    </table>
+</div>
+<br>
+
+<p>
+    <b>Aufgabe:</b> Auf einer Skala von 0% bis 100% in Schritten von einem Prozentpunkt: Geben Sie bitte an, wie sehr Sie sich mit den Eigenschaften des Entwicklers identifizieren können.
+    <br>(Legende: 100%: Der Faktor ist für mich sehr wichtig. 0%: Der Faktor ist für mich überhaupt nicht wichtig.)
+</p>
+<!-- importance table -->
+<table class="importance-table">
+    <tr>
+        <td style="vertical-align: middle">Das Geschlecht</td>
+        <td class="importance-slider"><div id="slider_soc_distance_sex"></div></td>
+    </tr>
+    <tr>
+        <td style="vertical-align: middle">Der Migrationshintergrund</td>
+        <td class="importance-slider"><div id="slider_soc_distance_migration_bg"></div></td>
+    </tr>
+    <tr>
+        <td style="vertical-align: middle">Die politische Ansicht</td>
+        <td class="importance-slider"><div id="slider_soc_distance_pol_views"></div></td>
+    </tr>
+</table>
+<br>
+<hr style="border-top:3px dashed black; background: transparent; opacity: 1 ">
+<br>
+
 <p>
     <b>Aufgabe:</b> Bitte geben Sie Ihre persönliche Einstellung zu folgenden Aussagen an.
 </p>
