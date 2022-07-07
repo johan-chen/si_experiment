@@ -98,10 +98,9 @@ class Player(BasePlayer):
     pers_inno4 = make_field("Ich experimentiere gerne mit neuer Technologie.")
 
     # task
-    confidence = make_field(
-        "Bitte sagen Sie uns, wie sicher Sie sich bei der soeben getroffenen Vorhersage des Immobilienpreises fühlen. ")
-    confidence_rev = make_field(
-        "Bitte sagen Sie uns, wie sicher Sie sich bei der soeben getroffenen Vorhersage des Immobilienpreises fühlen. ")
+    estimate = models.FloatField()
+    confEstimate = models.IntegerField(label="", widget=widgets.RadioSelectHorizontal,
+                                        choices=[1, 2, 3, 4, 5])
 
     # todo immobilien-expertise, risikoaversion
     immo_exp = models.IntegerField(
@@ -174,7 +173,9 @@ class PreQuestions(Page):
 
 
 class Task(Page):
-    pass
+    form_model = 'player'
+    form_fields = ["estimate", "confEstimate"]
+
 
 
 class WTP(Page):
@@ -194,9 +195,7 @@ class End(Page):
     pass
 
 
-# Intro, PreQuestions,
-# , PostQuestions, End
-page_sequence = [
+page_sequence = [Intro, PreQuestions,
     Task,
     WTP,
-    Revision]
+    Revision, PostQuestions, End]
