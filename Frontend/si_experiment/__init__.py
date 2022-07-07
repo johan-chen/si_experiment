@@ -113,10 +113,12 @@ class Player(BasePlayer):
                  [3, "Viel Erfahrungen"]],
         label="TBD: Wie risikoavers sind Sie?")
 
-    # revision
+    # Revision
     revision = models.FloatField()
     confRevision = models.IntegerField(label="", widget=widgets.RadioSelectHorizontal,
                                         choices=[1, 2, 3, 4, 5])
+    click_dev_open, click_dev_close = models.IntegerField(), models.IntegerField()
+    click_acc_open, click_acc_close = models.IntegerField(), models.IntegerField()
 
     ###################
     # algorithm items #
@@ -181,7 +183,7 @@ class WTP(Page):
 
 class Revision(Page):
     form_model = 'player'
-    form_fields = ["revision", "confRevision"]
+    form_fields = ["revision", "confRevision", "click_dev_open", "click_dev_close", "click_acc_open", "click_acc_close"]
 
 
 class PostQuestions(Page):

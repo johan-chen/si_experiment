@@ -3,43 +3,36 @@
     Revision Ihrer Schätzung
 {{ endblock }}
 {{ block content }}
-<script>
-    var c_open = 0;
-    var c_close = 0;
-
-    function showDivAndCount(){
-    var div = document.getElementById("Sachverhalt");
-
-    if (div.style.display == "none") {
-        div.style.display = "block";
-        c_open += 1;
-        document.getElementById("click_open").value = c_open;
-    } else {
-        div.style.display = "none";
-        c_close += 1;
-        document.getElementById("click_close").value = c_close;
-    }
-    }
-</script>
-
-<div>
-    <i>(Hinweis: Klicken Sie auf die Taste “Sachverhalt“, um sich den Sachverhalt der letzten Seite anzuschauen.)</i>
-</div>
-<br>
-<div style="text-align:center" >
-    <button type="button"  class="btn btn-secondary" onclick="showDivAndCount('Sachverhalt')" style="margin:10px">
-        Sachverhalt
-    </button>
-</div>
-<input type="hidden" name="click_open" id="click_open" />
-{{ formfield_errors "click_open" }}
-<input type="hidden" name="click_close" id="click_close" />
-{{ formfield_errors "click_close" }}
-
 
 <head>
     <script>
+        var c_open = {"dev": 0, "acc": 0};
+        var c_close = {"dev": 0, "acc": 0};
+
+
+        function showDivAndCount(my_button){
+            var div = document.getElementById(my_button);
+
+            if (div.style.display == "none") {
+                div.style.display = "block";
+                c_open[my_button] += 1;
+                document.getElementById("click_" + my_button + "_open").value = c_open[my_button];
+            } else {
+                div.style.display = "none";
+                c_close[my_button] += 1;
+                document.getElementById("click_" + my_button + "_close").value = c_close[my_button];
+            }
+        }
+
+
         $(document).ready(function() {
+            // count clicks
+            document.getElementById("click_dev_open").value = c_open["dev"];
+            document.getElementById("click_dev_close").value = c_close["dev"];
+            document.getElementById("click_acc_open").value = c_open["acc"];
+            document.getElementById("click_acc_close").value = c_close["acc"];
+
+            // create slider
             var slider = document.getElementById('slider_estimator');
             createSliderEstimate(slider)
 
@@ -55,6 +48,69 @@ In diesem Schritt erhalten Sie die <b>Möglichkeit</b>, Ihre abgegebene <b>Schä
 Ihnen erneut die Eigenschaften der Immobilie sowie die Preisvorhersage der KI. Außerdem können Sie sich noch einmal -- falls
 gewünscht -- die Vorhersagegenauigkeit der KI und das Profil der KI-Entwicklerin ansehen: klicken Sie dazu einfach auf den
 entsprechenden Button.
+
+<br><br>
+
+<table id="button_table" class="tab_slider">
+    <tr>
+        <td>
+            <div style="text-align:center" >
+                <button type="button"  class="btn btn-secondary" onclick="showDivAndCount('dev')" style="margin:10px">
+                    Profil KI Entwickler
+                </button>
+            </div>
+        </td>
+        <td>
+            <div style="text-align:center" >
+                <button type="button"  class="btn btn-secondary" onclick="showDivAndCount('acc')" style="margin:10px">
+                    KI Vorhersagegenauigkeit
+                </button>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="dev" style="display:none; border: 1px solid grey; padding: 10px">
+                 <table>
+                                <tr>
+                                    <td><ul><li>Geschlecht:</li></ul></td>
+                                    <td style="padding-left:10px">männlich</td>
+                                </tr>
+                                <tr>
+                                    <td><ul><li>Migrationshintergrund:</li></ul></td>
+                                    <td style="padding-left:10px">keinen</td>
+                                </tr>
+                                <tr>
+                                    <td><ul><li>Politische Ansicht:</li></ul></td>
+                                    <td style="padding-left:10px">eher rechts</td>
+                                </tr>
+                 </table>
+            </div>
+        </td>
+        <td>
+             <div id="acc" style="display:none; border: 1px solid grey; padding: 10px">
+                 <table>
+                    <tr>
+                        <td class="treatment_elem">
+                            Die <b>Genauigkeit</b> des Algorithmus: 80 %
+                        </td>
+                    </tr>
+                 </table>
+             </div>
+        </td>
+    </tr>
+</table>
+
+
+<input type="hidden" name="click_dev_open" id="click_dev_open" />
+{{ formfield_errors "click_dev_open" }}
+<input type="hidden" name="click_dev_close" id="click_dev_close" />
+{{ formfield_errors "click_dev_close" }}
+<input type="hidden" name="click_acc_open" id="click_acc_open" />
+{{ formfield_errors "click_acc_open" }}
+<input type="hidden" name="click_acc_close" id="click_acc_close" />
+{{ formfield_errors "click_acc_close" }}
+
 
 <br><br>
 
