@@ -51,6 +51,11 @@ def creating_session(subsession):
 
 
 class Player(BasePlayer):
+    # intro data
+    is_mobile = models.BooleanField()
+    consent = models.BooleanField(choices=["Ich möchte an der Studie teilnehmen."],
+                                  label="Durch das Ankreuzen des Kästchens erkläre ich mich mit der Teilnahme an der Studie einverstanden.")
+
     # Treatments: Baseline, Accuracy, Developer and Accuracy
     treatment = models.IntegerField()
 
@@ -150,7 +155,8 @@ class Player(BasePlayer):
 
 # PAGES
 class Intro(Page):
-    pass
+    form_model = 'player'
+    form_fields = ['is_mobile', 'consent']
 
 
 class PreQuestions(Page):
