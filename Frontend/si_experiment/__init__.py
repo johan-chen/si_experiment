@@ -112,11 +112,11 @@ class Player(BasePlayer):
     immo_exp = models.IntegerField(
         choices=[[0, "Keine Erfahrungen"], [1, "Wenige Erfahrungen"], [2, "Einige Erfahrungen"],
                  [3, "Viel Erfahrungen"]],
-        label="TBD: Bitte geben Sie an, wie gut Ihre Erfahrungen mit Immobilien sind.")
+        label="TBD: Bitte geben Sie an, wie gut Ihre Erfahrungen mit Immobilien sind.", blank=True)
     risk_aver = models.IntegerField(
         choices=[[0, "Keine Erfahrungen"], [1, "Wenige Erfahrungen"], [2, "Einige Erfahrungen"],
                  [3, "Viel Erfahrungen"]],
-        label="TBD: Wie risikoavers sind Sie?")
+        label="TBD: Wie risikoavers sind Sie?", blank=True)
 
     # Revision
     revision = models.FloatField()
