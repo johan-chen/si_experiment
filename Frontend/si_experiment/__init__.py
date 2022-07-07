@@ -2,9 +2,8 @@ from otree.api import *
 import random
 
 doc = """
-Your app description
+The impact of social identity on reliance / trust in AI
 """
-
 
 class C(BaseConstants):
     NAME_IN_URL = 'si_experiment'
@@ -23,23 +22,25 @@ class Group(BaseGroup):
 # FUNCTIONS
 def make_field(label):
     return models.IntegerField(
-        choices=[1,2,3,4,5,6,7],
+        choices=[1, 2, 3, 4, 5, 6, 7],
         label=label,
-        widget= widgets.RadioSelectHorizontal,
+        widget=widgets.RadioSelectHorizontal,
         blank=True
     )
+
 
 def shuffle_form_fields(fields, blocksize=3, subblocks=True):
     form_fields = fields
     blocksize = blocksize
 
-    blocks = [form_fields[i:i+blocksize] for i in range(0, len(form_fields), blocksize)]
+    blocks = [form_fields[i:i + blocksize] for i in range(0, len(form_fields), blocksize)]
     random.shuffle(blocks)
     if subblocks:
         for subblock in blocks:
             random.shuffle(subblock)
     form_fields = [formfield for subblock in blocks for formfield in subblock]
     return form_fields
+
 
 def creating_session(subsession):
     for player in subsession.get_players():
@@ -57,6 +58,11 @@ def creating_session(subsession):
         participant.post_questions_order = post_questions
 
 class Player(BasePlayer):
+    # intro data
+    is_mobile = models.BooleanField()
+    consent = models.BooleanField(choices=["Ich möchte an der Studie teilnehmen."],
+                                  label="Durch das Ankreuzen des Kästchens erkläre ich mich mit der Teilnahme an der Studie einverstanden.")
+
     # Treatments: Baseline, Accuracy, Developer and Accuracy
     treatment = models.IntegerField()
 
@@ -98,16 +104,26 @@ class Player(BasePlayer):
     pers_inno4 = make_field("Ich experimentiere gerne mit neuer Technologie.")
 
     # task
-    confidence = make_field("Bitte sagen Sie uns, wie sicher Sie sich bei der soeben getroffenen Vorhersage des Immobilienpreises fühlen. ")
-    confidence_rev = make_field("Bitte sagen Sie uns, wie sicher Sie sich bei der soeben getroffenen Vorhersage des Immobilienpreises fühlen. ")
+    estimate = models.FloatField()
+    confEstimate = models.IntegerField(label="", widget=widgets.RadioSelectHorizontal,
+                                        choices=[1, 2, 3, 4, 5])
 
     # todo immobilien-expertise, risikoaversion
-    immo_exp = models.IntegerField(choices=[[0, "Keine Erfahrungen"],[1,"Wenige Erfahrungen"],[2,"Einige Erfahrungen"],[3,"Viel Erfahrungen"]],
-                            label="TBD: Bitte geben Sie an, wie gut Ihre Erfahrungen mit Immobilien sind.", blank=True)
-    risk_aver = models.IntegerField(choices=[[0, "Keine Erfahrungen"],[1,"Wenige Erfahrungen"],[2,"Einige Erfahrungen"],[3,"Viel Erfahrungen"]],
-                            label="TBD: Wie risikoavers sind Sie?", blank=True)
+    immo_exp = models.IntegerField(
+        choices=[[0, "Keine Erfahrungen"], [1, "Wenige Erfahrungen"], [2, "Einige Erfahrungen"],
+                 [3, "Viel Erfahrungen"]],
+        label="TBD: Bitte geben Sie an, wie gut Ihre Erfahrungen mit Immobilien sind.")
+    risk_aver = models.IntegerField(
+        choices=[[0, "Keine Erfahrungen"], [1, "Wenige Erfahrungen"], [2, "Einige Erfahrungen"],
+                 [3, "Viel Erfahrungen"]],
+        label="TBD: Wie risikoavers sind Sie?")
 
-    wtp = models.IntegerField()
+    # Revision
+    revision = models.FloatField()
+    confRevision = models.IntegerField(label="", widget=widgets.RadioSelectHorizontal,
+                                        choices=[1, 2, 3, 4, 5])
+    click_dev_open, click_dev_close = models.IntegerField(), models.IntegerField()
+    click_acc_open, click_acc_close = models.IntegerField(), models.IntegerField()
 
     ###################
     # algorithm items #
@@ -127,15 +143,19 @@ class Player(BasePlayer):
     integ_trust2 = make_field("Der Algorithmus ist unehrlich.")
     integ_trust3 = make_field("Ich halte diesen Algorithmus für integer.")
     # attention check 2
-    emo_trust1 = make_field("Ich fühle mich unsicher, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.")
-    emo_trust2 = make_field("Ich fühle mich wohl, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.")
-    emo_trust3 = make_field("Ich fühle mich zufrieden, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.")
-
+    emo_trust1 = make_field(
+        "Ich fühle mich unsicher, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.")
+    emo_trust2 = make_field(
+        "Ich fühle mich wohl, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.")
+    emo_trust3 = make_field(
+        "Ich fühle mich zufrieden, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.")
 
 
 # PAGES
 class Intro(Page):
-    pass
+    form_model = 'player'
+    form_fields = ['is_mobile', 'consent']
+
 
 class PreQuestions(Page):
     form_model = "player"
@@ -143,7 +163,8 @@ class PreQuestions(Page):
     @staticmethod
     def get_form_fields(player: Player):
         form_fields = ["importance_sex", "importance_migration_bg", "importance_pol_views",
-                       "age", "sex", "nationality", "migration_bg", "student", "job", "immo_exp", "risk_aver", "pol_views", "soc_norms"]
+                       "age", "sex", "nationality", "migration_bg", "student", "job", "immo_exp", "risk_aver",
+                       "pol_views", "soc_norms"]
         form_fields += player.participant.pers_inno_order
         return form_fields
 
@@ -155,15 +176,22 @@ class PreQuestions(Page):
             demo=demo,
         )
 
+
 class Task(Page):
-    pass
+    form_model = 'player'
+    form_fields = ["estimate", "confEstimate"]
+
+
 
 class WTP(Page):
     form_model = "player"
     # form_fields = ["wtp"]
 
 class Revision(Page):
-    pass
+    form_model = 'player'
+    form_fields = ["revision", "confRevision", "click_dev_open", "click_dev_close", "click_acc_open", "click_acc_close"]
+
+
 
 class PostQuestions(Page):
     form_model = "player"

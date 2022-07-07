@@ -1,29 +1,55 @@
 {{ block title }}
-    Herzlich Willkommen!
+    Herzlich Willkommen
 {{ endblock }}
 {{ block content }}
-<div>
-    Liebe Teilnehmerinnen und Teilnehmer,
+<head>
+        <link rel="stylesheet" href="{{ static 'global/styles.css' }}">
+</head>
+
+<div class="instrucText">
+
+    Die Studie wird von Forschern der <b>Goethe-Universität Frankfurt</b> durchgeführt.<br>
     <br>
-    vielen Dank, dass Sie an dieser Umfrage über Immobilienpreise teilnehmen.
+
+    <i><b><u>Was muss ich tun?</u></b></i><br>
+    Ihre Aufgabe ist es, Listenpreise von Immobilienobjekten schätzen, die auf einer großen Plattform gelistet wurden
+    und einen kurzen Fragebogen auszufüllen.<br>
     <br>
-    Auf den folgenden Seiten werden Sie gebeten, einige Fragen zu Ihren demografischen Daten auszufüllen und eine Aufgabe zur Preisvorhersage für eine Wohnung zu beantworten.
+    <i><b><u>Was habe ich davon?</u></b></i><br>
+
+    Für die Teilnahme erhalten Sie <b>zusätzlich zu der fixen Vergütung</b> auch eine <b>variable Vergütung</b>, die von
+    der <b>Genauigkeit Ihrer Preisschätzungen</b> abhängt. Die gesamte Vergütung werden wir Ihnen in den nächsten Tagen über Prolific
+    zukommen lassen. Die Studie besteht aus <b style="color: red">X</b> Teilen und dauert <b>nur ca. <b style="color: red">Y</b> Minuten</b>.
+
     <br>
-    Bitte beachten Sie, dass die Korrektheit Ihrer Preisvorhersage mit Ihrer Auszahlung verbunden ist und daher eine höhere Korrektheit mit einer höheren Auszahlung verbunden ist.
-</div>
-<br>
-<div>
-    <p>
-        Nähere Informationen finden Sie auf den nachfolgenden Seiten. Klicken Sie dazu bitte auf die "Weiter" Taste.
-    </p>
-    <p>
-        <i>(Hinweis: Sobald Sie auf „Weiter“ klicken, können Sie nicht mehr auf die vorherige Seite zurückkehren.
-            Vermeiden Sie bitte, die Seite zu aktualisieren oder auf eine Seite zurück zu klicken, da Sie ansonsten Ihre Angaben erneut machen müssten.)
-        </i>
-    </p>
+    Selbstverständlich behandeln wir alle Daten zu jeder Zeit streng vertraulich und nutzen diese nur für wissenschaftlichen Zwecke.
+    <br>
 </div>
 
-<button id="next-button" class="otree-btn-next btn btn-primary">
-    Weiter
-</button>
+    <input type="hidden" name="is_mobile" id="is_mobile">
+    <div>{{ formfield "consent" }}</div>
+    {{ next_button }}
+
+<script>
+    function isMobile() {
+        const toMatch = [
+            /Android/i,
+            /iPhone/i,
+            /iPad/i,
+        ];
+
+        return toMatch.some((toMatchItem) => {
+            return navigator.userAgent.match(toMatchItem);
+        });
+    }
+
+    // here is an alternative technique that checks screen resolution
+    // function isMobile() {
+    //     return ((window.innerWidth <= 800) && (window.innerHeight <= 600));
+    // }
+
+    document.getElementById('is_mobile').value = isMobile() ? 1 : 0;
+
+</script>
+
 {{ endblock }}

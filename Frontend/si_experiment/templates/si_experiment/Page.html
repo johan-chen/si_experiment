@@ -90,5 +90,48 @@
             }
         });
     }
+    // estimator slider
+    function createSliderEstimate(slider) {
+        noUiSlider.create(slider, {
+            start: [0],
+            tooltips: true,
+            range: {
+                'min': [0, 10_000],
+                '33%': [500_000, 10_000],
+                '67%': [1_000_000, 10_000],
+                'max': [1500000]
+            },
+
+           format: {
+               to: function (value) {
+                   return value.toLocaleString('de-DE', {
+                        style: 'currency',
+                        currency: 'EUR',
+                        minimumFractionDigits: 2
+                });
+               },
+               from: function (value) {
+                   return Number(value.replace(' €', '').replace(',', '').replace('.', ','))
+               }
+           },
+
+            pips: {
+                mode: "range",
+                density: 5,
+                format: {
+               to: function (value) {
+                   return value.toLocaleString('de-DE', {
+                        style: 'currency',
+                        currency: 'EUR',
+                        minimumFractionDigits: 2
+                });
+               },
+               from: function (value) {
+                   return Number(value.replace(' €', '').replace(',', '').replace('.', ','))
+               }
+                }
+            }
+            });
+        }
     </script>
 {% endblock %}

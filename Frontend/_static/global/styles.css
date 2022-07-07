@@ -7,6 +7,47 @@ div {
     width: 300px;
 }
 
+.ai_prediction {
+    width: 60%;
+    margin-left: 5%;
+    margin-right: auto;
+    text-align: left;
+    border: 1px solid #000000;
+}
+
+.ai_prediction th{
+    padding: 10px;
+    background-color: #eee;
+}
+
+.tab_slider {
+    width: 60%;
+    margin-left: 5%;
+    margin-right: auto;
+}
+
+.real_estate_properties {
+    width: 60%;
+    margin-left: 5%;
+    margin-right: auto;
+    text-align: center;
+    border: 1px solid #dddddd;
+}
+
+.real_estate_properties td, .real_estate_properties th{
+    padding: 10px;
+}
+
+.real_estate_properties tr:nth-child(odd){
+    background-color:#eee;
+}
+
+.real_estate_properties td:nth-child(1) {
+  font-weight: bold;
+  text-align: left;
+  padding-right: 20px;
+}
+
 .likert th, .likert td {
     width: auto;
     border: 1px solid #dddddd;
