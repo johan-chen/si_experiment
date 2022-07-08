@@ -95,26 +95,46 @@
     </table>
 </div>
 <br>
-
 <p>
-    <b>Aufgabe:</b> Auf einer Skala von 0% bis 100% in Schritten von einem Prozentpunkt: Geben Sie bitte an, wie sehr Sie sich mit den Eigenschaften des Entwicklers identifizieren können.
-    <br>(Legende: 100%: Der Faktor ist für mich sehr wichtig. 0%: Der Faktor ist für mich überhaupt nicht wichtig.)
+    <b>Aufgabe:</b> Bitte geben Sie Ihre persönliche Einstellung zu folgenden Aussagen an.
 </p>
-<!-- importance table -->
-<table class="importance-table">
+<table class="likert">
+    <col span="1" class="wide">
     <tr>
-        <td style="vertical-align: middle">Das Geschlecht</td>
-        <td class="importance-slider"><div id="slider_soc_distance_sex"></div></td>
+        <th></th>
+        <th>Stimme <br> nicht zu</th>
+        <th>Stimme eher <br> nicht zu</th>
+        <th>Neutral</th>
+        <th>Stimme eher <br> zu</th>
+        <th>Stimme <br> zu</th>
     </tr>
+
     <tr>
-        <td style="vertical-align: middle">Der Migrationshintergrund</td>
-        <td class="importance-slider"><div id="slider_soc_distance_migration_bg"></div></td>
+        <th></th>
+        {{for choice in form.soc_distance1.choices}}
+            <th>{{choice}}</th>
+        {{endfor}}
     </tr>
+    {{ for field in form }}
+    {{ if forloop.counter < 5 }}
     <tr>
-        <td style="vertical-align: middle">Die politische Ansicht</td>
-        <td class="importance-slider"><div id="slider_soc_distance_pol_views"></div></td>
+        <td class="likert_label">{{ field.label }}</td>
+        {{ for choice in field }}
+            <td class="likert_choice">{{ choice }}</td>
+        {{ endfor }}
     </tr>
+    {{ endif }}
+    {{ endfor }}
 </table>
+<br>
+<br>
+<p>
+    <b>Aufgabe:</b> Bitte ordnen Sie die Attribute der Wichtigkeit an, nach der Sie Ihre "social distance" zum Entwickler angegeben haben.
+</p>
+{{ for field in ranks }}
+    {{ formfield field }}
+{{ endfor }}
+
 <br>
 <hr style="border-top:3px dashed black; background: transparent; opacity: 1 ">
 <br>
@@ -126,13 +146,11 @@
     <col span="1" class="wide">
     <tr>
         <th></th>
-        <th>Stimme gar nicht zu</th>
-        <th>Stimme nicht zu</th>
-        <th>Stimme eher nicht zu</th>
+        <th>Stimme <br> nicht zu</th>
+        <th>Stimme eher <br> nicht zu</th>
         <th>Neutral</th>
-        <th>Stimme eher zu</th>
-        <th>Stimme zu</th>
-        <th>Stimme voll und ganz zu</th>
+        <th>Stimme eher <br> zu</th>
+        <th>Stimme <br> zu</th>
     </tr>
 
     <tr>
@@ -142,12 +160,14 @@
         {{endfor}}
     </tr>
     {{ for field in form }}
+    {{ if forloop.counter > 7 }}
     <tr>
         <td class="likert_label">{{ field.label }}</td>
         {{ for choice in field }}
             <td class="likert_choice">{{ choice }}</td>
         {{ endfor }}
     </tr>
+    {{ endif }}
     {{ endfor }}
 </table>
 <br>

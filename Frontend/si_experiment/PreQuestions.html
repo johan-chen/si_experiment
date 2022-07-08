@@ -8,8 +8,6 @@
         var slider_importances = ["slider_importance_sex", "slider_importance_migration_bg", "slider_importance_pol_views"]
         var importances = ["importance_sex", "importance_migration_bg", "importance_pol_views"]
         $(document).ready(function() {
-            var slider = document.getElementById('slider_pol_views');
-            createSliderPol(slider)
 
             // create slider for importances
             for (let [i, slid] of slider_importances.entries()) {
@@ -20,7 +18,6 @@
             // write slider results into form field for data export
             document.getElementById("next-button").addEventListener("click", function (){
 
-                document.getElementById("pol_views").value = parseInt(slider.noUiSlider.get(true))
                 for (let [i, imp] of importances.entries()) {
                     document.getElementById(imp).value = parseInt(slider_importances[i].noUiSlider.get(true))
             }
@@ -47,39 +44,25 @@
     <tr>
         <th>Aufgabe: Beantworten Sie bitte folgende Fragen. </th>
         <th>Antwortmöglichkeit</th>
-        <th>Aufgabe: Auf einer Skala von 0% bis 100% in Schritten von einem Prozentpunkt: Geben Sie bitte an, wie wichtig Ihnen persönlich die entsprechenden Faktoren sind.
-        <p style="font-weight:normal">(Legende: 100%: Der Faktor ist für mich sehr wichtig. 0%: Der Faktor ist für mich überhaupt nicht wichtig.)</p></th>
+        <th>Aufgabe: Geben Sie bitte an, wie wichtig Ihnen persönlich die entsprechenden Faktoren sind.
+        <p style="font-weight: normal">Legende: 1 (nicht wichtig), 5 (wichtig)</p></th>
     </tr>
     <tr>
         <td style="vertical-align: middle">{{ form.sex.label }}</td>
         <td style="vertical-align: middle">{{ form.sex }}</td>
-        <td class="importance-slider"><div id="slider_importance_sex"></div></td>
+        <td style="width:270px">{{ form.importance_sex }}</td>
     </tr>
     <tr>
         <td style="vertical-align: middle">{{ form.migration_bg.label }}</td>
         <td style="vertical-align: middle">{{ form.migration_bg }}</td>
-        <td class="importance-slider"><div id="slider_importance_migration_bg"></div></td>
+        <td>{{ form.importance_migration_bg }}</td>
     </tr>
     <tr>
         <td style="vertical-align: middle">{{ form.pol_views.label }}</td>
         <td style="vertical-align: middle">{{ form.pol_views }} </td>
-        <td class="importance-slider"><div id="slider_importance_pol_views"></div></td>
+        <td>{{ form.importance_pol_views}}</td>
     </tr>
 </table>
-<br>
-<div>
-    <p>
-        <b>Aufgabe:</b> In der Politik reden die Leute oft von 'Links' und 'Rechts', wenn es darum geht, unterschiedliche politische Einstellungen zu kennzeichnen.
-        <br>
-        Wenn Sie an Ihre eigenen politischen Ansichten denken: Wo würden Sie diese Ansichten einstufen? (Klicken Sie dazu auf den Schieberegler und verschieben ihn.)
-    </p>
-</div>
-
-<br>
-<div style="padding-left: 50px; padding-right: 50px" >
-    <div id="slider_pol_views" ></div>
-</div>
-<br>
 
 <br>
 <br>
@@ -93,13 +76,11 @@
     <col span="1" class="wide">
     <tr>
         <th></th>
-        <th>Stimme gar nicht zu</th>
-        <th>Stimme nicht zu</th>
-        <th>Stimme eher nicht zu</th>
+        <th>Stimme <br> nicht zu</th>
+        <th>Stimme eher <br> nicht zu</th>
         <th>Neutral</th>
-        <th>Stimme eher zu</th>
-        <th>Stimme zu</th>
-        <th>Stimme voll und ganz zu</th>
+        <th>Stimme eher <br> zu</th>
+        <th>Stimme <br> zu</th>
     </tr>
 
     <tr>

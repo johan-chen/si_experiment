@@ -9,6 +9,7 @@ class C(BaseConstants):
     NAME_IN_URL = 'si_experiment'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
+    CHOICES = ["Geschlecht", "Migrationshintergrund", "Politische Ansichten"]
 
 
 class Subsession(BaseSubsession):
@@ -22,12 +23,14 @@ class Group(BaseGroup):
 # FUNCTIONS
 def make_field(label):
     return models.IntegerField(
-        choices=[1, 2, 3, 4, 5, 6, 7],
+        choices=[1, 2, 3, 4, 5],
         label=label,
         widget=widgets.RadioSelectHorizontal,
         blank=True
     )
 
+def make_rank_field(label):
+    return models.StringField(choices=C.CHOICES, label=label)
 
 def shuffle_form_fields(fields, blocksize=3, subblocks=True):
     form_fields = fields
@@ -85,15 +88,23 @@ class Player(BasePlayer):
                                           [12,"Sachsen-Anhalt"],[13,"Sachsen"],[14,"Schleswig-Holstein"],[15,"Thüringen"]],
                                  label="TBD: Bitte geben Sie an, in welchem Arbeitsbereich Sie arbeiten bzw. studieren.", blank=True)
 
-    pol_views = models.IntegerField(choices=[[0,"ganz links"],[1,1],[2,2],[3,3],
+    pol_views = models.IntegerField(choices=[[0,"0 (ganz links)"],[1,1],[2,2],[3,3],
                                           [4,4],[5,5],[6,6],[7,7],
-                                          [8,8],[9,9],[10,"ganz rechts"]],widget=widgets.RadioSelect,
+                                          [8,8],[9,9],[10,"10 (ganz rechts)"]],
                                         label="In der Politik reden die Leute oft von 'links' und 'rechts', wenn es darum geht, unterschiedliche politische Einstellungen zu kennzeichnen. "
                                           "Wenn Sie an Ihre eigenen politischen Ansichten denken: Wo würden Sie diese Ansichten einstufen?",blank=True)
 
-    importance_sex = models.IntegerField(label="Das Geschlecht", blank=True)
-    importance_migration_bg = models.IntegerField(label="Der Migrationshintergrund", blank=True)
-    importance_pol_views = models.IntegerField(label="Die politische Einstellung", blank=True)
+    importance_sex = make_field("Das Geschlecht")
+    importance_migration_bg = make_field("Der Migrationshintergrund")
+    importance_pol_views = make_field("Die politische Einstellung")
+    soc_distance_rank1 = make_rank_field("1. Platz")
+    soc_distance_rank2 = make_rank_field("2. Platz")
+    soc_distance_rank3 = make_rank_field("3. Platz")
+
+    soc_distance1 = make_field("Der Entwickler könnte ähnliche Ansichten haben wie ich.")
+    soc_distance2 = make_field("Der Entwickler könnte ähnliche Werte haben wie ich.")
+    soc_distance3 = make_field("Ich könnte zur gleichen Gruppe gehören wie der Entwickler.")
+    soc_distance4 = make_field("Ich bin eine ähnlicher Mensch wie der Entwickler.")
 
     soc_norms = make_field("Ich tue immer mein Bestes, um gesellschaftliche Normen zu befolgen.")
 
@@ -119,9 +130,11 @@ class Player(BasePlayer):
                  [3, "Viel Erfahrungen"]],
         label="TBD: Bitte geben Sie an, wie gut Ihre Erfahrungen mit Immobilien sind.", blank=True)
     risk_aver = models.IntegerField(
-        choices=[[0, "Keine Erfahrungen"], [1, "Wenige Erfahrungen"], [2, "Einige Erfahrungen"],
-                 [3, "Viel Erfahrungen"]],
-        label="TBD: Wie risikoavers sind Sie?", blank=True)
+        choices=[[0,"0 (völlig risikoscheu)"],[1,1],[2,2],[3,3],
+                                          [4,4],[5,5],[6,6],[7,7],
+                                          [8,8],[9,9],[10,"10 (sehr risikofreudig)"]],
+        label="Bitte sagen Sie mir, wie risikobereit oder risikoscheu Sie im Allgemeinen sind. Bitte nutzen Sie eine Skala von 0 bis 10, wobei 0 'völlig risikoscheu' und 10 'sehr risikofreudig' bedeutet.",
+        blank=True)
 
     # Revision
     revision = models.FloatField()
@@ -204,16 +217,40 @@ class Revision(Page):
                    "click_pol_views_open", "click_pol_views_close",
                    "click_acc_open", "click_acc_close"]
 
-
-
 class PostQuestions(Page):
     form_model = "player"
 
     @staticmethod
     def get_form_fields(player: Player):
-        form_fields = ["transparency"]
+        form_fields = ["soc_distance1", "soc_distance2", "soc_distance3", "soc_distance4",
+                       "soc_distance_rank1","soc_distance_rank2","soc_distance_rank3","transparency"]
         form_fields += player.participant.post_questions_order
         return form_fields
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        ranks = ["soc_distance_rank1","soc_distance_rank2","soc_distance_rank3"]
+        return dict(
+            ranks=ranks,
+        )
+
+    @staticmethod
+    def error_message(player: Player, values):
+        choices = [values['soc_distance_rank1'], values['soc_distance_rank2'], values['soc_distance_rank3']]
+        # set() gives you distinct elements. if a list's length is different from its
+        # set length, that means it must have duplicates.
+        if len(set(choices)) != len(choices):
+            return "Sie können nicht dasselbe Element mehrfach auswählen."
+
+    # @staticmethod
+    # def vars_for_template(player: Player):
+    #     soc_distance = ["soc_distance_sex","soc_distance_migration_bg","soc_distance_pol_views"]
+    #     post_questions = ["transparency"]
+    #     post_questions += player.participant.post_questions_order
+    #     return dict(
+    #         soc_distance=soc_distance,
+    #         post_questions=post_questions,
+    #     )
 
 class End(Page):
     pass
