@@ -9,15 +9,15 @@
 <!--todo add script to tasks templates-->
         $(document).ready(function() {
             // create slider
-            var slider = document.getElementById('slider_estimator');
-            createSliderEstimate(slider)
-
-            // duplicates for showcasing
-            var slider = document.getElementById('slider_estimator2');
-            createSliderEstimate2(slider)
-
-            var slider = document.getElementById('slider_estimator3');
-            createSliderEstimate3(slider)
+            // var slider = document.getElementById('slider_estimator');
+            // createSliderEstimate(slider)
+            //
+            // // duplicates for showcasing
+            // var slider = document.getElementById('slider_estimator2');
+            // createSliderEstimate2(slider)
+            //
+            // var slider = document.getElementById('slider_estimator3');
+            // createSliderEstimate3(slider)
 
             var slider = document.getElementById('slider_estimator_credit');
             createSliderPerAcc(slider)
@@ -32,11 +32,13 @@
 <h3>*TODOs*</h3>
 <ul>
     <li>Bei welchen Attributen sollen bei ? die Erklärungen angezeigt werden? </li>
+    <li>Model macht eine Pred zwischen 1-25, die y_true range ist aber nur 1-20</li>
+    <li>Mapping von 1-20 auf 5% bis 100% scale?</li>
 </ul>
 {{ if tasks_order}}
-    {{ include "si_experiment/immoTask.html" }}
-{{ else }}
     {{ include "si_experiment/creditTask.html" }}
+{{ else }}
+    {{ include "si_experiment/immoTask.html" }}
 {{ endif }}
 <!--<input type="hidden" name="estimate" id="estimate" />-->
 <!-- todo adjust likert table according to formfield -->

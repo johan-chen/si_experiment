@@ -19,7 +19,7 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     pass
 
-
+#todo remove all blank=True
 # FUNCTIONS
 def make_field(label):
     return models.IntegerField(
@@ -30,7 +30,7 @@ def make_field(label):
     )
 
 def make_rank_field(label):
-    return models.StringField(choices=C.CHOICES, label=label)
+    return models.StringField(choices=C.CHOICES, label=label, blank=True)
 
 def shuffle_form_fields(fields, blocksize=3, subblocks=True):
     form_fields = fields
@@ -56,9 +56,14 @@ def creating_session(subsession):
             "emo_trust1", "emo_trust2", "emo_trust3",
         ]
         random.shuffle(pers_inno)
+        # True = Immo task first
+        # False = Credit task first
+        tasks_order = True #random.choice([True, False])
         post_questions = shuffle_form_fields(post_questions, 3, True)
+
         participant.pers_inno_order = pers_inno
         participant.post_questions_order = post_questions
+        participant.tasks_order = tasks_order
 
 class Player(BasePlayer):
     # intro data
@@ -78,15 +83,21 @@ class Player(BasePlayer):
     migration_bg = models.BooleanField(choices=[[True, "Ja, ich habe einen Migrationshintergrund"],
                                                 [False, "Nein, ich habe keinen Migrationshintergrund"]],
                                        widget=widgets.RadioSelect, label="Bitte geben Sie an, ob Sie einen Migrationshintergrund besitzen.", blank=True)
-    student = models.BooleanField(choices=[[True, "Ja"],
-                                           [False, "Nein"]],
-                                  widget=widgets.RadioSelectHorizontal, label="Bitte geben Sie an, ob Sie studieren.", blank=True)
+    # student = models.BooleanField(choices=[[True, "Ja"],
+    #                                        [False, "Nein"]],
+    #                               widget=widgets.RadioSelectHorizontal, label="Bitte geben Sie an, ob Sie studieren.", blank=True)
+    job_status = models.IntegerField(
+        choices=[[0, "Vollzeitbeschäftigung"], [1, "Teilzeitbeschäftigung"], [2, "Selbstständig"],
+                 [3, "Hausfrau/mann"], [4, "Student"], [5, "Rentner"]],
+        label="Wie ist Ihr derzeitiger Beschäftigungsstatus?", blank=True)
+
     # todo: Tbd
     job = models.IntegerField(choices=[[0,"Baden-Württemberg"],[1,"Bayern"],[2,"Berlin"],[3,"Brandenburg"],
                                           [4,"Bremen"],[5,"Hamburg"],[6,"Hessen"],[7,"Mecklenburg-Vorpommern"],
                                           [8,"Niedersachsen"],[9,"Nordrhein-Westfalen"],[10,"Rheinland-Pfalz"],[11,"Saarland"],
                                           [12,"Sachsen-Anhalt"],[13,"Sachsen"],[14,"Schleswig-Holstein"],[15,"Thüringen"]],
                                  label="TBD: Bitte geben Sie an, in welchem Arbeitsbereich Sie arbeiten bzw. studieren.", blank=True)
+
 
     pol_views = models.IntegerField(choices=[[0,"0 (ganz links)"],[1,1],[2,2],[3,3],
                                           [4,4],[5,5],[6,6],[7,7],
@@ -117,23 +128,28 @@ class Player(BasePlayer):
     # task
     estimate = models.FloatField()
 
-    # for showcasing
-    estimate_box = models.IntegerField(label="Bitte geben Sie eine Schätzung ein.", blank=True)
-    confEstimate = make_field("Ich bin von meiner Schätzung überzeugt.")
+    confEstimateImmo = make_field("Ich bin von meiner Schätzung überzeugt.")
+    confEstimateCredit = make_field("Ich bin von meiner Schätzung überzeugt.")
 
     # perceived accuracy of AI
     perc_acc = models.FloatField()
 
-    # todo immobilien-expertise, risikoaversion
+    # todo immobilien-expertise
+    # todo credit default expertise
     immo_exp = models.IntegerField(
         choices=[[0, "Keine Erfahrungen"], [1, "Wenige Erfahrungen"], [2, "Einige Erfahrungen"],
                  [3, "Viel Erfahrungen"]],
         label="TBD: Bitte geben Sie an, wie gut Ihre Erfahrungen mit Immobilien sind.", blank=True)
+    credit_exp = models.IntegerField(
+        choices=[[0, "Keine Erfahrungen"], [1, "Wenige Erfahrungen"], [2, "Einige Erfahrungen"],
+                 [3, "Viel Erfahrungen"]],
+        label="TBD: Bitte geben Sie an, wie gut Ihre Erfahrungen mit Krediten sind.", blank=True)
+
     risk_aver = models.IntegerField(
         choices=[[0,"0 (völlig risikoscheu)"],[1,1],[2,2],[3,3],
                                           [4,4],[5,5],[6,6],[7,7],
                                           [8,8],[9,9],[10,"10 (sehr risikofreudig)"]],
-        label="Bitte sagen Sie mir, wie risikobereit oder risikoscheu Sie im Allgemeinen sind. Bitte nutzen Sie eine Skala von 0 bis 10, wobei 0 'völlig risikoscheu' und 10 'sehr risikofreudig' bedeutet.",
+        label="Bitte geben Sie an, wie risikobereit oder risikoscheu Sie im Allgemeinen sind. Bitte nutzen Sie eine Skala von 0 bis 10, wobei 0 'völlig risikoscheu' und 10 'sehr risikofreudig' bedeutet.",
         blank=True)
 
     # Revision
@@ -144,6 +160,7 @@ class Player(BasePlayer):
     click_pol_views_open, click_pol_views_close = models.IntegerField(), models.IntegerField()
     click_acc_open, click_acc_close = models.IntegerField(), models.IntegerField()
 
+    # todo add items for credit task
     ###################
     # algorithm items #
     ###################
@@ -182,7 +199,7 @@ class PreQuestions(Page):
     @staticmethod
     def get_form_fields(player: Player):
         form_fields = ["importance_sex", "importance_migration_bg", "importance_pol_views",
-                       "age", "sex", "nationality", "migration_bg", "student", "job", "immo_exp", "risk_aver",
+                       "age", "sex", "nationality", "migration_bg", "job_status", "job", "immo_exp", "credit_exp", "risk_aver",
                        "pol_views", "soc_norms"]
         form_fields += player.participant.pers_inno_order
         return form_fields
@@ -190,7 +207,7 @@ class PreQuestions(Page):
     @staticmethod
     def vars_for_template(player: Player):
         # removed "sex", "migration_bg"
-        demo = ["age", "nationality", "student", "job", "immo_exp", "risk_aver",]
+        demo = ["age", "nationality", "job_status", "job", "immo_exp", "credit_exp", "risk_aver",]
         return dict(
             demo=demo,
         )
@@ -198,8 +215,14 @@ class PreQuestions(Page):
 
 class Task(Page):
     form_model = 'player'
-    form_fields = ["estimate", "confEstimate",
-                   "estimate_box"]
+    # todo add "estimate",
+    # todo input fields according to immo or credit task sequence
+    form_fields = ["confEstimateImmo"]
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        tasks_order = player.participant.tasks_order
+        return dict(tasks_order=tasks_order)
 
 class PercAccuracy(Page):
     form_model = 'player'
@@ -234,23 +257,64 @@ class PostQuestions(Page):
             ranks=ranks,
         )
 
+    # @staticmethod
+    # def error_message(player: Player, values):
+    #     choices = [values['soc_distance_rank1'], values['soc_distance_rank2'], values['soc_distance_rank3']]
+    #     # set() gives you distinct elements. if a list's length is different from its
+    #     # set length, that means it must have duplicates.
+    #     if len(set(choices)) != len(choices):
+    #         return "Sie können nicht dasselbe Element mehrfach auswählen."
+
+class Stage2(Page):
+    pass
+
+class Task2(Page):
+    form_model = 'player'
+    # todo add "estimate",
+    # todo input fields according to immo or credit task sequence
+    form_fields = ["confEstimateImmo"]
+
     @staticmethod
-    def error_message(player: Player, values):
-        choices = [values['soc_distance_rank1'], values['soc_distance_rank2'], values['soc_distance_rank3']]
-        # set() gives you distinct elements. if a list's length is different from its
-        # set length, that means it must have duplicates.
-        if len(set(choices)) != len(choices):
-            return "Sie können nicht dasselbe Element mehrfach auswählen."
+    def vars_for_template(player: Player):
+        tasks_order = player.participant.tasks_order
+        return dict(tasks_order=tasks_order)
+
+class PercAccuracy2(Page):
+    form_model = 'player'
+    form_fields = ["perc_acc"]
+
+class Revision2(Page):
+    form_model = 'player'
+    form_fields = ["revision", "confRevision",
+                   "click_sex_open", "click_sex_close",
+                   "click_migration_bg_open", "click_migration_bg_close",
+                   "click_pol_views_open", "click_pol_views_close",
+                   "click_acc_open", "click_acc_close"]
+
+class PostQuestions2(Page):
+    form_model = "player"
+
+    @staticmethod
+    def get_form_fields(player: Player):
+        form_fields = ["soc_distance1", "soc_distance2", "soc_distance3", "soc_distance4",
+                       "soc_distance_rank1","soc_distance_rank2","soc_distance_rank3","transparency"]
+        form_fields += player.participant.post_questions_order
+        return form_fields
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        ranks = ["soc_distance_rank1","soc_distance_rank2","soc_distance_rank3"]
+        return dict(
+            ranks=ranks,
+        )
 
     # @staticmethod
-    # def vars_for_template(player: Player):
-    #     soc_distance = ["soc_distance_sex","soc_distance_migration_bg","soc_distance_pol_views"]
-    #     post_questions = ["transparency"]
-    #     post_questions += player.participant.post_questions_order
-    #     return dict(
-    #         soc_distance=soc_distance,
-    #         post_questions=post_questions,
-    #     )
+    # def error_message(player: Player, values):
+    #     choices = [values['soc_distance_rank1'], values['soc_distance_rank2'], values['soc_distance_rank3']]
+    #     # set() gives you distinct elements. if a list's length is different from its
+    #     # set length, that means it must have duplicates.
+    #     if len(set(choices)) != len(choices):
+    #         return "Sie können nicht dasselbe Element mehrfach auswählen."
 
 class End(Page):
     pass
@@ -262,4 +326,9 @@ page_sequence = [Intro,
                  WTP,
                  Revision,
                  PostQuestions,
+                 Stage2,
+                 Task2,
+                 PercAccuracy2,
+                 Revision2,
+                 PostQuestions2,
                  End]

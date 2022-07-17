@@ -22,7 +22,7 @@ SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=1.00, participation_fee=0.00, doc=""
 )
 
-PARTICIPANT_FIELDS = ["pers_inno_order", "post_questions_order"]
+PARTICIPANT_FIELDS = ["pers_inno_order", "post_questions_order", "tasks_order"]
 SESSION_FIELDS = []
 
 # ISO-639 code
@@ -32,6 +32,10 @@ LANGUAGE_CODE = 'de'
 # e.g. EUR, GBP, CNY, JPY
 REAL_WORLD_CURRENCY_CODE = 'USD'
 USE_POINTS = True
+
+ROOMS = [
+    dict(name='study', display_name='Studie')
+]
 
 ADMIN_USERNAME = 'admin'
 # for security, best to set admin password in an environment variable

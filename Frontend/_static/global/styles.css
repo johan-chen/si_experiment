@@ -105,3 +105,16 @@ td ul, td li {
     margin:0;
 
 }
+
+.question_mark {
+    background:grey;
+    border-radius: 10px;
+    height:20px;
+    width:20px;
+    line-height: 18px;
+    color:white;
+    font-weight: bold;
+    display:inline-block;
+    text-align: center
+}
+

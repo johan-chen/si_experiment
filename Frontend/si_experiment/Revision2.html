@@ -38,7 +38,7 @@
 
             // create slider
             var slider = document.getElementById('slider_estimator');
-            createSliderEstimate(slider)
+            createSliderPerAcc(slider)
 
             // write slider results into form field for data export
             document.getElementById("next-button").addEventListener("click", function (){
@@ -49,7 +49,7 @@
 </head>
 
 In diesem Schritt erhalten Sie die <b>Möglichkeit</b>, Ihre abgegebene <b>Schätzung noch einmal anzupassen</b>. Dazu zeigen wir
-Ihnen erneut die Eigenschaften der Immobilie sowie die Preisvorhersage der KI. Außerdem können Sie sich noch einmal -- falls
+Ihnen erneut die Eigenschaften des Kreditbewerbers sowie die Ausfallvorhersage der KI. Außerdem können Sie sich noch einmal -- falls
 gewünscht -- die Vorhersagegenauigkeit der KI und das Profil der KI-Entwicklerin ansehen: klicken Sie dazu einfach auf den
 entsprechenden Button.
 
@@ -80,8 +80,8 @@ entsprechenden Button.
         </td>
         <td>
             <div style="text-align:center" >
-                <button type="button" class="btn btn-secondary" onclick="showDivAndCount('acc')" style="margin:10px">
-                    KI: Vorhersagegenauigkeit
+                <button type="button"  class="btn btn-secondary" onclick="showDivAndCount('acc')" style="margin:10px">
+                    KI Vorhersagegenauigkeit
                 </button>
             </div>
         </td>
@@ -152,54 +152,50 @@ entsprechenden Button.
 
 <br><br>
 
-<table id="real-estate-properties_2" class="real_estate_properties">
+<table id="real-estate-properties_1" class="real_estate_properties">
     <tr>
-        <th colspan="2" style="text-align: center">Eigenschaften der Immobilie</th>
+        <th colspan="2" style="text-align: center">Eigenschaften des Kreditbewerbers</th>
     </tr>
 
     <tr>
-        <td>Stadt</td>
-        <td>Frankfurt am Main</td>
+        <td>Jährliches Einkommen <span data-bs-toggle="tooltip" data-bs-placement="top" title="Das vom Kreditnehmer bei der Beantragung selbst angegebene Jahreseinkommen." class="question_mark">?</span></td>
+        <td>41.000  </td>
     </tr>
     <tr>
-        <td>Wohnfläche</td>
-        <td>74 m<sup>2</sup>  </td>
+        <td>Beschäftigungsdauer in Jahren <span data-bs-toggle="tooltip" data-bs-placement="top" title="Mögliche Werte liegen zwischen 0 und 10, wobei 0 für weniger als ein Jahr und 10 für zehn oder mehr Jahre steht." class="question_mark">?</span></td>
+        <td>2</td>
     </tr>
     <tr>
-        <td>Etage</td>
-        <td>3. Obergeschoss</td>
+        <td>Berufsbezeichnung <span data-bs-toggle="tooltip" data-bs-placement="top" title="Die vom Kreditnehmer bei der Beantragung angegebene Berufsbezeichnung." class="question_mark">?</span></td>
+        <td>IT</td>
     </tr>
     <tr>
-        <td>Aufzug</td>
-        <td>Ja</td>
+        <td>Wohneigentum <span data-bs-toggle="tooltip" data-bs-placement="top" title="Der vom Kreditnehmer bei der Beantragung angegebene Status des Wohneigentums." class="question_mark">?</span></td>
+        <td>Miete</td>
     </tr>
     <tr>
-        <td>Garten</td>
-        <td>Nein</td>
+        <td>Ratenzahlung <span data-bs-toggle="tooltip" data-bs-placement="top" title="Die monatliche Rate, die der Kreditnehmer zu zahlen hat, wenn der Kredit zustande kommt." class="question_mark">?</span></td>
+        <td>215,84</td>
     </tr>
     <tr>
-        <td>Keller</td>
-        <td>Ja</td>
+        <td>DTI <span data-bs-toggle="tooltip" data-bs-placement="top" title="Eine Kennzahl, die sich aus den monatlichen Gesamtzahlungen des Kreditnehmers für seine gesamten Verbindlichkeiten (ohne Hypotheken und den beantragten Kredit), geteilt durch sein selbst angegebenes Monatseinkommen, errechnet." class="question_mark">?</span></td>
+        <td>5,68</td>
     </tr>
     <tr>
-        <td>Balkon</td>
-        <td>Ja</td>
+        <td>Laufzeit in Monaten <span data-bs-toggle="tooltip" data-bs-placement="top" title="Die Anzahl der Zahlungen für den Kredit. Die Werte können entweder 36 oder 60 betragen." class="question_mark">?</span></td>
+        <td>36</td>
     </tr>
     <tr>
-        <td>Anzahl Zimmer</td>
-        <td>3</td>
+        <td>Verwendungszweck <span data-bs-toggle="tooltip" data-bs-placement="top" title="Eine vom Kreditnehmer für den Antrag angegebene Kategorie." class="question_mark">?</span></td>
+        <td>Schuldenkonsolidierung</td>
     </tr>
     <tr>
-        <td>Baujahr</td>
-        <td>2019</td>
-    </tr>
-    <tr>
-        <td>Arbeitslosenquote Stadtteil    <br>(innerstädt. Vergleich)</td>
-        <td>Unterdurchschnittlich</td>
+        <td>Offene Rechnungen <span data-bs-toggle="tooltip" data-bs-placement="top" title="Die Anzahl der offenen Kredite in der Kreditakte des Bewerbers." class="question_mark">?</span></td>
+        <td>7</td>
     </tr>
         <tr>
-        <td>Anteil Grünenwähler Stadtteil    <br>(innerstädt. Vergleich)</td>
-        <td>Durchschnittlich</td>
+        <td>Kredithöhe <span data-bs-toggle="tooltip" data-bs-placement="top" title="Der angegebene Betrag des vom Kreditnehmer beantragten Kredits. Wenn die Kreditabteilung zu einem bestimmten Zeitpunkt den Kreditbetrag reduziert, wird dies in diesem Wert berücksichtigt." class="question_mark">?</span></td>
+        <td>6.500</td>
     </tr>
 </table>
 
@@ -208,7 +204,7 @@ entsprechenden Button.
 <table id="prediction_1" class="ai_prediction">
     <tr>
         <th bgcolor="white">KI Vorhersage:</th>
-        <th bgcolor="white" style="text-align: center;" >400.000,- EUR</th>
+        <th bgcolor="white" style="text-align: center;" >80 %</th>
     </tr>
 </table>
 

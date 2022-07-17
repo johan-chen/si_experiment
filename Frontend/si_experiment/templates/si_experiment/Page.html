@@ -9,12 +9,15 @@
 {% endblock %}
 
 {% block global_scripts  %}
+
+
     <!--jQuery-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <!-- no UI slider-->
     <script src="{{ static 'global/nouislider/dist/nouislider.js' }}"></script>
-
+        <!-- bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0/js/bootstrap.min.js"></script>
     <script>
     // When players click on table cell radio button gets selected
     $(document).on("click",".likert_choice",function(){
@@ -100,6 +103,48 @@
                 'min': [400000,10000],
                 '50%': [500000,10000],
                 'max': [600000]
+            },
+
+           format: {
+               to: function (value) {
+                   return value.toLocaleString('de-DE', {
+                        style: 'currency',
+                        currency: 'EUR',
+                        minimumFractionDigits: 2
+                });
+               },
+               from: function (value) {
+                   return Number(value.replace(' €', '').replace(',', '').replace('.', ','))
+               }
+           },
+
+            pips: {
+                mode: "range",
+                density: 5,
+                format: {
+               to: function (value) {
+                   return value.toLocaleString('de-DE', {
+                        style: 'currency',
+                        currency: 'EUR',
+                        minimumFractionDigits: 2
+                });
+               },
+               from: function (value) {
+                   return Number(value.replace(' €', '').replace(',', '').replace('.', ','))
+               }
+                }
+            }
+            });
+        }
+    function createSliderEstimateCredit(slider) {
+        noUiSlider.create(slider, {
+            start: [1],
+            tooltips: true,
+            step: 1,
+            range: {
+                'min': [1],
+                '50%': [10],
+                'max': [20]
             },
 
            format: {
