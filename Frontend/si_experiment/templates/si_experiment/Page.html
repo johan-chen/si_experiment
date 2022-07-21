@@ -4,7 +4,6 @@
 
 {% block global_styles  %}
     <link href="{{ static 'global/nouislider/dist/nouislider.css' }}" rel="stylesheet">
-
     <link rel="stylesheet" href="{{ static 'global/styles.css' }}">
 {% endblock %}
 
@@ -93,93 +92,9 @@
             }
         });
     }
-    // estimator slider
+
     function createSliderEstimate(slider) {
-        noUiSlider.create(slider, {
-            start: [400000],
-            tooltips: true,
-            step: 10000,
-            range: {
-                'min': [400000,10000],
-                '50%': [500000,10000],
-                'max': [600000]
-            },
-
-           format: {
-               to: function (value) {
-                   return value.toLocaleString('de-DE', {
-                        style: 'currency',
-                        currency: 'EUR',
-                        minimumFractionDigits: 2
-                });
-               },
-               from: function (value) {
-                   return Number(value.replace(' €', '').replace(',', '').replace('.', ','))
-               }
-           },
-
-            pips: {
-                mode: "range",
-                density: 5,
-                format: {
-               to: function (value) {
-                   return value.toLocaleString('de-DE', {
-                        style: 'currency',
-                        currency: 'EUR',
-                        minimumFractionDigits: 2
-                });
-               },
-               from: function (value) {
-                   return Number(value.replace(' €', '').replace(',', '').replace('.', ','))
-               }
-                }
-            }
-            });
-        }
-    function createSliderEstimateCredit(slider) {
-        noUiSlider.create(slider, {
-            start: [1],
-            tooltips: true,
-            step: 1,
-            range: {
-                'min': [1],
-                '50%': [10],
-                'max': [20]
-            },
-
-           format: {
-               to: function (value) {
-                   return value.toLocaleString('de-DE', {
-                        style: 'currency',
-                        currency: 'EUR',
-                        minimumFractionDigits: 2
-                });
-               },
-               from: function (value) {
-                   return Number(value.replace(' €', '').replace(',', '').replace('.', ','))
-               }
-           },
-
-            pips: {
-                mode: "range",
-                density: 5,
-                format: {
-               to: function (value) {
-                   return value.toLocaleString('de-DE', {
-                        style: 'currency',
-                        currency: 'EUR',
-                        minimumFractionDigits: 2
-                });
-               },
-               from: function (value) {
-                   return Number(value.replace(' €', '').replace(',', '').replace('.', ','))
-               }
-                }
-            }
-            });
-        }
-            function createSliderEstimate2(slider) {
-        noUiSlider.create(slider, {
+            noUiSlider.create(slider, {
             start: [300000],
             tooltips: true,
             step: 20000,
@@ -220,49 +135,8 @@
             }
             });
         }
-                        function createSliderEstimate3(slider) {
-        noUiSlider.create(slider, {
-            start: [100000],
-            tooltips: true,
-            range: {
-                'min': [100000, 50000],
-                '50%': [500000, 50000],
-                'max': [1000000]
-            },
 
-           format: {
-               to: function (value) {
-                   return value.toLocaleString('de-DE', {
-                        style: 'currency',
-                        currency: 'EUR',
-                        minimumFractionDigits: 2
-                });
-               },
-               from: function (value) {
-                   return Number(value.replace(' €', '').replace(',', '').replace('.', ','))
-               }
-           },
-
-            pips: {
-                mode: "range",
-                density: 5,
-                format: {
-               to: function (value) {
-                   return value.toLocaleString('de-DE', {
-                        style: 'currency',
-                        currency: 'EUR',
-                        minimumFractionDigits: 2
-                });
-               },
-               from: function (value) {
-                   return Number(value.replace(' €', '').replace(',', '').replace('.', ','))
-               }
-                }
-            }
-            });
-        }
-
-            // estimator slider
+        // estimator slider
     function createSliderPerAcc(slider) {
         noUiSlider.create(slider, {
             start: [0],

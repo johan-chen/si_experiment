@@ -98,5 +98,17 @@ n_correct_selec = int(1+10*len(correct_test_indices)/len(foc_test_indices))
 indices_to_select = correct_test_indices[0:n_correct_selec]
 false_test_indices = foc_test_indices[~foc_test_indices.isin(correct_test_indices)]
 indices_to_select = indices_to_select.append(false_test_indices[30:(40-n_correct_selec)])
+
+# prepare selected data for frontend
+model_data.rename(columns={'floor (storey)': 'floor', 'nmbr of rooms': 'n_rooms',
+                           'construction year': 'construction_year',
+                           'Anteil Gruenenwaehler': 'share_green'}, inplace=True)
+for int_col in ['floor', 'construction_year', 'n_rooms', 'sq_meters']:
+    model_data[int_col] = model_data[int_col].astype(int)
+for bool_col in ['garden', 'basement', 'elevator', 'balcony']:
+    model_data[bool_col] = ["Ja" if b_c == 1 else "Nein" for b_c in model_data[bool_col]]
+for ord_col in ['unemployment', 'share_green']:
+    model_data[ord_col] = ["Unterdurchschnittlich" if o_c == 1 else "Durchschnittlich" if o_c == 2 else
+    "Überdurchschnittlich" for o_c in model_data[ord_col]]
 if write_selected_file:
     model_data[model_data.index.isin(indices_to_select)].to_csv(path_pre + "RealEstate/immonet_data_selected.csv")

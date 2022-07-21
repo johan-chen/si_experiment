@@ -6,33 +6,10 @@
 
 <head>
     <script>
-<!--todo add script to tasks templates-->
-        $(document).ready(function() {
-            // create slider
-            var slider = document.getElementById('slider_estimator');
-            createSliderEstimate(slider)
 
-            // duplicates for showcasing
-            var slider = document.getElementById('slider_estimator2');
-            createSliderEstimate2(slider)
-
-            var slider = document.getElementById('slider_estimator3');
-            createSliderEstimate3(slider)
-
-            var slider = document.getElementById('slider_estimator_credit');
-            createSliderPerAcc(slider)
-
-            // write slider results into form field for data export
-            // document.getElementById("next-button").addEventListener("click", function (){
-            //     document.getElementById("estimate").value = parseInt(slider.noUiSlider.get(true))
-            // });
-        })
     </script>
 </head>
-<h3>*TODOs*</h3>
-<ul>
-    <li>Bei welchen Attributen sollen bei ? die Erklärungen angezeigt werden? </li>
-</ul>
+
 {{ if tasks_order}}
     {{ include "si_experiment/immoTask.html" }}
 {{ else }}
@@ -57,13 +34,13 @@
 
     <tr>
         <th></th>
-        {{for choice in form.confEstimateImmo.choices}}
+        {{for choice in form.conf1Estimate.choices}}
             <th>{{choice}}</th>
         {{endfor}}
     </tr>
     <tr>
-        <td class="likert_label">{{ form.confEstimateImmo.label }}</td>
-        {{ for choice in form.confEstimateImmo }}
+        <td class="likert_label">{{ form.conf1Estimate.label }}</td>
+        {{ for choice in form.conf1Estimate }}
             <td class="likert_choice">{{ choice }}</td>
         {{ endfor }}
     </tr>
@@ -71,7 +48,7 @@
 
 <br><br>
 
-
+<input type="hidden" name="task1Estimate" id="task1Estimate"/>
 
 <button id="next-button" class="otree-btn-next btn btn-primary">
     Weiter

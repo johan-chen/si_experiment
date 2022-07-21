@@ -1,10 +1,31 @@
 <!DOCTYPE html>
 <html lang="de">
+<head>
+        <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+
+        $(document).ready(function() {
+            // create slider
+            var slider = document.getElementById('slider_estimator');
+            createSliderEstimate(slider)
+
+
+            // write slider results into form field for data export
+            document.getElementById("next-button").addEventListener("click", function (){
+                 document.getElementById("task1Estimate").value = parseInt(slider.noUiSlider.get(true))
+            });
+        })
+    </script>
+</head>
 <body>
     <div>
-    In diesem Schritt sollen Sie den Verkäuferpreis einer Immobilie in <b>Frankfurt am Main</b> schätzen, die auf einer großen Online Plattform gelistet ist.
-    Bitte beachten Sie, dass es sich dabei nicht um den endgültigen Kaufpreis, sondern um den auf der Plattform inserierten
-    Preis handelt. <b>(Optional: Der Preis befindet sich zwischen 400.000€ und 600.000€)</b> Um diesen Preis zu schätzen, können Sie sich die unten gelisteten Eigenschaften der Immobilie ansehen und
+    In diesem Schritt sollen Sie den Verkäuferpreis einer <b>Wohnung in Berlin</b> schätzen, die auf einer großen
+    Online Plattform gelistet ist. Bitte beachten Sie, dass es sich dabei nicht um den endgültigen Kaufpreis, sondern
+    um <b>den auf der Plattform inserierten Preis</b> handelt.
+    Um diesen Preis zu schätzen, können Sie sich die unten gelisteten Eigenschaften der Immobilie ansehen und
     anschließend den Schieberegler auf die entsprechende Position bewegen.
 </div>
 <br><br>
@@ -15,78 +36,64 @@
     </tr>
 
     <tr>
-        <td>Wohnfläche <span data-bs-toggle="tooltip" data-bs-placement="top" title="Die Größe der Wohnfläche" class="question_mark">?</span></td>
-        <td>74 m<sup>2</sup>  </td>
+        <td>Wohnfläche</td>
+        <td>{{ apartment.sq_meters }} m<sup>2</sup>  </td>
     </tr>
     <tr>
         <td>Etage</td>
-        <td>3. Obergeschoss</td>
+        <td>{{ apartment.floor }}. Obergeschoss</td>
     </tr>
     <tr>
         <td>Aufzug</td>
-        <td>Ja</td>
+        <td>{{ apartment.elevator }}</td>
     </tr>
     <tr>
         <td>Garten</td>
-        <td>Nein</td>
+        <td>{{ apartment.garden }}</td>
     </tr>
     <tr>
         <td>Keller</td>
-        <td>Ja</td>
+        <td>{{ apartment.basement }}</td>
     </tr>
     <tr>
         <td>Balkon</td>
-        <td>Ja</td>
+        <td>{{ apartment.balcony }}</td>
     </tr>
     <tr>
         <td>Anzahl Zimmer</td>
-        <td>3</td>
+        <td>{{ apartment.n_rooms }}</td>
     </tr>
     <tr>
         <td>Baujahr</td>
-        <td>2019</td>
+        <td>{{ apartment.construction_year }}</td>
     </tr>
     <tr>
-        <td>Arbeitslosenquote Stadtteil    <br>(innerstädt. Vergleich)</td>
-        <td>Unterdurchschnittlich</td>
+        <td>Arbeitslosenquote Stadtteil  <span data-bs-toggle="tooltip" data-bs-placement="top" title=
+                "Anteil der arbeitslosen Bevölkerung im Stadtteil im Vergleich zum Rest Berlins." class="question_mark">?</span>
+            <br>(innerstädt. Vergleich)</td>
+        <td>{{ apartment.unemployment }}</td>
     </tr>
         <tr>
-        <td>Anteil Grünenwähler Stadtteil    <br>(innerstädt. Vergleich)</td>
-        <td>Durchschnittlich</td>
+        <td>Anteil Grünenwähler Stadtteil  <span data-bs-toggle="tooltip" data-bs-placement="top" title=
+            "Anteil der Bevölkerung im Stadtteil, die bei der Bundestagswahl 2021 die Partei 'Bündnis 90/Die Grünen' gewählt hat, im Vergleich zum Rest Berlins." class="question_mark">?</span>
+            <br>(innerstädt. Vergleich)</td>
+        <td>{{ apartment.share_green }}</td>
     </tr>
 </table>
 
-<br><br>
+<br><br><br>
 
 Bewegen Sie den Schieberegler, um Ihre Schätzung abzugeben:
 
-    <br>
-    <br>
-<h3>Option 1:</h3>
 <br><br><br>
 
-<table id="estimator_original" class="tab_slider">
+<table class="tab_slider">
     <tr>
         <th><div id="slider_estimator"></div></th>
     </tr>
 </table>
-<br><br><br>
-<h3>Option 2:</h3>
+
 <br><br><br>
 
-<table class="tab_slider">
-    <tr>
-        <th><div id="slider_estimator2"></div></th>
-    </tr>
-</table>
-<br><br><br>
-<h3>Option 3:</h3>
-<br><br><br>
-
-<table class="tab_slider">
-    <tr>
-        <th><div id="slider_estimator3"></div></th>
-    </tr>
-</table>
 </body>
 </html>

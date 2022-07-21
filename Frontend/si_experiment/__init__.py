@@ -1,4 +1,5 @@
 from otree.api import *
+import pandas as pd
 import random
 
 doc = """
@@ -64,6 +65,8 @@ def creating_session(subsession):
         participant.pers_inno_order = pers_inno
         participant.post_questions_order = post_questions
         participant.tasks_order = tasks_order
+        participant.apartment_row = random.randint(0, 9)
+        participant.lender_row = random.randint(0, 9)
 
 class Player(BasePlayer):
     # intro data
@@ -125,11 +128,10 @@ class Player(BasePlayer):
     pers_inno3 = make_field("Im Allgemeinen zögere ich davor, neue Technologie auszuprobieren.")
     pers_inno4 = make_field("Ich experimentiere gerne mit neuer Technologie.")
 
-    # task
-    estimate = models.FloatField()
+    # task1
+    task1Estimate = models.FloatField()
+    conf1Estimate = make_field("Ich bin von meiner Schätzung überzeugt.")
 
-    confEstimateImmo = make_field("Ich bin von meiner Schätzung überzeugt.")
-    confEstimateCredit = make_field("Ich bin von meiner Schätzung überzeugt.")
 
     # perceived accuracy of AI
     perc_acc = models.FloatField()
@@ -217,12 +219,18 @@ class Task(Page):
     form_model = 'player'
     # todo add "estimate",
     # todo input fields according to immo or credit task sequence
-    form_fields = ["confEstimateImmo"]
+    form_fields = ["task1Estimate", "conf1Estimate"]
 
     @staticmethod
     def vars_for_template(player: Player):
+        apartments = pd.read_csv("../RealEstate/immonet_data_selected.csv")
+        apartments = apartments[['garden', 'basement', 'elevator', 'balcony',
+            'floor', 'n_rooms', 'sq_meters', 'construction_year',
+            'unemployment', 'share_green']]
+        apartment = dict(apartments.iloc[player.participant.apartment_row])
         tasks_order = player.participant.tasks_order
-        return dict(tasks_order=tasks_order)
+        return dict(tasks_order=tasks_order,
+                    apartment=apartment)
 
 class PercAccuracy(Page):
     form_model = 'player'
