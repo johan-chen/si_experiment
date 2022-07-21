@@ -1,0 +1,1 @@
+{'learning_rate': 0.01, 'max_depth': 6, 'n_estimators': 2000, 'random_state': 0, 'subsample': 0.75}
