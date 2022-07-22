@@ -15,9 +15,9 @@ if len(sys.argv) > 1:
 
 # if trained on subset range only (FFM + within bounds of slider)
 train_on_subset = True
-city = "Berlin"  # Frankfurt
 tune_fresh = False
 write_selected_file = False
+city = "Berlin"  # Frankfurt
 
 # random seed
 rnd_state = 0
@@ -110,5 +110,7 @@ for bool_col in ['garden', 'basement', 'elevator', 'balcony']:
 for ord_col in ['unemployment', 'share_green']:
     model_data[ord_col] = ["Unterdurchschnittlich" if o_c == 1 else "Durchschnittlich" if o_c == 2 else
     "Überdurchschnittlich" for o_c in model_data[ord_col]]
+
+# write selected data to file
 if write_selected_file:
     model_data[model_data.index.isin(indices_to_select)].to_csv(path_pre + "RealEstate/immonet_data_selected.csv")
