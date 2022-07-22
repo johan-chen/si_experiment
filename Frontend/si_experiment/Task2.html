@@ -59,13 +59,13 @@
 
     <tr>
         <th></th>
-        {{for choice in form.confEstimateImmo.choices}}
+        {{for choice in form.conf2Estimate.choices}}
             <th>{{choice}}</th>
         {{endfor}}
     </tr>
     <tr>
-        <td class="likert_label">{{ form.confEstimateImmo.label }}</td>
-        {{ for choice in form.confEstimateImmo }}
+        <td class="likert_label">{{ form.conf2Estimate.label }}</td>
+        {{ for choice in form.conf2Estimate }}
             <td class="likert_choice">{{ choice }}</td>
         {{ endfor }}
     </tr>
