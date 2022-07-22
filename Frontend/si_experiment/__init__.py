@@ -1,6 +1,9 @@
 from otree.api import *
 import pandas as pd
 import random
+import locale
+locale.setlocale(locale.LC_ALL, 'de')
+
 
 doc = """
 The impact of social identity on reliance / trust in AI
@@ -232,13 +235,16 @@ class Task(Page):
         return dict(tasks_order=tasks_order,
                     apartment=apartment)
 
+
 class PercAccuracy(Page):
     form_model = 'player'
     form_fields = ["perc_acc"]
 
+
 class WTP(Page):
     form_model = "player"
     # form_fields = ["wtp"]
+
 
 class Revision(Page):
     form_model = 'player'
@@ -247,6 +253,20 @@ class Revision(Page):
                    "click_migration_bg_open", "click_migration_bg_close",
                    "click_pol_views_open", "click_pol_views_close",
                    "click_acc_open", "click_acc_close"]
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        apartments = pd.read_csv("../RealEstate/immonet_data_selected.csv")
+        apartments = apartments[['garden', 'basement', 'elevator', 'balcony',
+            'floor', 'n_rooms', 'sq_meters', 'construction_year',
+            'unemployment', 'share_green', 'pred_price']]
+        apartment = dict(apartments.iloc[player.participant.apartment_row])
+        apartment['pred_price'] = locale.format('%.0f', round(apartment['pred_price']/20_000)*20_000, 1)
+        tasks_order = player.participant.tasks_order
+        return dict(original_estimate=locale.format('%.0f', player.task1Estimate, 1),
+                    tasks_order=tasks_order,
+                    apartment=apartment)
+
 
 class PostQuestions(Page):
     form_model = "player"
@@ -273,8 +293,10 @@ class PostQuestions(Page):
     #     if len(set(choices)) != len(choices):
     #         return "Sie können nicht dasselbe Element mehrfach auswählen."
 
+
 class Stage2(Page):
     pass
+
 
 class Task2(Page):
     form_model = 'player'
@@ -287,9 +309,11 @@ class Task2(Page):
         tasks_order = player.participant.tasks_order
         return dict(tasks_order=tasks_order)
 
+
 class PercAccuracy2(Page):
     form_model = 'player'
     form_fields = ["perc_acc"]
+
 
 class Revision2(Page):
     form_model = 'player'
