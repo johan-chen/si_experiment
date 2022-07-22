@@ -135,6 +135,9 @@ class Player(BasePlayer):
     task1Estimate = models.FloatField()
     conf1Estimate = make_field("Ich bin von meiner Schätzung überzeugt.")
 
+    # task2
+    task2Estimate = models.FloatField()
+    conf2Estimate = make_field("Ich bin von meiner Schätzung überzeugt.")
 
     # perceived accuracy of AI
     perc_acc = models.FloatField()
@@ -302,7 +305,7 @@ class Task2(Page):
     form_model = 'player'
     # todo add "estimate",
     # todo input fields according to immo or credit task sequence
-    form_fields = ["confEstimateImmo"]
+    form_fields = ["conf2Estimate"]
 
     @staticmethod
     def vars_for_template(player: Player):
