@@ -35,15 +35,6 @@
             document.getElementById("click_pol_views_close").value = c_close["pol_views"];
             document.getElementById("click_acc_open").value = c_open["acc"];
             document.getElementById("click_acc_close").value = c_close["acc"];
-
-            // create slider
-            var slider = document.getElementById('slider_estimator');
-            createSliderEstimate(slider)
-
-            // write slider results into form field for data export
-            document.getElementById("next-button").addEventListener("click", function (){
-                document.getElementById("revision").value = parseInt(slider.noUiSlider.get(true))
-            });
         })
     </script>
 </head>
@@ -149,80 +140,14 @@ entsprechenden Button.
 <input type="hidden" name="click_acc_close" id="click_acc_close" />
 {{ formfield_errors "click_acc_close" }}
 
-
 <br><br>
 
-<table id="real-estate-properties_2" class="real_estate_properties">
-    <tr>
-        <th colspan="2" style="text-align: center">Eigenschaften der Immobilie</th>
-    </tr>
+{{ if tasks_order}}
+    {{ include "si_experiment/immoRevision.html" }}
+{{ else }}
+    {{ include "si_experiment/creditRevision.html" }}
+{{ endif }}
 
-    <tr>
-        <td>Stadt</td>
-        <td>Frankfurt am Main</td>
-    </tr>
-    <tr>
-        <td>Wohnfläche</td>
-        <td>74 m<sup>2</sup>  </td>
-    </tr>
-    <tr>
-        <td>Etage</td>
-        <td>3. Obergeschoss</td>
-    </tr>
-    <tr>
-        <td>Aufzug</td>
-        <td>Ja</td>
-    </tr>
-    <tr>
-        <td>Garten</td>
-        <td>Nein</td>
-    </tr>
-    <tr>
-        <td>Keller</td>
-        <td>Ja</td>
-    </tr>
-    <tr>
-        <td>Balkon</td>
-        <td>Ja</td>
-    </tr>
-    <tr>
-        <td>Anzahl Zimmer</td>
-        <td>3</td>
-    </tr>
-    <tr>
-        <td>Baujahr</td>
-        <td>2019</td>
-    </tr>
-    <tr>
-        <td>Arbeitslosenquote Stadtteil    <br>(innerstädt. Vergleich)</td>
-        <td>Unterdurchschnittlich</td>
-    </tr>
-        <tr>
-        <td>Anteil Grünenwähler Stadtteil    <br>(innerstädt. Vergleich)</td>
-        <td>Durchschnittlich</td>
-    </tr>
-</table>
-
-<br>
-
-<table id="prediction_1" class="ai_prediction">
-    <tr>
-        <th bgcolor="white">KI Vorhersage:</th>
-        <th bgcolor="white" style="text-align: center;" >400.000,- EUR</th>
-    </tr>
-</table>
-
-<br><br>
-
-Falls Sie Ihre Schätzung revidieren möchten, ziehen Sie den Schieberegler an die entsprechende Position.
-<br><br><br>
-<table id="estimator_revise" class="tab_slider">
-    <tr>
-        <th><div id="slider_estimator"></div></th>
-    </tr>
-</table>
-
-<input type="hidden" name="revision" id="revision" />
 
 <br><br><br>
 
