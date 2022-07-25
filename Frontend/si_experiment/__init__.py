@@ -229,7 +229,7 @@ class Task(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-        apartments = pd.read_csv("../RealEstate/immonet_data_selected.csv")
+        apartments = pd.read_csv("Data/immonet_data_selected.csv")
         apartments = apartments[['garden', 'basement', 'elevator', 'balcony',
             'floor', 'n_rooms', 'sq_meters', 'construction_year',
             'unemployment', 'share_green']]
@@ -259,7 +259,7 @@ class Revision(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-        apartments = pd.read_csv("../RealEstate/immonet_data_selected.csv")
+        apartments = pd.read_csv("Data/immonet_data_selected.csv")
         apartments = apartments[['garden', 'basement', 'elevator', 'balcony',
             'floor', 'n_rooms', 'sq_meters', 'construction_year',
             'unemployment', 'share_green', 'pred_price']]

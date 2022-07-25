@@ -113,4 +113,4 @@ for ord_col in ['unemployment', 'share_green']:
 
 # write selected data to file
 if write_selected_file:
-    model_data[model_data.index.isin(indices_to_select)].to_csv(path_pre + "RealEstate/immonet_data_selected.csv")
+    model_data[model_data.index.isin(indices_to_select)].to_csv(path_pre + "Frontend/Data/immonet_data_selected.csv")
