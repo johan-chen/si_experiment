@@ -1,8 +1,18 @@
 from otree.api import *
 import pandas as pd
 import random
-import locale
-locale.setlocale(locale.LC_ALL, 'de')
+
+
+# custom function to get German number format
+def format_german_number(number, precision=0):
+    # build format string
+    format_str = '{{:,.{}f}}'.format(precision)
+
+    # make number string
+    number_str = format_str.format(number)
+
+    # replace chars
+    return number_str.replace(',', 'X').replace('.', ',').replace('X', '.')
 
 
 doc = """
@@ -264,9 +274,9 @@ class Revision(Page):
             'floor', 'n_rooms', 'sq_meters', 'construction_year',
             'unemployment', 'share_green', 'pred_price']]
         apartment = dict(apartments.iloc[player.participant.apartment_row])
-        apartment['pred_price'] = locale.format('%.0f', round(apartment['pred_price']/20_000)*20_000, 1)
+        apartment['pred_price'] = format_german_number(round(apartment['pred_price']/20_000)*20_000)
         tasks_order = player.participant.tasks_order
-        return dict(original_estimate=locale.format('%.0f', player.task1Estimate, 1),
+        return dict(original_estimate=format_german_number(player.task1Estimate),
                     tasks_order=tasks_order,
                     apartment=apartment)
 
