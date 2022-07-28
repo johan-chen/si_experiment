@@ -1,0 +1,10 @@
+,home_ownership,purpose,job_new,loan_amnt,term,open_acc,emp_length,annual_inc,dti,installment,pred_,y_
+18,zur Miete,größere Anschaffung,Krankenpflege,20700.0,60.0,9.0,9.0,45000.0,13.04,537.32,75.0,70.0
+19,zur Miete,Kreditkarte,Sonstiges,20400.0,60.0,9.0,2.0,43800.0,27.64,456.79,40.0,40.0
+20,Hypothek,Schuldenkonsolidierung,Sonstiges,7500.0,36.0,6.0,0.0,35000.0,12.31,234.92,30.0,25.0
+21,Hypothek,Haus Sanierung/Ausbau,Techniker/in,10000.0,36.0,8.0,0.0,95000.0,19.82,342.17,55.0,55.0
+22,zur Miete,Schuldenkonsolidierung,Operativer Bereich,8000.0,36.0,10.0,9.0,75000.0,19.42,257.24,25.0,35.0
+23,zur Miete,Schuldenkonsolidierung,Sonstiges,25000.0,60.0,22.0,5.0,132000.0,15.28,629.01,75.0,75.0
+24,Eigentum,Schuldenkonsolidierung,Sonstiges,14325.0,60.0,8.0,10.0,40000.0,26.64,362.68,80.0,80.0
+25,zur Miete,Schuldenkonsolidierung,Sonstiges,22250.0,60.0,10.0,10.0,53000.0,14.83,547.61,75.0,65.0
+26,Hypothek,Sonstiges,Management,10000.0,36.0,11.0,10.0,52000.0,10.96,324.61,40.0,30.0

@@ -1,16 +1,15 @@
 {{ extends "si_experiment/Page.html" }}
 {{ block title }}
-    Ihre Preisschätzung der Immobilie
+    {{ if player.participant.tasks_order}}
+        Ihre Preisschätzung der Immobilie
+    {{ else }}
+        Ihre Schätzung für einen Kreditausfall
+    {{ endif }}
+
 {{ endblock }}
 {{ block content }}
 
-<head>
-    <script>
-
-    </script>
-</head>
-
-{{ if tasks_order}}
+{{ if player.participant.tasks_order}}
     {{ include "si_experiment/immoTask.html" }}
 {{ else }}
     {{ include "si_experiment/creditTask.html" }}

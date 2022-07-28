@@ -1,6 +1,6 @@
 {{ extends "si_experiment/Page.html" }}
 {{ block title }}
-    Revision Ihrer Preisschätzung
+    Revision Ihrer Schätzung
 {{ endblock }}
 {{ block content }}
 
@@ -39,10 +39,11 @@
     </script>
 </head>
 
-In diesem Schritt erhalten Sie die <b>Möglichkeit</b>, Ihre abgegebene <b>Schätzung noch einmal anzupassen</b>. Dazu zeigen wir
-Ihnen erneut die Eigenschaften der Immobilie sowie die Preisvorhersage der KI. Außerdem können Sie sich noch einmal -- falls
-gewünscht -- die Vorhersagegenauigkeit der KI und das Profil der KI-Entwicklerin ansehen: klicken Sie dazu einfach auf den
-entsprechenden Button.
+In diesem Schritt erhalten Sie die <b>Möglichkeit</b>, Ihre abgegebene <b>{{ if player.participant.tasks_order }} Preisschätzung {{ else }} Schätzung der Ausfallwahrscheinlichkeit {{ endif }}
+    noch einmal anzupassen</b>. Dazu zeigen wir Ihnen erneut die Eigenschaften
+{{ if player.participant.tasks_order }} der Immobilie {{ else }} des Kreditbewerbers {{ endif }}
+sowie die Vorhersage der KI. Außerdem können Sie sich noch einmal -- falls gewünscht -- die Vorhersagegenauigkeit der KI
+und das Profil der KI-Entwicklerin ansehen: klicken Sie dazu einfach auf den entsprechenden Button.
 
 <br><br>
 
@@ -93,7 +94,7 @@ entsprechenden Button.
                  <table>
                         <tr>
                             <td class="treatment_elem">Migrationshintergrund:</td>
-                            <td style="padding-left:10px">keinen</td>
+                            <td style="padding-left:10px">nein</td>
                         </tr>
                  </table>
             </div>
@@ -142,7 +143,7 @@ entsprechenden Button.
 
 <br><br>
 
-{{ if tasks_order}}
+{{ if player.participant.tasks_order}}
     {{ include "si_experiment/immoRevision.html" }}
 {{ else }}
     {{ include "si_experiment/creditRevision.html" }}

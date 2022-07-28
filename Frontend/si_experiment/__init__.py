@@ -19,6 +19,7 @@ doc = """
 The impact of social identity on reliance / trust in AI
 """
 
+
 class C(BaseConstants):
     NAME_IN_URL = 'si_experiment'
     PLAYERS_PER_GROUP = None
@@ -33,7 +34,8 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     pass
 
-#todo remove all blank=True
+
+# todo remove all blank=True
 # FUNCTIONS
 def make_field(label):
     return models.IntegerField(
@@ -43,8 +45,10 @@ def make_field(label):
         blank=True
     )
 
+
 def make_rank_field(label):
     return models.StringField(choices=C.CHOICES, label=label, blank=True)
+
 
 def shuffle_form_fields(fields, blocksize=3, subblocks=True):
     form_fields = fields
@@ -72,7 +76,7 @@ def creating_session(subsession):
         random.shuffle(pers_inno)
         # True = Immo task first
         # False = Credit task first
-        tasks_order = True #random.choice([True, False])
+        tasks_order = random.choice([True, False])
         post_questions = shuffle_form_fields(post_questions, 3, True)
 
         participant.pers_inno_order = pers_inno
@@ -81,11 +85,13 @@ def creating_session(subsession):
         participant.apartment_row = random.randint(0, 9)
         participant.lender_row = random.randint(0, 9)
 
+
 class Player(BasePlayer):
     # intro data
     is_mobile = models.BooleanField()
     consent = models.BooleanField(choices=["Ich möchte an der Studie teilnehmen."],
-                                  label="Durch das Ankreuzen des Kästchens erkläre ich mich mit der Teilnahme an der Studie einverstanden.", blank=True)
+                                  label="Durch das Ankreuzen des Kästchens erkläre ich mich mit der Teilnahme an der Studie einverstanden.",
+                                  blank=True)
 
     # Treatments: Baseline, Accuracy, Developer and Accuracy
     treatment = models.IntegerField()
@@ -95,10 +101,13 @@ class Player(BasePlayer):
     sex = models.IntegerField(choices=[[0, "Divers"], [1, "Weiblich"], [2, "Männlich"]],
                               widget=widgets.RadioSelect, label="Bitte geben Sie Ihr Geschlecht an.", blank=True)
     nationality = models.BooleanField(choices=[[True, "Deutsch"], [False, "Nichtdeutsch"]],
-                              widget=widgets.RadioSelectHorizontal, label="Bitte geben Sie an, ob Ihre Nationalität Deutsch ist.", blank=True)
+                                      widget=widgets.RadioSelectHorizontal,
+                                      label="Bitte geben Sie an, ob Ihre Nationalität Deutsch ist.", blank=True)
     migration_bg = models.BooleanField(choices=[[True, "Ja, ich habe einen Migrationshintergrund"],
                                                 [False, "Nein, ich habe keinen Migrationshintergrund"]],
-                                       widget=widgets.RadioSelect, label="Bitte geben Sie an, ob Sie einen Migrationshintergrund besitzen.", blank=True)
+                                       widget=widgets.RadioSelect,
+                                       label="Bitte geben Sie an, ob Sie einen Migrationshintergrund besitzen.",
+                                       blank=True)
     # student = models.BooleanField(choices=[[True, "Ja"],
     #                                        [False, "Nein"]],
     #                               widget=widgets.RadioSelectHorizontal, label="Bitte geben Sie an, ob Sie studieren.", blank=True)
@@ -108,18 +117,21 @@ class Player(BasePlayer):
         label="Wie ist Ihr derzeitiger Beschäftigungsstatus?", blank=True)
 
     # todo: Tbd
-    job = models.IntegerField(choices=[[0,"Baden-Württemberg"],[1,"Bayern"],[2,"Berlin"],[3,"Brandenburg"],
-                                          [4,"Bremen"],[5,"Hamburg"],[6,"Hessen"],[7,"Mecklenburg-Vorpommern"],
-                                          [8,"Niedersachsen"],[9,"Nordrhein-Westfalen"],[10,"Rheinland-Pfalz"],[11,"Saarland"],
-                                          [12,"Sachsen-Anhalt"],[13,"Sachsen"],[14,"Schleswig-Holstein"],[15,"Thüringen"]],
-                                 label="TBD: Bitte geben Sie an, in welchem Arbeitsbereich Sie arbeiten bzw. studieren.", blank=True)
+    job = models.IntegerField(choices=[[0, "Baden-Württemberg"], [1, "Bayern"], [2, "Berlin"], [3, "Brandenburg"],
+                                       [4, "Bremen"], [5, "Hamburg"], [6, "Hessen"], [7, "Mecklenburg-Vorpommern"],
+                                       [8, "Niedersachsen"], [9, "Nordrhein-Westfalen"], [10, "Rheinland-Pfalz"],
+                                       [11, "Saarland"],
+                                       [12, "Sachsen-Anhalt"], [13, "Sachsen"], [14, "Schleswig-Holstein"],
+                                       [15, "Thüringen"]],
+                              label="TBD: Bitte geben Sie an, in welchem Arbeitsbereich Sie arbeiten bzw. studieren.",
+                              blank=True)
 
-
-    pol_views = models.IntegerField(choices=[[0,"0 (ganz links)"],[1,1],[2,2],[3,3],
-                                          [4,4],[5,5],[6,6],[7,7],
-                                          [8,8],[9,9],[10,"10 (ganz rechts)"]],
-                                        label="In der Politik reden die Leute oft von 'links' und 'rechts', wenn es darum geht, unterschiedliche politische Einstellungen zu kennzeichnen. "
-                                          "Wenn Sie an Ihre eigenen politischen Ansichten denken: Wo würden Sie diese Ansichten einstufen?",blank=True)
+    pol_views = models.IntegerField(choices=[[0, "0 (ganz links)"], [1, 1], [2, 2], [3, 3],
+                                             [4, 4], [5, 5], [6, 6], [7, 7],
+                                             [8, 8], [9, 9], [10, "10 (ganz rechts)"]],
+                                    label="In der Politik reden die Leute oft von 'links' und 'rechts', wenn es darum geht, unterschiedliche politische Einstellungen zu kennzeichnen. "
+                                          "Wenn Sie an Ihre eigenen politischen Ansichten denken: Wo würden Sie diese Ansichten einstufen?",
+                                    blank=True)
 
     importance_sex = make_field("Das Geschlecht")
     importance_migration_bg = make_field("Der Migrationshintergrund")
@@ -136,8 +148,10 @@ class Player(BasePlayer):
     soc_norms = make_field("Ich tue immer mein Bestes, um gesellschaftliche Normen zu befolgen.")
 
     # tech-savyness
-    pers_inno1 = make_field("Wenn ich von einer neuen Technologie hören würde, würde ich nach Möglichkeiten suchen, damit zu experimentieren.")
-    pers_inno2 = make_field("Unter meinen Kolleg*innen bzw. Kommiliton*innen bin ich in der Regel die/der erste, die/der neue Technologie ausprobiert.")
+    pers_inno1 = make_field(
+        "Wenn ich von einer neuen Technologie hören würde, würde ich nach Möglichkeiten suchen, damit zu experimentieren.")
+    pers_inno2 = make_field(
+        "Unter meinen Kolleg*innen bzw. Kommiliton*innen bin ich in der Regel die/der erste, die/der neue Technologie ausprobiert.")
     pers_inno3 = make_field("Im Allgemeinen zögere ich davor, neue Technologie auszuprobieren.")
     pers_inno4 = make_field("Ich experimentiere gerne mit neuer Technologie.")
 
@@ -164,9 +178,9 @@ class Player(BasePlayer):
         label="TBD: Bitte geben Sie an, wie gut Ihre Erfahrungen mit Krediten sind.", blank=True)
 
     risk_aver = models.IntegerField(
-        choices=[[0,"0 (völlig risikoscheu)"],[1,1],[2,2],[3,3],
-                                          [4,4],[5,5],[6,6],[7,7],
-                                          [8,8],[9,9],[10,"10 (sehr risikofreudig)"]],
+        choices=[[0, "0 (völlig risikoscheu)"], [1, 1], [2, 2], [3, 3],
+                 [4, 4], [5, 5], [6, 6], [7, 7],
+                 [8, 8], [9, 9], [10, "10 (sehr risikofreudig)"]],
         label="Bitte geben Sie an, wie risikobereit oder risikoscheu Sie im Allgemeinen sind. Bitte nutzen Sie eine Skala von 0 bis 10, wobei 0 'völlig risikoscheu' und 10 'sehr risikofreudig' bedeutet.",
         blank=True)
 
@@ -191,7 +205,8 @@ class Player(BasePlayer):
     # trust
     cog_trust1 = make_field("Der Algorithmus ist kompetent und effektiv bei der Vorhersage der Immobilienpreise.")
     cog_trust2 = make_field("Der Algorithmus erfüllt seine Aufgabe, die Immobilienpreise vorherzusagen, sehr gut.")
-    cog_trust3 = make_field("Insgesamt ist der Algorithmus ein fähiges und kompetentes Werkzeug für die Vorhersage der Immobilienpreise.")
+    cog_trust3 = make_field(
+        "Insgesamt ist der Algorithmus ein fähiges und kompetentes Werkzeug für die Vorhersage der Immobilienpreise.")
     integ_trust1 = make_field("Der Algorithmus gibt unvoreingenommene Empfehlungen.")
     # attention check 1
     integ_trust2 = make_field("Der Algorithmus ist unehrlich.")
@@ -217,7 +232,8 @@ class PreQuestions(Page):
     @staticmethod
     def get_form_fields(player: Player):
         form_fields = ["importance_sex", "importance_migration_bg", "importance_pol_views",
-                       "age", "sex", "nationality", "migration_bg", "job_status", "job", "immo_exp", "credit_exp", "risk_aver",
+                       "age", "sex", "nationality", "migration_bg", "job_status", "job", "immo_exp", "credit_exp",
+                       "risk_aver",
                        "pol_views", "soc_norms"]
         form_fields += player.participant.pers_inno_order
         return form_fields
@@ -225,7 +241,7 @@ class PreQuestions(Page):
     @staticmethod
     def vars_for_template(player: Player):
         # removed "sex", "migration_bg"
-        demo = ["age", "nationality", "job_status", "job", "immo_exp", "credit_exp", "risk_aver",]
+        demo = ["age", "nationality", "job_status", "job", "immo_exp", "credit_exp", "risk_aver", ]
         return dict(
             demo=demo,
         )
@@ -239,14 +255,23 @@ class Task(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
+        # real estate task
         apartments = pd.read_csv("Data/immonet_data_selected.csv")
         apartments = apartments[['garden', 'basement', 'elevator', 'balcony',
-            'floor', 'n_rooms', 'sq_meters', 'construction_year',
-            'unemployment', 'share_green']]
+                                 'floor', 'n_rooms', 'sq_meters', 'construction_year',
+                                 'unemployment', 'share_green']]
         apartment = dict(apartments.iloc[player.participant.apartment_row])
-        tasks_order = player.participant.tasks_order
-        return dict(tasks_order=tasks_order,
-                    apartment=apartment)
+
+        # lending task
+        borrowers = pd.read_csv("Data/lending_data_selected.csv")
+        for col in ['loan_amnt', 'annual_inc', 'installment']:
+            borrowers[col] = [format_german_number(x, 0) for x in borrowers[col]]
+        for col in ['open_acc', 'emp_length', 'term']:
+            borrowers[col] = borrowers[col].astype(int)
+        borrower = dict(borrowers.iloc[player.participant.lender_row])
+
+        return dict(apartment=apartment,
+                    borrower=borrower)
 
 
 class PercAccuracy(Page):
@@ -269,16 +294,25 @@ class Revision(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
+        # real estate revision
         apartments = pd.read_csv("Data/immonet_data_selected.csv")
         apartments = apartments[['garden', 'basement', 'elevator', 'balcony',
-            'floor', 'n_rooms', 'sq_meters', 'construction_year',
-            'unemployment', 'share_green', 'pred_price']]
+                                 'floor', 'n_rooms', 'sq_meters', 'construction_year',
+                                 'unemployment', 'share_green', 'pred_price']]
         apartment = dict(apartments.iloc[player.participant.apartment_row])
-        apartment['pred_price'] = format_german_number(round(apartment['pred_price']/20_000)*20_000)
-        tasks_order = player.participant.tasks_order
+        apartment['pred_price'] = format_german_number(round(apartment['pred_price'] / 20_000) * 20_000)
+
+        # lending revision
+        borrowers = pd.read_csv("Data/lending_data_selected.csv")
+        for col in ['loan_amnt', 'annual_inc', 'installment', 'pred_']:
+            borrowers[col] = [format_german_number(x, 0) for x in borrowers[col]]
+        for col in ['open_acc', 'emp_length', 'term']:
+            borrowers[col] = borrowers[col].astype(int)
+        borrower = dict(borrowers.iloc[player.participant.lender_row])
+
         return dict(original_estimate=format_german_number(player.task1Estimate),
-                    tasks_order=tasks_order,
-                    apartment=apartment)
+                    apartment=apartment,
+                    borrower=borrower)
 
 
 class PostQuestions(Page):
@@ -287,13 +321,13 @@ class PostQuestions(Page):
     @staticmethod
     def get_form_fields(player: Player):
         form_fields = ["soc_distance1", "soc_distance2", "soc_distance3", "soc_distance4",
-                       "soc_distance_rank1","soc_distance_rank2","soc_distance_rank3","transparency"]
+                       "soc_distance_rank1", "soc_distance_rank2", "soc_distance_rank3", "transparency"]
         form_fields += player.participant.post_questions_order
         return form_fields
 
     @staticmethod
     def vars_for_template(player: Player):
-        ranks = ["soc_distance_rank1","soc_distance_rank2","soc_distance_rank3"]
+        ranks = ["soc_distance_rank1", "soc_distance_rank2", "soc_distance_rank3"]
         return dict(
             ranks=ranks,
         )
@@ -336,19 +370,20 @@ class Revision2(Page):
                    "click_pol_views_open", "click_pol_views_close",
                    "click_acc_open", "click_acc_close"]
 
+
 class PostQuestions2(Page):
     form_model = "player"
 
     @staticmethod
     def get_form_fields(player: Player):
         form_fields = ["soc_distance1", "soc_distance2", "soc_distance3", "soc_distance4",
-                       "soc_distance_rank1","soc_distance_rank2","soc_distance_rank3","transparency"]
+                       "soc_distance_rank1", "soc_distance_rank2", "soc_distance_rank3", "transparency"]
         form_fields += player.participant.post_questions_order
         return form_fields
 
     @staticmethod
     def vars_for_template(player: Player):
-        ranks = ["soc_distance_rank1","soc_distance_rank2","soc_distance_rank3"]
+        ranks = ["soc_distance_rank1", "soc_distance_rank2", "soc_distance_rank3"]
         return dict(
             ranks=ranks,
         )
@@ -361,8 +396,10 @@ class PostQuestions2(Page):
     #     if len(set(choices)) != len(choices):
     #         return "Sie können nicht dasselbe Element mehrfach auswählen."
 
+
 class End(Page):
     pass
+
 
 page_sequence = [Intro,
                  PreQuestions,

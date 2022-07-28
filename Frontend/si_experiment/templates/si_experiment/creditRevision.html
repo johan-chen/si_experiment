@@ -3,8 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <script>
+        $(document).ready(function() {
+            // create slider
+            var slider = document.getElementById('slider_estimator_credit');
+            createSliderPerAcc(slider)
+
+            // write slider results into form field for data export
+            document.getElementById("next-button").addEventListener("click", function (){
+                 document.getElementById("revision").value = parseInt(slider.noUiSlider.get(true))
+            });
+        })
+    </script>
 </head>
 <body>
 
+<table id="real-estate-properties_2" class="real_estate_properties">
+    <tr>
+        <th colspan="2" style="text-align: center">Eigenschaften des Kreditbewerbers</th>
+    </tr>
+    <tr>
+        <td>Kreditsumme</td>
+        <td>{{borrower.loan_amnt}},- EUR</td>
+    </tr>
+    <tr>
+        <td>Kreditlaufzeit in Monaten</td>
+        <td>{{borrower.term}}</td>
+    </tr>
+    <tr>
+        <td>Monatliche Rückzahlungsrate</td>
+        <td>{{borrower.installment}},- EUR</td>
+    </tr>
+    <tr>
+        <td>Verwendungszweck</td>
+        <td>{{borrower.purpose}}</td>
+    </tr>
+    <tr>
+        <td>Jährliches <b style="color: red">Brutto</b>einkommen</td>
+        <td>{{borrower.annual_inc}},- EUR</td>
+    </tr>
+    <tr>
+        <td>Beschäftigungsdauer in Jahren</td>
+        <td>{{borrower.emp_length}}</td>
+    </tr>
+    <tr>
+        <td>Berufsbezeichnung</td>
+        <td>{{borrower.job_new}}</td>
+    </tr>
+    <tr>
+        <td>Status Wohnimmobilie</td>
+        <td>{{borrower.home_ownership}}</td>
+    </tr>
+    <tr>
+        <td>DTI <span data-bs-toggle="tooltip" data-bs-placement="top" title="Eine Kennzahl, die sich aus den monatlichen Gesamtzahlungen des Kreditnehmers für seine gesamten Verbindlichkeiten (ohne Hypotheken und den beantragten Kredit), geteilt durch sein selbst angegebenes Monatseinkommen, errechnet." class="question_mark">?</span></td>
+        <td>{{borrower.dti}}</td>
+    </tr>
+    <tr>
+        <td>Anzahl offener Rechnungen</td>
+        <td>{{borrower.open_acc}}</td>
+    </tr>
+</table>
+
+<br>
+
+<table id="yourchoice_2" class="ai_prediction">
+    <tr>
+        <th bgcolor="white">Ihre bisherige Schätzung:</th>
+        <th bgcolor="white" style="text-align: right;" >{{ original_estimate }} % Ausfallwahrscheinlichkeit</th>
+    </tr>
+</table>
+
+<br>
+
+<table id="prediction_2" class="ai_prediction">
+    <tr>
+        <th bgcolor="white">KI Vorhersage:</th>
+        <th bgcolor="white" style="text-align: right;" >{{ borrower.pred_ }} % Ausfallwahrscheinlichkeit</th>
+    </tr>
+</table>
+
+<br><br>
+
+Falls Sie Ihre Schätzung revidieren möchten, ziehen Sie den Schieberegler an die entsprechende Position.
+<br><br><br>
+<table id="estimator_revise_2" class="tab_slider">
+    <tr>
+        <th><div id="slider_estimator_credit"></div></th>
+    </tr>
+</table>
+
+<input type="hidden" name="revision" id="revision" />
 </body>
 </html>

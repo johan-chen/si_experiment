@@ -1,11 +1,37 @@
 <!DOCTYPE html>
 <html lang="de">
+
+<head>
+        <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+
+        $(document).ready(function() {
+            // create slider
+            var slider = document.getElementById('slider_estimator_credit');
+            createSliderPerAcc(slider)
+
+
+            // write slider results into form field for data export
+            document.getElementById("next-button").addEventListener("click", function (){
+                 document.getElementById("task1Estimate").value = parseInt(slider.noUiSlider.get(true))
+            });
+        })
+    </script>
+</head>
+
+
 <body>
     <div>
-        In diesem Schritt sollen Sie die Ausfallwahrscheinlichkeit eines Kreditbewerbers schätzen.
+        In diesem Schritt sollen Sie die <b>Ausfallwahrscheinlichkeit</b> eines Kreditbewerbers schätzen.
         Die Ausfallwahrscheinlichkeit liegt zwischen 0% und 100%.
-        Um das Ausfallrisiko zu schätzen, können Sie sich die unten gelisteten Eigenschaften des Kreditbewerbers ansehen und anschließend den Schieberegler auf die entsprechende Position bewegen.
-        0% bedeutet, dass Sie mit Sicherheit davon ausgehen, dass der Kreditbewerber den Kredit bezahlen kann. 100% bedeutet, dass Sie davon ausgehen, dass der Kredit nicht bezahlt werden wird.
+        Um das Ausfallrisiko zu schätzen, können Sie sich die unten gelisteten Eigenschaften des Kreditbewerbers ansehen
+        und anschließend den <b>Schieberegler auf die entsprechende Position bewegen</b>.<br>
+        <br>
+        0% bedeutet, dass Sie mit Sicherheit davon ausgehen, dass der Kreditbewerber den Kredit bezahlen kann.
+        100% bedeutet, dass Sie davon ausgehen, dass der Kredit nicht bezahlt werden wird.
 </div>
 <br><br>
 
@@ -13,52 +39,51 @@
     <tr>
         <th colspan="2" style="text-align: center">Eigenschaften des Kreditbewerbers</th>
     </tr>
-
     <tr>
-        <td>Jährliches Einkommen <span data-bs-toggle="tooltip" data-bs-placement="top" title="Das vom Kreditnehmer bei der Beantragung selbst angegebene Jahreseinkommen." class="question_mark">?</span></td>
-        <td>41.000  </td>
+        <td>Kreditsumme</td>
+        <td>{{borrower.loan_amnt}},- EUR</td>
     </tr>
     <tr>
-        <td>Beschäftigungsdauer in Jahren <span data-bs-toggle="tooltip" data-bs-placement="top" title="Mögliche Werte liegen zwischen 0 und 10, wobei 0 für weniger als ein Jahr und 10 für zehn oder mehr Jahre steht." class="question_mark">?</span></td>
-        <td>2</td>
+        <td>Kreditlaufzeit in Monaten</td>
+        <td>{{borrower.term}}</td>
     </tr>
     <tr>
-        <td>Berufsbezeichnung <span data-bs-toggle="tooltip" data-bs-placement="top" title="Die vom Kreditnehmer bei der Beantragung angegebene Berufsbezeichnung." class="question_mark">?</span></td>
-        <td>IT</td>
+        <td>Monatliche Rückzahlungsrate</td>
+        <td>{{borrower.installment}},- EUR</td>
     </tr>
     <tr>
-        <td>Wohneigentum <span data-bs-toggle="tooltip" data-bs-placement="top" title="Der vom Kreditnehmer bei der Beantragung angegebene Status des Wohneigentums." class="question_mark">?</span></td>
-        <td>Miete</td>
+        <td>Verwendungszweck</td>
+        <td>{{borrower.purpose}}</td>
     </tr>
     <tr>
-        <td>Ratenzahlung <span data-bs-toggle="tooltip" data-bs-placement="top" title="Die monatliche Rate, die der Kreditnehmer zu zahlen hat, wenn der Kredit zustande kommt." class="question_mark">?</span></td>
-        <td>215,84</td>
+        <td>Jährliches <b style="color: red">Brutto</b>einkommen</td>
+        <td>{{borrower.annual_inc}},- EUR</td>
+    </tr>
+    <tr>
+        <td>Beschäftigungsdauer in Jahren</td>
+        <td>{{borrower.emp_length}}</td>
+    </tr>
+    <tr>
+        <td>Berufsbezeichnung</td>
+        <td>{{borrower.job_new}}</td>
+    </tr>
+    <tr>
+        <td>Status Wohnimmobilie</td>
+        <td>{{borrower.home_ownership}}</td>
     </tr>
     <tr>
         <td>DTI <span data-bs-toggle="tooltip" data-bs-placement="top" title="Eine Kennzahl, die sich aus den monatlichen Gesamtzahlungen des Kreditnehmers für seine gesamten Verbindlichkeiten (ohne Hypotheken und den beantragten Kredit), geteilt durch sein selbst angegebenes Monatseinkommen, errechnet." class="question_mark">?</span></td>
-        <td>5,68</td>
+        <td>{{borrower.dti}}</td>
     </tr>
     <tr>
-        <td>Laufzeit in Monaten <span data-bs-toggle="tooltip" data-bs-placement="top" title="Die Anzahl der Zahlungen für den Kredit. Die Werte können entweder 36 oder 60 betragen." class="question_mark">?</span></td>
-        <td>36</td>
-    </tr>
-    <tr>
-        <td>Verwendungszweck <span data-bs-toggle="tooltip" data-bs-placement="top" title="Eine vom Kreditnehmer für den Antrag angegebene Kategorie." class="question_mark">?</span></td>
-        <td>Schuldenkonsolidierung</td>
-    </tr>
-    <tr>
-        <td>Offene Rechnungen <span data-bs-toggle="tooltip" data-bs-placement="top" title="Die Anzahl der offenen Kredite in der Kreditakte des Bewerbers." class="question_mark">?</span></td>
-        <td>7</td>
-    </tr>
-        <tr>
-        <td>Kredithöhe <span data-bs-toggle="tooltip" data-bs-placement="top" title="Der angegebene Betrag des vom Kreditnehmer beantragten Kredits. Wenn die Kreditabteilung zu einem bestimmten Zeitpunkt den Kreditbetrag reduziert, wird dies in diesem Wert berücksichtigt." class="question_mark">?</span></td>
-        <td>6.500</td>
+        <td>Anzahl offener Rechnungen</td>
+        <td>{{borrower.open_acc}}</td>
     </tr>
 </table>
 
 <br><br>
 
-Bewegen Sie den Schieberegler, um Ihre Schätzung abzugeben:
+Bewegen Sie den Schieberegler, um Ihre Schätzung für die Kreditausfallwahrscheinlichkeit abzugeben:
 
 <br><br><br>
 

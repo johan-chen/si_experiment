@@ -29,7 +29,7 @@ model_data = pd.read_csv(path_pre + "RealEstate/immonet_data_preprocessed.csv")
 # parameters
 test_size = 0.1
 lower_bound, upper_bound = 300_000, 700_000
-step_size = (upper_bound-lower_bound)/20
+step_size = (upper_bound-lower_bound)/10
 
 # subsetting if applicable
 subset_str = ""
