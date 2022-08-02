@@ -1,13 +1,44 @@
 {{ extends "si_experiment/Page.html" }}
 {{ block title }}
-    Revision Ihrer Preisschätzung
+    {{ if player.participant.tasks_order }}
+        Revision Ihrer Schätzung
+        <script>
+            $(document).ready(function() {
+                // create slider
+                var slider = document.getElementById('slider_estimator_credit');
+                createSliderCredit(slider)
+
+                // write slider results into form field for data export
+                document.getElementById("next-button").addEventListener("click", function (){
+                     document.getElementById("revision2").value = parseInt(slider.noUiSlider.get(true))
+                });
+            })
+        </script>
+
+    {{ else }}
+        Revision Ihrer Schätzung
+        <script>
+            $(document).ready(function() {
+                // create slider
+                var slider = document.getElementById('slider_estimator');
+                createSliderRealEstate(slider)
+
+                // write slider results into form field for data export
+                document.getElementById("next-button").addEventListener("click", function () {
+                    document.getElementById("revision2").value = parseInt(slider.noUiSlider.get(true))
+                });
+            })
+        </script>
+
+    {{ endif }}
 {{ endblock }}
+
 {{ block content }}
 
 <head>
     <script>
-        var c_open = {"sex": 0, "migration_bg": 0, "pol_views": 0, "acc": 0};
-        var c_close = {"sex": 0, "migration_bg": 0, "pol_views": 0, "acc": 0};
+        var c_open = {"sex2": 0, "migration_bg2": 0, "pol_views2": 0, "acc2": 0};
+        var c_close = {"sex2": 0, "migration_bg2": 0, "pol_views2": 0, "acc2": 0};
 
 
         function showDivAndCount(my_button){
@@ -16,25 +47,25 @@
             if (div.style.display == "none") {
                 div.style.display = "block";
                 c_open[my_button] += 1;
-                document.getElementById("click_" + my_button + "_open").value = c_open[my_button];
+                document.getElementById("click_" + my_button + "_open2").value = c_open[my_button];
             } else {
                 div.style.display = "none";
                 c_close[my_button] += 1;
-                document.getElementById("click_" + my_button + "_close").value = c_close[my_button];
+                document.getElementById("click_" + my_button + "_close2").value = c_close[my_button];
             }
         }
 
 
         $(document).ready(function() {
             // count clicks
-            document.getElementById("click_sex_open").value = c_open["sex"];
-            document.getElementById("click_sex_close").value = c_close["sex"];
-            document.getElementById("click_migration_bg_open").value = c_open["migration_bg"];
-            document.getElementById("click_migration_bg_close").value = c_close["migration_bg"];
-            document.getElementById("click_pol_views_open").value = c_open["pol_views"];
-            document.getElementById("click_pol_views_close").value = c_close["pol_views"];
-            document.getElementById("click_acc_open").value = c_open["acc"];
-            document.getElementById("click_acc_close").value = c_close["acc"];
+            document.getElementById("click_sex_open2").value = c_open["sex2"];
+            document.getElementById("click_sex_close2").value = c_close["sex2"];
+            document.getElementById("click_migration_bg_open2").value = c_open["migration_bg2"];
+            document.getElementById("click_migration_bg_close2").value = c_close["migration_bg2"];
+            document.getElementById("click_pol_views_open2").value = c_open["pol_views2"];
+            document.getElementById("click_pol_views_close2").value = c_close["pol_views2"];
+            document.getElementById("click_acc_open2").value = c_open["acc2"];
+            document.getElementById("click_acc_close2").value = c_close["acc2"];
 
             // create slider
             var slider = document.getElementById('slider_estimator');
@@ -42,53 +73,54 @@
 
             // write slider results into form field for data export
             document.getElementById("next-button").addEventListener("click", function (){
-                document.getElementById("revision").value = parseInt(slider.noUiSlider.get(true))
+                document.getElementById("revision2").value = parseInt(slider.noUiSlider.get(true))
             });
         })
     </script>
 </head>
 
-In diesem Schritt erhalten Sie die <b>Möglichkeit</b>, Ihre abgegebene <b>Schätzung noch einmal anzupassen</b>. Dazu zeigen wir
-Ihnen erneut die Eigenschaften des Kreditbewerbers sowie die Ausfallvorhersage der KI. Außerdem können Sie sich noch einmal -- falls
-gewünscht -- die Vorhersagegenauigkeit der KI und das Profil der KI-Entwicklerin ansehen: klicken Sie dazu einfach auf den
-entsprechenden Button.
+In diesem Schritt erhalten Sie die <b>Möglichkeit</b>, Ihre abgegebene <b>{{ if player.participant.tasks_order }} Preisschätzung {{ else }} Schätzung der Ausfallwahrscheinlichkeit {{ endif }}
+    noch einmal anzupassen</b>. Dazu zeigen wir Ihnen erneut die Eigenschaften
+{{ if player.participant.tasks_order }} des Kreditbewerbers {{ else }} der Immobilie {{ endif }}
+sowie die Vorhersage der KI. Außerdem können Sie sich noch einmal -- falls gewünscht -- die Vorhersagegenauigkeit der KI
+und das Profil der KI-Entwicklerin ansehen: klicken Sie dazu einfach auf den entsprechenden Button.
 
 <br><br>
 
-<table id="button_table">
+<table id="button_table2">
     <tr>
         <td>
             <div style="text-align:center" >
-                <button type="button"  class="btn btn-secondary" onclick="showDivAndCount('sex')" style="margin:10px">
+                <button type="button"  class="btn btn-secondary" onclick="showDivAndCount('sex2')" style="margin:10px">
                     KI Entwickler: Geschlecht
                 </button>
             </div>
         </td>
         <td>
             <div style="text-align:center" >
-                <button type="button"  class="btn btn-secondary" onclick="showDivAndCount('migration_bg')" style="margin:10px">
+                <button type="button"  class="btn btn-secondary" onclick="showDivAndCount('migration_bg2')" style="margin:10px">
                     KI Entwickler: Migrationshintergrund
                 </button>
             </div>
         </td>
         <td>
             <div style="text-align:center" >
-                <button type="button"  class="btn btn-secondary" onclick="showDivAndCount('pol_views')" style="margin:10px">
+                <button type="button"  class="btn btn-secondary" onclick="showDivAndCount('pol_views2')" style="margin:10px">
                     KI Entwickler: Politische Ansichten
                 </button>
             </div>
         </td>
         <td>
             <div style="text-align:center" >
-                <button type="button"  class="btn btn-secondary" onclick="showDivAndCount('acc')" style="margin:10px">
-                    KI Vorhersagegenauigkeit
+                <button type="button" class="btn btn-secondary" onclick="showDivAndCount('acc2')" style="margin:10px">
+                    KI: Vorhersagegenauigkeit
                 </button>
             </div>
         </td>
     </tr>
     <tr>
         <td>
-            <div id="sex" style="display:none; border: 1px solid grey; padding: 10px">
+            <div id="sex2" style="display:none; border: 1px solid grey; padding: 10px">
                  <table>
                         <tr>
                             <td class="treatment_elem">Geschlecht:</td>
@@ -98,7 +130,7 @@ entsprechenden Button.
             </div>
         </td>
         <td>
-            <div id="migration_bg" style="display:none; border: 1px solid grey; padding: 10px">
+            <div id="migration_bg2" style="display:none; border: 1px solid grey; padding: 10px">
                  <table>
                         <tr>
                             <td class="treatment_elem">Migrationshintergrund:</td>
@@ -108,7 +140,7 @@ entsprechenden Button.
             </div>
         </td>
         <td>
-            <div id="pol_views" style="display:none; border: 1px solid grey; padding: 10px">
+            <div id="pol_views2" style="display:none; border: 1px solid grey; padding: 10px">
                  <table>
                         <tr>
                             <td class="treatment_elem">Politische Ansicht:</td>
@@ -118,7 +150,7 @@ entsprechenden Button.
             </div>
         </td>
         <td>
-             <div id="acc" style="display:none; border: 1px solid grey; padding: 10px">
+             <div id="acc2" style="display:none; border: 1px solid grey; padding: 10px">
                  <table>
                     <tr>
                         <td class="treatment_elem">
@@ -132,93 +164,32 @@ entsprechenden Button.
 </table>
 
 
-<input type="hidden" name="click_sex_open" id="click_sex_open" />
-{{ formfield_errors "click_sex_open" }}
-<input type="hidden" name="click_sex_close" id="click_sex_close" />
-{{ formfield_errors "click_sex_close" }}
-<input type="hidden" name="click_migration_bg_open" id="click_migration_bg_open" />
-{{ formfield_errors "click_migration_bg_open" }}
-<input type="hidden" name="click_migration_bg_close" id="click_migration_bg_close" />
-{{ formfield_errors "click_migration_bg_close" }}
-<input type="hidden" name="click_pol_views_open" id="click_pol_views_open" />
-{{ formfield_errors "click_pol_views_open" }}
-<input type="hidden" name="click_pol_views_close" id="click_pol_views_close" />
-{{ formfield_errors "click_pol_views_close" }}
-<input type="hidden" name="click_acc_open" id="click_acc_open" />
-{{ formfield_errors "click_acc_open" }}
-<input type="hidden" name="click_acc_close" id="click_acc_close" />
-{{ formfield_errors "click_acc_close" }}
-
-
-<br><br>
-
-<table id="real-estate-properties_1" class="real_estate_properties">
-    <tr>
-        <th colspan="2" style="text-align: center">Eigenschaften des Kreditbewerbers</th>
-    </tr>
-
-    <tr>
-        <td>Jährliches Einkommen <span data-bs-toggle="tooltip" data-bs-placement="top" title="Das vom Kreditnehmer bei der Beantragung selbst angegebene Jahreseinkommen." class="question_mark">?</span></td>
-        <td>41.000  </td>
-    </tr>
-    <tr>
-        <td>Beschäftigungsdauer in Jahren <span data-bs-toggle="tooltip" data-bs-placement="top" title="Mögliche Werte liegen zwischen 0 und 10, wobei 0 für weniger als ein Jahr und 10 für zehn oder mehr Jahre steht." class="question_mark">?</span></td>
-        <td>2</td>
-    </tr>
-    <tr>
-        <td>Berufsbezeichnung <span data-bs-toggle="tooltip" data-bs-placement="top" title="Die vom Kreditnehmer bei der Beantragung angegebene Berufsbezeichnung." class="question_mark">?</span></td>
-        <td>IT</td>
-    </tr>
-    <tr>
-        <td>Wohneigentum <span data-bs-toggle="tooltip" data-bs-placement="top" title="Der vom Kreditnehmer bei der Beantragung angegebene Status des Wohneigentums." class="question_mark">?</span></td>
-        <td>Miete</td>
-    </tr>
-    <tr>
-        <td>Ratenzahlung <span data-bs-toggle="tooltip" data-bs-placement="top" title="Die monatliche Rate, die der Kreditnehmer zu zahlen hat, wenn der Kredit zustande kommt." class="question_mark">?</span></td>
-        <td>215,84</td>
-    </tr>
-    <tr>
-        <td>DTI <span data-bs-toggle="tooltip" data-bs-placement="top" title="Eine Kennzahl, die sich aus den monatlichen Gesamtzahlungen des Kreditnehmers für seine gesamten Verbindlichkeiten (ohne Hypotheken und den beantragten Kredit), geteilt durch sein selbst angegebenes Monatseinkommen, errechnet." class="question_mark">?</span></td>
-        <td>5,68</td>
-    </tr>
-    <tr>
-        <td>Laufzeit in Monaten <span data-bs-toggle="tooltip" data-bs-placement="top" title="Die Anzahl der Zahlungen für den Kredit. Die Werte können entweder 36 oder 60 betragen." class="question_mark">?</span></td>
-        <td>36</td>
-    </tr>
-    <tr>
-        <td>Verwendungszweck <span data-bs-toggle="tooltip" data-bs-placement="top" title="Eine vom Kreditnehmer für den Antrag angegebene Kategorie." class="question_mark">?</span></td>
-        <td>Schuldenkonsolidierung</td>
-    </tr>
-    <tr>
-        <td>Offene Rechnungen <span data-bs-toggle="tooltip" data-bs-placement="top" title="Die Anzahl der offenen Kredite in der Kreditakte des Bewerbers." class="question_mark">?</span></td>
-        <td>7</td>
-    </tr>
-        <tr>
-        <td>Kredithöhe <span data-bs-toggle="tooltip" data-bs-placement="top" title="Der angegebene Betrag des vom Kreditnehmer beantragten Kredits. Wenn die Kreditabteilung zu einem bestimmten Zeitpunkt den Kreditbetrag reduziert, wird dies in diesem Wert berücksichtigt." class="question_mark">?</span></td>
-        <td>6.500</td>
-    </tr>
-</table>
-
-<br>
-
-<table id="prediction_1" class="ai_prediction">
-    <tr>
-        <th bgcolor="white">KI Vorhersage:</th>
-        <th bgcolor="white" style="text-align: center;" >80 %</th>
-    </tr>
-</table>
+<input type="hidden" name="click_sex_open2" id="click_sex_open2" />
+{{ formfield_errors "click_sex_open2" }}
+<input type="hidden" name="click_sex_close2" id="click_sex_close2" />
+{{ formfield_errors "click_sex_close2" }}
+<input type="hidden" name="click_migration_bg_open2" id="click_migration_bg_open2" />
+{{ formfield_errors "click_migration_bg_open2" }}
+<input type="hidden" name="click_migration_bg_close2" id="click_migration_bg_close2" />
+{{ formfield_errors "click_migration_bg_close2" }}
+<input type="hidden" name="click_pol_views_open2" id="click_pol_views_open2" />
+{{ formfield_errors "click_pol_views_open2" }}
+<input type="hidden" name="click_pol_views_close2" id="click_pol_views_close2" />
+{{ formfield_errors "click_pol_views_close2" }}
+<input type="hidden" name="click_acc_open2" id="click_acc_open2" />
+{{ formfield_errors "click_acc_open2" }}
+<input type="hidden" name="click_acc_close2" id="click_acc_close2" />
+{{ formfield_errors "click_acc_close2" }}
 
 <br><br>
 
-Falls Sie Ihre Schätzung revidieren möchten, ziehen Sie den Schieberegler an die entsprechende Position.
-<br><br><br>
-<table id="estimator_revise" class="tab_slider">
-    <tr>
-        <th><div id="slider_estimator"></div></th>
-    </tr>
-</table>
+{{ if player.participant.tasks_order}}
+    {{ include "si_experiment/creditRevision.html" }}
+{{ else }}
+    {{ include "si_experiment/immoRevision.html" }}
+{{ endif }}
 
-<input type="hidden" name="revision" id="revision" />
+<input type="hidden" name="revision2" id="revision2" />
 
 <br><br><br>
 
@@ -239,13 +210,13 @@ Falls Sie Ihre Schätzung revidieren möchten, ziehen Sie den Schieberegler an d
 
     <tr>
         <th></th>
-        {{for choice in form.confRevision.choices}}
+        {{for choice in form.confRevision2.choices}}
             <th>{{choice}}</th>
         {{endfor}}
     </tr>
     <tr>
-        <td class="likert_label">{{ form.confRevision.label }}</td>
-        {{ for choice in form.confRevision }}
+        <td class="likert_label">{{ form.confRevision2.label }}</td>
+        {{ for choice in form.confRevision2 }}
             <td class="likert_choice">{{ choice }}</td>
         {{ endfor }}
     </tr>
@@ -254,7 +225,7 @@ Falls Sie Ihre Schätzung revidieren möchten, ziehen Sie den Schieberegler an d
 <br><br>
 
 
-{{ formfield_errors 'revision' }}
+{{ formfield_errors 'revision2' }}
 
 <button id="next-button" class="otree-btn-next btn btn-primary">
     Weiter

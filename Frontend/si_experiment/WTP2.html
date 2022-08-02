@@ -6,7 +6,7 @@
 {{ block content }}
 <script>
         $(document).ready(function() {
-            var slider = document.getElementById('slider_wtp');
+            var slider = document.getElementById('slider_wtp2');
                 // WTP slider
             function filterPipsWTP(value) {
                 if (value == 80 || value == 20 || value == 50) {
@@ -52,26 +52,26 @@
             createSliderWTP(slider)
 
             // show remaining budget and probability to see prediction
-            var budget = document.getElementById("budget");
-            var wtp_probab = document.getElementById("wtp_probab");
+            var budget2 = document.getElementById("budget2");
+            var wtp_probab2 = document.getElementById("wtp_probab2");
 
             slider.noUiSlider.on("update", function(){
-                wtp_probab.innerHTML = parseInt(slider.noUiSlider.get(true)) + "%";
+                wtp_probab2.innerHTML = parseInt(slider.noUiSlider.get(true)) + "%";
             })
 
             slider.noUiSlider.on("update", function(values, handle){
-                budget.innerHTML = (1.50 - values[handle].substring(1,values[handle].length-1)).toFixed(2) + "€";
+                budget2.innerHTML = (1.50 - values[handle].substring(1,values[handle].length-1)).toFixed(2) + "€";
             })
+
 
 
             // write slider results into form field for data export
             document.getElementById("next-button").addEventListener("click", function (){
-                document.getElementById("wtp").value = parseInt(slider.noUiSlider.get(true))
-            });
+                 document.getElementById("wtp2").value = parseInt(slider.noUiSlider.get(true))
+             });
 
         })
 </script>
-
 <br>
 
 {{ if player.participant.treatment == "both" }}
@@ -179,21 +179,21 @@
 </div>
 <br>
 <div>
-    <b>Ihr übriges Geld: <span id="budget"></span></b>
+    <b>Ihr übriges Geld: <span id="budget2"></span></b>
 </div>
 <br>
 <br>
 <div style="padding-left: 50px; padding-right: 50px" >
-    <div id="slider_wtp" ></div>
+    <div id="slider_wtp2" ></div>
 </div>
 <br>
 <br>
 <br>
 <div>
-    <b>Die Wahrscheinlichkeit, die KI-Vorhersage zu sehen: <span id="wtp_probab"></span></b>
+    <b>Die Wahrscheinlichkeit, die KI-Vorhersage zu sehen: <span id="wtp_probab2"></span></b>
 </div>
 
-<input type="hidden" name="wtp" id="wtp" />
+<input type="hidden" name="wtp2" id="wtp2" />
 
 <br>
 <button id="next-button" class="otree-btn-next btn btn-primary">

@@ -23,17 +23,17 @@
 
 {{ if player.participant.tasks_order }}
     Wir stellen Ihnen nun eine <b>Künstliche Intelligenz (KI)</b> vor, die darauf trainiert ist, den Verkaufspreis von auf der
-    Plattform gelisteten Immobilien vorherzusagen. Die KI nutzt die gleichen <b style="color: red">10</b> Eigenschaften von
+    Plattform gelisteten Wohnungen vorherzusagen. Die KI nutzt die gleichen zehn Eigenschaften von
     Wohnungen, um den angebotenen Preis vorherzusagen.
 {{ else }}
     Wir stellen Ihnen nun eine <b>Künstliche Intelligenz (KI)</b> vor, die darauf trainiert ist, die Kreditausfallwahrscheinlichkeit
-    von Kreditbewerbern vorherzusagen. Die KI nutzt die gleichen <b style="color: red">10</b> Eigenschaften von
+    von Kreditbewerbern vorherzusagen. Die KI nutzt die gleichen zehn Eigenschaften von
     Kreditbewerbern, um die Ausfallwahrscheinlichkeit vorherzusagen.
 {{ endif }}
 
 
 <br><br>
-Die KI basiert auf einem <b style="color: red">Random Forest</b>, eine der einfachsten, aber auch eine der
+Die KI basiert auf einem Random Forest, eine der einfachsten, aber auch eine der
 leistungsfähigsten KI-Methoden. Ein Random Forest nutzt eine Vielzahl unterschiedlicher Entscheidungsbäume,
 die jeweils einen einzelnen Wert vorhersagen (hier: den Verkaufspreis). Die Mehrheitsvorhersage alle
 Entscheidungsbäume bestimmt dann die endgültige Vorhersage. Mit anderen Worten: Der Random Forest nutzt die
@@ -41,9 +41,17 @@ Entscheidungsbäume bestimmt dann die endgültige Vorhersage. Mit anderen Worten
 <br><br>
 
 {{ if player.participant.tasks_order }}
-    Wie hoch schätzen Sie die Genauigkeit der KI ein, um Immobilienpreise vorherzusagen?
+Die <b>Genauigkeit der KI</b> bemisst sich daran, <b>wie häufig der echte Verkaufspreis der Wohnung vorhergesagt wird</b>.
+    Die KI kann dabei zwischen den selben 11 Werten auswählen, die auch Ihnen zur Auswahl standen.
+    100% Genauigkeit bedeutet, dass die KI immer den richtigen Wert vorhersagt, während 0% bedeutet, dass sie nie den richtigen Wert vorhersagt.
+    <br><br>
+    Wie hoch schätzen Sie die Genauigkeit der KI ein?
 {{ else }}
-    Wie hoch schätzen Sie die Genauigkeit der KI ein, um die Kreditausfallwahrscheinlichkeit vorherzusagen?
+Die <b>Genauigkeit der KI</b> bemisst sich daran, <b>wie häufig das korrekte Kreditausfallrisiko vorhergesagt</b> wird.
+    Die KI kann dabei zwischen den selben 11 Werten auswählen, die auch Ihnen zur Auswahl standen.
+    100% Genauigkeit bedeutet, dass die KI immer den richtigen Wert vorhersagt, während 0% bedeutet, dass sie nie den richtigen Wert vorhersagt.
+    <br><br>
+    Wie hoch schätzen Sie die Genauigkeit der KI ein?
 {{ endif }}
 
 

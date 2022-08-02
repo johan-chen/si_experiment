@@ -1,7 +1,38 @@
 {{ extends "si_experiment/Page.html" }}
 {{ block title }}
-    Revision Ihrer Schätzung
+    {{ if player.participant.tasks_order }}
+        Revision Ihrer Schätzung
+        <script>
+            $(document).ready(function() {
+                // create slider
+                var slider = document.getElementById('slider_estimator');
+                createSliderRealEstate(slider)
+
+                // write slider results into form field for data export
+                document.getElementById("next-button").addEventListener("click", function () {
+                    document.getElementById("revision").value = parseInt(slider.noUiSlider.get(true))
+                });
+            })
+        </script>
+
+    {{ else }}
+        Revision Ihrer Schätzung
+        <script>
+            $(document).ready(function() {
+                // create slider
+                var slider = document.getElementById('slider_estimator_credit');
+                createSliderCredit(slider)
+
+                // write slider results into form field for data export
+                document.getElementById("next-button").addEventListener("click", function (){
+                     document.getElementById("revision").value = parseInt(slider.noUiSlider.get(true))
+                });
+            })
+        </script>
+
+    {{ endif }}
 {{ endblock }}
+
 {{ block content }}
 
 <head>
@@ -149,6 +180,7 @@ und das Profil der KI-Entwicklerin ansehen: klicken Sie dazu einfach auf den ent
     {{ include "si_experiment/creditRevision.html" }}
 {{ endif }}
 
+<input type="hidden" name="revision" id="revision" />
 
 <br><br><br>
 

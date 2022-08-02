@@ -7,18 +7,6 @@
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
-
-        $(document).ready(function() {
-            // create slider
-            var slider = document.getElementById('slider_estimator_credit');
-            createSliderPerAcc(slider)
-
-
-            // write slider results into form field for data export
-            document.getElementById("next-button").addEventListener("click", function (){
-                 document.getElementById("task1Estimate").value = parseInt(slider.noUiSlider.get(true))
-            });
-        })
     </script>
 </head>
 
@@ -56,7 +44,7 @@
         <td>{{borrower.purpose}}</td>
     </tr>
     <tr>
-        <td>Jährliches <b style="color: red">Brutto</b>einkommen</td>
+        <td>Jährliches Bruttoeinkommen</td>
         <td>{{borrower.annual_inc}},- EUR</td>
     </tr>
     <tr>

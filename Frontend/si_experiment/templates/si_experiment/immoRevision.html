@@ -3,17 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-
     <script>
-        $(document).ready(function() {
-            // create slider
-            var slider = document.getElementById('slider_estimator');
-            createSliderEstimate(slider)
-
-            // write slider results into form field for data export
-            document.getElementById("next-button").addEventListener("click", function () {
-                document.getElementById("revision").value = parseInt(slider.noUiSlider.get(true))
-            });
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
         })
     </script>
 </head>
@@ -30,7 +23,7 @@
     </tr>
     <tr>
         <td>Etage</td>
-        <td>{{ apartment.floor }}. Obergeschoss</td>
+        <td>{{ if apartment.floor >= 1 }} {{ apartment.floor }}. Obergeschoss {{ else }} Erdgeschoss {{ endif }}</td>
     </tr>
     <tr>
         <td>Aufzug</td>
@@ -98,6 +91,5 @@ Falls Sie Ihre Schätzung revidieren möchten, ziehen Sie den Schieberegler an d
     </tr>
 </table>
 
-<input type="hidden" name="revision" id="revision" />
 </body>
 </html>

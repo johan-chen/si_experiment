@@ -111,6 +111,12 @@ for ord_col in ['unemployment', 'share_green']:
     model_data[ord_col] = ["Unterdurchschnittlich" if o_c == 1 else "Durchschnittlich" if o_c == 2 else
     "Überdurchschnittlich" for o_c in model_data[ord_col]]
 
+# check hit rate in selection
+prices_true = round(model_data[model_data.index.isin(indices_to_select)]["price"]/step_size)*step_size
+prices_pred = round(model_data[model_data.index.isin(indices_to_select)]["pred_price"]/step_size)*step_size
+print(f"{np.sum(prices_true == prices_pred)} hits out of {len(prices_true)}.")
+
 # write selected data to file
 if write_selected_file:
     model_data[model_data.index.isin(indices_to_select)].to_csv(path_pre + "Frontend/Data/immonet_data_selected.csv")
+

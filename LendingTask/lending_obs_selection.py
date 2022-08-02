@@ -20,7 +20,7 @@ write_selected_file = False
 data = pd.read_csv(path_pre + "LendingTask/PoolOfObs_Lending_R2_97.csv", sep=";")
 
 # number of bins
-n_b = 21
+n_b = 11
 
 # accuracy (i.t.o. hit rate on 20/25 original bins)
 hit_rate = np.sum(data.pred_ == data.y_)/len(data)
@@ -46,7 +46,7 @@ print("MSE: %.2f" % mse)
 print("RMSE: %.2f" % (mse ** (1 / 2.0)))
 
 # select data for frontend (broad range of values and representative w.r.t. hit rate)
-data_selected = data.iloc[18:27, ].copy(deep=True)
+data_selected = data.iloc[18:28, ].copy(deep=True)
 
 # prepare selected data for frontend
 home_ownership_dic = {'MORTGAGE': 'Hypothek', 'RENT': 'zur Miete', 'OWN': 'Eigentum', 'ANY': 'Sonstiges'}
@@ -68,6 +68,9 @@ data_selected.replace({"home_ownership": home_ownership_dic, "purpose": purpose_
 max_val = np.max([np.max(data["pred_"]), np.max(data["y_"])])
 data_selected.loc[:, "pred_"] = data["pred_"]*(100/max_val)
 data_selected.loc[:, "y_"] = data["y_"]*(100/max_val)
+
+# check hit rate in selection
+print(f"{np.sum(data_selected['y_'] == data_selected['pred_'])} hits out of {len(data_selected)}.")
 
 # write selected data to file
 if write_selected_file:

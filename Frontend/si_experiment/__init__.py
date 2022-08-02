@@ -66,24 +66,37 @@ def shuffle_form_fields(fields, blocksize=3, subblocks=True):
 def creating_session(subsession):
     for player in subsession.get_players():
         participant = player.participant
+        treatments = ["none", "dev", "acc", "both"]
         pers_inno = ["pers_inno1", "pers_inno2", "pers_inno3", "pers_inno4"]
-        post_questions = [
-            "anthro1", "anthro2", "anthro3",
-            "cog_trust1", "cog_trust2", "cog_trust3",
-            "integ_trust1", "integ_trust2", "integ_trust3",
-            "emo_trust1", "emo_trust2", "emo_trust3",
+        post_questions_t1 = [
+            "anthro_t1_1", "anthro_t1_2", "anthro_t1_3",
+            "cog_trust_t1_1", "cog_trust_t1_2", "cog_trust_t1_3",
+            "integ_trust_t1_1", "integ_trust_t1_2", "integ_trust_t1_3",
+            "emo_trust_t1_1", "emo_trust_t1_2", "emo_trust_t1_3",
+        ]
+        post_questions_t2 = [
+            "anthro_t2_1", "anthro_t2_2", "anthro_t2_3",
+            "cog_trust_t2_1", "cog_trust_t2_2", "cog_trust_t2_3",
+            "integ_trust_t2_1", "integ_trust_t2_2", "integ_trust_t2_3",
+            "emo_trust_t2_1", "emo_trust_t2_2", "emo_trust_t2_3",
         ]
         random.shuffle(pers_inno)
-        # True = Immo task first
-        # False = Credit task first
-        tasks_order = random.choice([True, False])
-        post_questions = shuffle_form_fields(post_questions, 3, True)
+        tasks_order = random.choice([True, False])  # True = Immo task first
+        post_questions_t1 = shuffle_form_fields(post_questions_t1, 3, True)
+        post_questions_t2 = shuffle_form_fields(post_questions_t2, 3, True)
 
+        participant.treatment = random.choice(treatments)
         participant.pers_inno_order = pers_inno
-        participant.post_questions_order = post_questions
+        participant.post_questions_order_t1 = post_questions_t1
+        participant.post_questions_order_t2 = post_questions_t2
         participant.tasks_order = tasks_order
         participant.apartment_row = random.randint(0, 9)
         participant.lender_row = random.randint(0, 9)
+
+        dev_rows = [0, 1, 2]  # TODO: check if we indeed want developers guaranteed to be different from each other
+        participant.dev_row1 = random.choice(dev_rows)
+        dev_rows.remove(participant.dev_row1)
+        participant.dev_row2 = random.choice(dev_rows)
 
 
 class Player(BasePlayer):
@@ -136,14 +149,26 @@ class Player(BasePlayer):
     importance_sex = make_field("Das Geschlecht")
     importance_migration_bg = make_field("Der Migrationshintergrund")
     importance_pol_views = make_field("Die politische Einstellung")
-    soc_distance_rank1 = make_rank_field("1. Platz")
-    soc_distance_rank2 = make_rank_field("2. Platz")
-    soc_distance_rank3 = make_rank_field("3. Platz")
 
-    soc_distance1 = make_field("Der Entwickler könnte ähnliche Ansichten haben wie ich.")
-    soc_distance2 = make_field("Der Entwickler könnte ähnliche Werte haben wie ich.")
-    soc_distance3 = make_field("Ich könnte zur gleichen Gruppe gehören wie der Entwickler.")
-    soc_distance4 = make_field("Ich bin eine ähnlicher Mensch wie der Entwickler.")
+    # social distance var -- task 1
+    soc_distance_rank_t1_1 = make_rank_field("1. Platz")
+    soc_distance_rank_t1_2 = make_rank_field("2. Platz")
+    soc_distance_rank_t1_3 = make_rank_field("3. Platz")
+
+    soc_distance_t1_1 = make_field("Der Entwickler könnte ähnliche Ansichten haben wie ich.")
+    soc_distance_t1_2 = make_field("Der Entwickler könnte ähnliche Werte haben wie ich.")
+    soc_distance_t1_3 = make_field("Ich könnte zur gleichen Gruppe gehören wie der Entwickler.")
+    soc_distance_t1_4 = make_field("Ich bin eine ähnlicher Mensch wie der Entwickler.")
+
+    # social distance var -- task 2
+    soc_distance_rank_t2_1 = make_rank_field("1. Platz")
+    soc_distance_rank_t2_2 = make_rank_field("2. Platz")
+    soc_distance_rank_t2_3 = make_rank_field("3. Platz")
+
+    soc_distance_t2_1 = make_field("Der Entwickler könnte ähnliche Ansichten haben wie ich.")
+    soc_distance_t2_2 = make_field("Der Entwickler könnte ähnliche Werte haben wie ich.")
+    soc_distance_t2_3 = make_field("Ich könnte zur gleichen Gruppe gehören wie der Entwickler.")
+    soc_distance_t2_4 = make_field("Ich bin eine ähnlicher Mensch wie der Entwickler.")
 
     soc_norms = make_field("Ich tue immer mein Bestes, um gesellschaftliche Normen zu befolgen.")
 
@@ -163,8 +188,13 @@ class Player(BasePlayer):
     task2Estimate = models.FloatField()
     conf2Estimate = make_field("Ich bin von meiner Schätzung überzeugt.")
 
-    # perceived accuracy of AI
+    # perceived accuracy of AI -- task 1 and 2
     perc_acc = models.FloatField()
+    perc_acc2 = models.FloatField()
+
+    # wtp -- task 1 and 2
+    wtp = models.FloatField()
+    wtp2 = models.FloatField()
 
     # todo immobilien-expertise
     # todo credit default expertise
@@ -184,7 +214,7 @@ class Player(BasePlayer):
         label="Bitte geben Sie an, wie risikobereit oder risikoscheu Sie im Allgemeinen sind. Bitte nutzen Sie eine Skala von 0 bis 10, wobei 0 'völlig risikoscheu' und 10 'sehr risikofreudig' bedeutet.",
         blank=True)
 
-    # Revision
+    # Revision 1
     revision = models.FloatField()
     confRevision = make_field("Ich bin von meiner Schätzung überzeugt.")
     click_sex_open, click_sex_close = models.IntegerField(), models.IntegerField()
@@ -192,31 +222,61 @@ class Player(BasePlayer):
     click_pol_views_open, click_pol_views_close = models.IntegerField(), models.IntegerField()
     click_acc_open, click_acc_close = models.IntegerField(), models.IntegerField()
 
+    # Revision 2
+    revision2 = models.FloatField()
+    confRevision2 = make_field("Ich bin von meiner Schätzung überzeugt.")
+    click_sex_open2, click_sex_close2 = models.IntegerField(), models.IntegerField()
+    click_migration_bg_open2, click_migration_bg_close2 = models.IntegerField(), models.IntegerField()
+    click_pol_views_open2, click_pol_views_close2 = models.IntegerField(), models.IntegerField()
+    click_acc_open2, click_acc_close2 = models.IntegerField(), models.IntegerField()
+
     # todo add items for credit task
     ###################
     # algorithm items #
     ###################
-    transparency = make_field("Ich verstehe, wie der Algorithmus zu seiner Empfehlung kommt.")
+    transparency_t1 = make_field("Ich verstehe, wie der Algorithmus zu seiner Empfehlung kommt.")
+    transparency_t2 = make_field("Ich verstehe, wie der Algorithmus zu seiner Empfehlung kommt.")
 
-    anthro1 = make_field("Der Algorithmus ist für mich natürlich.")
-    anthro2 = make_field("Der Algorithmus ist für mich menschenähnlich.")
-    anthro3 = make_field("Der Algorithmus ist für mich lebensähnlich.")
+    anthro_t1_1 = make_field("Der Algorithmus ist für mich natürlich.")
+    anthro_t1_2 = make_field("Der Algorithmus ist für mich menschenähnlich.")
+    anthro_t1_3 = make_field("Der Algorithmus ist für mich lebensähnlich.")
 
-    # trust
-    cog_trust1 = make_field("Der Algorithmus ist kompetent und effektiv bei der Vorhersage der Immobilienpreise.")
-    cog_trust2 = make_field("Der Algorithmus erfüllt seine Aufgabe, die Immobilienpreise vorherzusagen, sehr gut.")
-    cog_trust3 = make_field(
+    anthro_t2_1 = make_field("Der Algorithmus ist für mich natürlich.")
+    anthro_t2_2 = make_field("Der Algorithmus ist für mich menschenähnlich.")
+    anthro_t2_3 = make_field("Der Algorithmus ist für mich lebensähnlich.")
+
+    # trust_t1
+    cog_trust_t1_1 = make_field("Der Algorithmus ist kompetent und effektiv bei der Vorhersage der Immobilienpreise.")
+    cog_trust_t1_2 = make_field("Der Algorithmus erfüllt seine Aufgabe, die Immobilienpreise vorherzusagen, sehr gut.")
+    cog_trust_t1_3 = make_field(
         "Insgesamt ist der Algorithmus ein fähiges und kompetentes Werkzeug für die Vorhersage der Immobilienpreise.")
-    integ_trust1 = make_field("Der Algorithmus gibt unvoreingenommene Empfehlungen.")
+    integ_trust_t1_1 = make_field("Der Algorithmus gibt unvoreingenommene Empfehlungen.")
     # attention check 1
-    integ_trust2 = make_field("Der Algorithmus ist unehrlich.")
-    integ_trust3 = make_field("Ich halte diesen Algorithmus für integer.")
+    integ_trust_t1_2 = make_field("Der Algorithmus ist unehrlich.")
+    integ_trust_t1_3 = make_field("Ich halte diesen Algorithmus für integer.")
     # attention check 2
-    emo_trust1 = make_field(
+    emo_trust_t1_1 = make_field(
         "Ich fühle mich unsicher, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.")
-    emo_trust2 = make_field(
+    emo_trust_t1_2 = make_field(
         "Ich fühle mich wohl, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.")
-    emo_trust3 = make_field(
+    emo_trust_t1_3 = make_field(
+        "Ich fühle mich zufrieden, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.")
+
+    # trust_t2
+    cog_trust_t2_1 = make_field("Der Algorithmus ist kompetent und effektiv bei der Vorhersage der Immobilienpreise.")
+    cog_trust_t2_2 = make_field("Der Algorithmus erfüllt seine Aufgabe, die Immobilienpreise vorherzusagen, sehr gut.")
+    cog_trust_t2_3 = make_field(
+        "Insgesamt ist der Algorithmus ein fähiges und kompetentes Werkzeug für die Vorhersage der Immobilienpreise.")
+    integ_trust_t2_1 = make_field("Der Algorithmus gibt unvoreingenommene Empfehlungen.")
+    # attention check 1
+    integ_trust_t2_2 = make_field("Der Algorithmus ist unehrlich.")
+    integ_trust_t2_3 = make_field("Ich halte diesen Algorithmus für integer.")
+    # attention check 2
+    emo_trust_t2_1 = make_field(
+        "Ich fühle mich unsicher, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.")
+    emo_trust_t2_2 = make_field(
+        "Ich fühle mich wohl, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.")
+    emo_trust_t2_3 = make_field(
         "Ich fühle mich zufrieden, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.")
 
 
@@ -249,8 +309,6 @@ class PreQuestions(Page):
 
 class Task(Page):
     form_model = 'player'
-    # todo add "estimate",
-    # todo input fields according to immo or credit task sequence
     form_fields = ["task1Estimate", "conf1Estimate"]
 
     @staticmethod
@@ -281,7 +339,15 @@ class PercAccuracy(Page):
 
 class WTP(Page):
     form_model = "player"
-    # form_fields = ["wtp"]
+    form_fields = ["wtp"]
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        # developer
+        developers = pd.read_csv("Data/dev_profiles.csv")
+        developer = dict(developers.iloc[player.participant.dev_row1])
+
+        return dict(developer=developer)
 
 
 class Revision(Page):
@@ -300,7 +366,8 @@ class Revision(Page):
                                  'floor', 'n_rooms', 'sq_meters', 'construction_year',
                                  'unemployment', 'share_green', 'pred_price']]
         apartment = dict(apartments.iloc[player.participant.apartment_row])
-        apartment['pred_price'] = format_german_number(round(apartment['pred_price'] / 20_000) * 20_000)
+        apartment['pred_price'] = format_german_number(round((apartment['pred_price'] - 20_000) / 40_000)
+                                                       * 40_000 + 20_000)
 
         # lending revision
         borrowers = pd.read_csv("Data/lending_data_selected.csv")
@@ -320,16 +387,23 @@ class PostQuestions(Page):
 
     @staticmethod
     def get_form_fields(player: Player):
-        form_fields = ["soc_distance1", "soc_distance2", "soc_distance3", "soc_distance4",
-                       "soc_distance_rank1", "soc_distance_rank2", "soc_distance_rank3", "transparency"]
-        form_fields += player.participant.post_questions_order
+        form_fields = ["soc_distance_t1_1", "soc_distance_t1_2", "soc_distance_t1_3", "soc_distance_t1_4",
+                       "soc_distance_rank_t1_1", "soc_distance_rank_t1_2", "soc_distance_rank_t1_3", "transparency_t1"]
+        form_fields += player.participant.post_questions_order_t1
         return form_fields
 
     @staticmethod
     def vars_for_template(player: Player):
-        ranks = ["soc_distance_rank1", "soc_distance_rank2", "soc_distance_rank3"]
+        # developer
+        developers = pd.read_csv("Data/dev_profiles.csv")
+        developer = dict(developers.iloc[player.participant.dev_row1])
+
+        # rank q
+        ranks = ["soc_distance_rank_t1_1", "soc_distance_rank_t1_2", "soc_distance_rank_t1_3"]
+
         return dict(
             ranks=ranks,
+            developer=developer
         )
 
     # @staticmethod
@@ -347,28 +421,77 @@ class Stage2(Page):
 
 class Task2(Page):
     form_model = 'player'
-    # todo add "estimate",
-    # todo input fields according to immo or credit task sequence
-    form_fields = ["conf2Estimate"]
+    form_fields = ["task2Estimate", "conf2Estimate"]
 
     @staticmethod
     def vars_for_template(player: Player):
-        tasks_order = player.participant.tasks_order
-        return dict(tasks_order=tasks_order)
+        # real estate task
+        apartments = pd.read_csv("Data/immonet_data_selected.csv")
+        apartments = apartments[['garden', 'basement', 'elevator', 'balcony',
+                                 'floor', 'n_rooms', 'sq_meters', 'construction_year',
+                                 'unemployment', 'share_green']]
+        apartment = dict(apartments.iloc[player.participant.apartment_row])
+
+        # lending task
+        borrowers = pd.read_csv("Data/lending_data_selected.csv")
+        for col in ['loan_amnt', 'annual_inc', 'installment']:
+            borrowers[col] = [format_german_number(x, 0) for x in borrowers[col]]
+        for col in ['open_acc', 'emp_length', 'term']:
+            borrowers[col] = borrowers[col].astype(int)
+        borrower = dict(borrowers.iloc[player.participant.lender_row])
+
+        return dict(apartment=apartment,
+                    borrower=borrower)
 
 
 class PercAccuracy2(Page):
     form_model = 'player'
-    form_fields = ["perc_acc"]
+    form_fields = ["perc_acc2"]
+
+
+class WTP2(Page):
+    form_model = "player"
+    form_fields = ["wtp2"]
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        # developer
+        developers = pd.read_csv("Data/dev_profiles.csv")
+        developer = dict(developers.iloc[player.participant.dev_row2])
+
+        return dict(developer=developer)
 
 
 class Revision2(Page):
     form_model = 'player'
-    form_fields = ["revision", "confRevision",
-                   "click_sex_open", "click_sex_close",
-                   "click_migration_bg_open", "click_migration_bg_close",
-                   "click_pol_views_open", "click_pol_views_close",
-                   "click_acc_open", "click_acc_close"]
+    form_fields = ["revision2", "confRevision2",
+                   "click_sex_open2", "click_sex_close2",
+                   "click_migration_bg_open2", "click_migration_bg_close2",
+                   "click_pol_views_open2", "click_pol_views_close2",
+                   "click_acc_open2", "click_acc_close2"]
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        # real estate revision
+        apartments = pd.read_csv("Data/immonet_data_selected.csv")
+        apartments = apartments[['garden', 'basement', 'elevator', 'balcony',
+                                 'floor', 'n_rooms', 'sq_meters', 'construction_year',
+                                 'unemployment', 'share_green', 'pred_price']]
+        apartment = dict(apartments.iloc[player.participant.apartment_row])
+        apartment['pred_price'] = format_german_number(round((apartment['pred_price'] - 20_000) / 40_000)
+                                                       * 40_000 + 20_000)
+
+        # lending revision
+        borrowers = pd.read_csv("Data/lending_data_selected.csv")
+        for col in ['loan_amnt', 'annual_inc', 'installment', 'pred_']:
+            borrowers[col] = [format_german_number(x, 0) for x in borrowers[col]]
+        for col in ['open_acc', 'emp_length', 'term']:
+            borrowers[col] = borrowers[col].astype(int)
+        borrower = dict(borrowers.iloc[player.participant.lender_row])
+
+        return dict(original_estimate=format_german_number(player.task2Estimate),
+                    apartment=apartment,
+                    borrower=borrower)
 
 
 class PostQuestions2(Page):
@@ -376,16 +499,22 @@ class PostQuestions2(Page):
 
     @staticmethod
     def get_form_fields(player: Player):
-        form_fields = ["soc_distance1", "soc_distance2", "soc_distance3", "soc_distance4",
-                       "soc_distance_rank1", "soc_distance_rank2", "soc_distance_rank3", "transparency"]
-        form_fields += player.participant.post_questions_order
+        form_fields = ["soc_distance_t2_1", "soc_distance_t2_2", "soc_distance_t2_3", "soc_distance_t2_4",
+                       "soc_distance_rank_t2_1", "soc_distance_rank_t2_2", "soc_distance_rank_t2_3", "transparency_t2"]
+        form_fields += player.participant.post_questions_order_t2
         return form_fields
 
     @staticmethod
     def vars_for_template(player: Player):
-        ranks = ["soc_distance_rank1", "soc_distance_rank2", "soc_distance_rank3"]
+        # developer
+        developers = pd.read_csv("Data/dev_profiles.csv")
+        developer = dict(developers.iloc[player.participant.dev_row2])
+
+        # rank q
+        ranks = ["soc_distance_rank_t2_1", "soc_distance_rank_t2_2", "soc_distance_rank_t2_3"]
         return dict(
             ranks=ranks,
+            developer=developer
         )
 
     # @staticmethod
@@ -411,6 +540,7 @@ page_sequence = [Intro,
                  Stage2,
                  Task2,
                  PercAccuracy2,
+                 WTP2,
                  Revision2,
                  PostQuestions2,
                  End]

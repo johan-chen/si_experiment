@@ -1,23 +1,12 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-        <script>
+    <script>
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
 
-        $(document).ready(function() {
-            // create slider
-            var slider = document.getElementById('slider_estimator');
-            createSliderEstimate(slider)
-
-
-            // write slider results into form field for data export
-            document.getElementById("next-button").addEventListener("click", function (){
-                 document.getElementById("task1Estimate").value = parseInt(slider.noUiSlider.get(true))
-            });
-        })
     </script>
 
     {{ block title }}
@@ -27,7 +16,7 @@
 <body>
     <div>
     In diesem Schritt sollen Sie den Verkäuferpreis einer <b>Wohnung in Berlin</b> schätzen, die auf einer großen
-    Online Plattform gelistet ist. Bitte beachten Sie, dass es sich dabei nicht um den endgültigen Kaufpreis, sondern
+    Online Plattform zum Verkauf angeboten wird. Bitte beachten Sie, dass es sich dabei nicht um den endgültigen Kaufpreis, sondern
     um <b>den auf der Plattform inserierten Preis</b> handelt.
     Um diesen Preis zu schätzen, können Sie sich die unten gelisteten Eigenschaften der Immobilie ansehen und
     anschließend den Schieberegler auf die entsprechende Position bewegen.
@@ -45,7 +34,7 @@
     </tr>
     <tr>
         <td>Etage</td>
-        <td>{{ apartment.floor }}. Obergeschoss</td>
+        <td> {{ if apartment.floor >= 1 }} {{ apartment.floor }}. Obergeschoss {{ else }} Erdgeschoss {{ endif }} </td>
     </tr>
     <tr>
         <td>Aufzug</td>

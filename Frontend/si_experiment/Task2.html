@@ -1,45 +1,49 @@
 {{ extends "si_experiment/Page.html" }}
 {{ block title }}
-    Ihre Preisschätzung der Immobilie
+    {{ if player.participant.tasks_order}}
+        Ihre Schätzung für einen Kreditausfall
+        <script>
+            $(document).ready(function() {
+                // create slider
+                var slider = document.getElementById('slider_estimator_credit');
+                createSliderCredit(slider)
+
+
+                // write slider results into form field for data export
+                document.getElementById("next-button").addEventListener("click", function (){
+                     document.getElementById("task2Estimate").value = parseInt(slider.noUiSlider.get(true))
+                });
+            })
+        </script>
+
+    {{ else }}
+        Ihre Preisschätzung der Immobilie
+        <script>
+            $(document).ready(function() {
+                // create slider
+                var slider = document.getElementById('slider_estimator');
+                createSliderRealEstate(slider)
+
+
+                // write slider results into form field for data export
+                document.getElementById("next-button").addEventListener("click", function (){
+                     document.getElementById("task2Estimate").value = parseInt(slider.noUiSlider.get(true))
+                });
+            })
+        </script>
+
+    {{ endif }}
+
 {{ endblock }}
 {{ block content }}
 
-<head>
-    <script>
-<!--todo add script to tasks templates-->
-        $(document).ready(function() {
-            // create slider
-            // var slider = document.getElementById('slider_estimator');
-            // createSliderEstimate(slider)
-            //
-            // // duplicates for showcasing
-            // var slider = document.getElementById('slider_estimator2');
-            // createSliderEstimate2(slider)
-            //
-            // var slider = document.getElementById('slider_estimator3');
-            // createSliderEstimate3(slider)
-
-            var slider = document.getElementById('slider_estimator_credit');
-            createSliderPerAcc(slider)
-
-            // write slider results into form field for data export
-            // document.getElementById("next-button").addEventListener("click", function (){
-            //     document.getElementById("estimate").value = parseInt(slider.noUiSlider.get(true))
-            // });
-        })
-    </script>
-</head>
-<h3>*TODOs*</h3>
-<ul>
-    <li>Bei welchen Attributen sollen bei ? die Erklärungen angezeigt werden? </li>
-    <li>Model macht eine Pred zwischen 1-25, die y_true range ist aber nur 1-20</li>
-    <li>Mapping von 1-20 auf 5% bis 100% scale?</li>
-</ul>
-{{ if tasks_order}}
+{{ if player.participant.tasks_order}}
     {{ include "si_experiment/creditTask.html" }}
 {{ else }}
     {{ include "si_experiment/immoTask.html" }}
 {{ endif }}
+
+
 <!--<input type="hidden" name="estimate" id="estimate" />-->
 <!-- todo adjust likert table according to formfield -->
 <br><br><br>
@@ -73,7 +77,7 @@
 
 <br><br>
 
-
+<input type="hidden" name="task2Estimate" id="task2Estimate"/>
 
 <button id="next-button" class="otree-btn-next btn btn-primary">
     Weiter

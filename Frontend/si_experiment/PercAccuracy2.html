@@ -1,6 +1,6 @@
 {{ extends "si_experiment/Page.html" }}
 {{ block title }}
-    KI zur Ausfallvorhersage
+    KI zur Vorhersage
 {{ endblock }}
 
 {{ block content }}
@@ -10,46 +10,61 @@
 
         $(document).ready(function() {
             // create slider
-            var slider = document.getElementById('slider_per_acc');
+            var slider = document.getElementById('slider_per_acc2');
             createSliderPerAcc(slider)
 
             // write slider results into form field for data export
             document.getElementById("next-button").addEventListener("click", function (){
-                document.getElementById("perc_acc").value = parseInt(slider.noUiSlider.get(true))
+                document.getElementById("perc_acc2").value = parseInt(slider.noUiSlider.get(true))
             });
         })
     </script>
 </head>
 
-<h3>*TODOs*</h3>
-<ul>
-    <li>Beschreibung</li>
-    <li>XGBoost bei Credit risk vs. Random Forest bei Immobilienpreisen?</li>
-</ul>
-
-<br>
+{{ if player.participant.tasks_order }}
+    Wir stellen Ihnen nun erneut eine <b>Künstliche Intelligenz (KI)</b> vor, die darauf trainiert ist, die Kreditausfallwahrscheinlichkeit
+    von Kreditbewerbern vorherzusagen. Die KI nutzt die gleichen zehn Eigenschaften von
+    Kreditbewerbern, um die Ausfallwahrscheinlichkeit vorherzusagen.
+{{ else }}
 Wir stellen Ihnen nun eine <b>Künstliche Intelligenz (KI)</b> vor, die darauf trainiert ist, den Verkaufspreis von auf der
-Plattform gelisteten Immobilien vorherzusagen.
+    Plattform gelisteten Wohnungen vorherzusagen. Die KI nutzt die gleichen zehn Eigenschaften von
+    Wohnungen, um den angebotenen Preis vorherzusagen.
+
+{{ endif }}
+
+
 <br><br>
-Die KI nutzt die gleichen <b style="color: red">10</b> Eigenschaften von Wohnungen, um den angebotenen Preis
-vorherzusagen. Die KI basiert auf einem Random Forest, eine der einfachsten, aber auch eine der
+Die KI basiert auf einem Random Forest, eine der einfachsten, aber auch eine der
 leistungsfähigsten KI-Methoden. Ein Random Forest nutzt eine Vielzahl unterschiedlicher Entscheidungsbäume,
 die jeweils einen einzelnen Wert vorhersagen (hier: den Verkaufspreis). Die Mehrheitsvorhersage alle
 Entscheidungsbäume bestimmt dann die endgültige Vorhersage. Mit anderen Worten: Der Random Forest nutzt die
 "Weisheit der Menge".
 <br><br>
 
-Wie hoch schätzen Sie die Genauigkeit der KI ein, um Immobilienpreise vorherzusagen?
+{{ if player.participant.tasks_order }}
+Die <b>Genauigkeit der KI</b> bemisst sich daran, <b>wie häufig das korrekte Kreditausfallrisiko vorhergesagt</b> wird.
+    Die KI kann dabei zwischen den selben 11 Werten auswählen, die auch Ihnen zur Auswahl standen.
+    100% Genauigkeit bedeutet, dass die KI immer den richtigen Wert vorhersagt, während 0% bedeutet, dass sie nie den richtigen Wert vorhersagt.
+    <br><br>
+    Wie hoch schätzen Sie die Genauigkeit der KI ein?
+{{ else }}
+Die <b>Genauigkeit der KI</b> bemisst sich daran, <b>wie häufig der echte Verkaufspreis der Wohnung vorhergesagt wird</b>.
+    Die KI kann dabei zwischen den selben 11 Werten auswählen, die auch Ihnen zur Auswahl standen.
+    100% Genauigkeit bedeutet, dass die KI immer den richtigen Wert vorhersagt, während 0% bedeutet, dass sie nie den richtigen Wert vorhersagt.
+    <br><br>
+    Wie hoch schätzen Sie die Genauigkeit der KI ein?
+{{ endif }}
+
 
 <br><br><br>
 
-<table id="perc_acc_tab" class="tab_slider">
+<table id="perc_acc_tab2" class="tab_slider">
     <tr>
-        <th><div id="slider_per_acc"></div></th>
+        <th><div id="slider_per_acc2"></div></th>
     </tr>
 </table>
 
-<input type="hidden" name="perc_acc" id="perc_acc" />
+<input type="hidden" name="perc_acc2" id="perc_acc2" />
 
 <br><br><br>
 <button id="next-button" class="otree-btn-next btn btn-primary">

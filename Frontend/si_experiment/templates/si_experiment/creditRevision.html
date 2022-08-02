@@ -3,17 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-
     <script>
-        $(document).ready(function() {
-            // create slider
-            var slider = document.getElementById('slider_estimator_credit');
-            createSliderPerAcc(slider)
-
-            // write slider results into form field for data export
-            document.getElementById("next-button").addEventListener("click", function (){
-                 document.getElementById("revision").value = parseInt(slider.noUiSlider.get(true))
-            });
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
         })
     </script>
 </head>
@@ -40,7 +33,7 @@
         <td>{{borrower.purpose}}</td>
     </tr>
     <tr>
-        <td>Jährliches <b style="color: red">Brutto</b>einkommen</td>
+        <td>Jährliches Bruttoeinkommen</td>
         <td>{{borrower.annual_inc}},- EUR</td>
     </tr>
     <tr>
@@ -93,6 +86,5 @@ Falls Sie Ihre Schätzung revidieren möchten, ziehen Sie den Schieberegler an d
     </tr>
 </table>
 
-<input type="hidden" name="revision" id="revision" />
 </body>
 </html>

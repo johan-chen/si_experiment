@@ -24,15 +24,11 @@
         })
     </script>
 </head>
-<h3>*TODOs*</h3>
-<ul>
-    <li>treatment: anderes Dev profil als task 1?</li>
-    <li>Beschreibung zum Ranking der social distance attribute importance anpassen</li>
-</ul>
 <div>
     Reihenfolge und Attributreihenfolge randomisiert:
 </div>
 <br>
+{{ if player.participant.treatment == "both" }}
 <div class="treatment">
     <table>
         <tr>
@@ -45,61 +41,87 @@
                 <table>
                     <tr>
                         <td><ul><li>Geschlecht:</li></ul></td>
-                        <td style="padding-left:10px">männlich</td>
+                        <td style="padding-left:10px">{{ developer.gender }}</td>
                     </tr>
                     <tr>
                         <td><ul><li>Migrationshintergrund:</li></ul></td>
-                        <td style="padding-left:10px">keinen</td>
+                        <td style="padding-left:10px">{{ developer.migrant }}</td>
                     </tr>
                     <tr>
                         <td><ul><li>Politische Ansicht:</li></ul></td>
-                        <td style="padding-left:10px">eher rechts</td>
+                        <td style="padding-left:10px">{{ developer.politics }}</td>
                     </tr>
                 </table>
             </td>
             <td class="treatment_elem">
-                Die <b>Genauigkeit</b> des Algorithmus: 80 %
+                <table>
+                    <tr>
+                        <td style="padding-left:10px">Die <b>Genauigkeit</b> des Algorithmus beträgt <b>{{ if player.participant.tasks_order }} 45% {{ else }} 40% {{ endif }}. </b></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen, beträgt weniger als 10%. Sollten Sie
+                        also einfach raten, kann die KI Ihre Chance mehr als vervierfachen.</td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </table>
 </div>
 <br>
+
+
+{{ elif player.participant.treatment == "dev" }}
 <div class="treatment">
-    Die <b>Entwicklerin</b> des Algorithmus besitzt folgende Eigenschaften:
     <table>
         <tr>
-            <td><ul><li>Geschlecht:</li></ul></td>
-            <td style="padding-left:10px">weiblich</td>
-        </tr>
-        <tr>
-            <td><ul><li>Migrationshintergrund:</li></ul></td>
-            <td style="padding-left:10px">keinen</td>
-        </tr>
-        <tr>
-            <td><ul><li>Politische Ansicht:</li></ul></td>
-            <td style="padding-left:10px">mitte</td>
+            <td class="treatment_elem">
+                Der <b>Entwickler</b> des Algorithmus besitzt folgende Eigenschaften:
+                <table>
+                    <tr>
+                        <td><ul><li>Geschlecht:</li></ul></td>
+                        <td style="padding-left:10px">{{ developer.gender }}</td>
+                    </tr>
+                    <tr>
+                        <td><ul><li>Migrationshintergrund:</li></ul></td>
+                        <td style="padding-left:10px">{{ developer.migrant }}</td>
+                    </tr>
+                    <tr>
+                        <td><ul><li>Politische Ansicht:</li></ul></td>
+                        <td style="padding-left:10px">{{ developer.politics }}</td>
+                    </tr>
+                </table>
+            </td>
+            <td style="width:30%;vertical-align: center"><img src="{{ static 'global/expert.png' }}" style="width: 30%" /></td>
         </tr>
     </table>
 </div>
 <br>
+
+{{ elif player.participant.treatment == "acc" }}
 <div class="treatment">
-    Der <b>Entwickler</b> des Algorithmus besitzt folgende Eigenschaften:
     <table>
         <tr>
-            <td><ul><li>Geschlecht:</li></ul></td>
-            <td style="padding-left:10px">männlich</td>
-        </tr>
-        <tr>
-            <td><ul><li>Migrationshintergrund:</li></ul></td>
-            <td style="padding-left:10px">hat einen</td>
-        </tr>
-        <tr>
-            <td><ul><li>Politische Ansicht:</li></ul></td>
-            <td style="padding-left:10px">eher links</td>
+            <td class="treatment_elem">
+                <table>
+                    <tr>
+                        <td style="padding-left:10px">Die <b>Genauigkeit</b> des Algorithmus beträgt <b>{{ if player.participant.tasks_order }} 40%{{ else }} 45%{{ endif }}. </b></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen, beträgt weniger als 10%. Sollten Sie
+                        also einfach raten, kann die KI Ihre Chance mehr als vervierfachen.</td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <td style="width:30%;vertical-align: center"><img src="{{ static 'global/KI.png' }}" style="width: 30%" /></td>
+            </td>
         </tr>
     </table>
 </div>
 <br>
+{{ endif }}
+
+{{ if player.participant.treatment in ["both", "dev"] }}
 <p>
     <b>Aufgabe:</b> Bitte geben Sie Ihre persönliche Einstellung zu folgenden Aussagen an.
 </p>
@@ -116,7 +138,7 @@
 
     <tr>
         <th></th>
-        {{for choice in form.soc_distance1.choices}}
+        {{for choice in form.soc_distance_t2_1.choices}}
             <th>{{choice}}</th>
         {{endfor}}
     </tr>
@@ -143,6 +165,7 @@
 <br>
 <hr style="border-top:3px dashed black; background: transparent; opacity: 1 ">
 <br>
+{{ endif }}
 
 <p>
     <b>Aufgabe:</b> Bitte geben Sie Ihre persönliche Einstellung zu folgenden Aussagen an.
@@ -160,7 +183,7 @@
 
     <tr>
         <th></th>
-        {{for choice in form.anthro1.choices}}
+        {{for choice in form.anthro_t2_1.choices}}
             <th>{{choice}}</th>
         {{endfor}}
     </tr>

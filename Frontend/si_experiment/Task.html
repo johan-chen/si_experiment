@@ -2,8 +2,36 @@
 {{ block title }}
     {{ if player.participant.tasks_order}}
         Ihre Preisschätzung der Immobilie
+        <script>
+            $(document).ready(function() {
+                // create slider
+                var slider = document.getElementById('slider_estimator');
+                createSliderRealEstate(slider)
+
+
+                // write slider results into form field for data export
+                document.getElementById("next-button").addEventListener("click", function (){
+                     document.getElementById("task1Estimate").value = parseInt(slider.noUiSlider.get(true))
+                });
+            })
+        </script>
+
     {{ else }}
         Ihre Schätzung für einen Kreditausfall
+        <script>
+            $(document).ready(function() {
+            // create slider
+            var slider = document.getElementById('slider_estimator_credit');
+            createSliderCredit(slider)
+
+
+            // write slider results into form field for data export
+            document.getElementById("next-button").addEventListener("click", function (){
+                 document.getElementById("task1Estimate").value = parseInt(slider.noUiSlider.get(true))
+            });
+        })
+        </script>
+
     {{ endif }}
 
 {{ endblock }}
