@@ -24,50 +24,90 @@
         })
     </script>
 </head>
-<div>
-    Reihenfolge und Attributreihenfolge randomisiert:
-</div>
+
 <br>
 {{ if player.participant.treatment == "both" }}
-<div class="treatment">
-    <table>
-        <tr>
-            <td style="width:15%;vertical-align: top"><img src="{{ static 'global/expert.png' }}" style="width: 20%" /></td>
-            <td style="width:15%;vertical-align: top"><img src="{{ static 'global/KI.png' }}" style="width: 30%" /></td>
-        </tr>
-        <tr>
-            <td class="treatment_elem">
-                Der <b>Entwickler</b> des Algorithmus besitzt folgende Eigenschaften:
-                <table>
-                    <tr>
-                        <td><ul><li>Geschlecht:</li></ul></td>
-                        <td style="padding-left:10px">{{ developer.gender }}</td>
-                    </tr>
-                    <tr>
-                        <td><ul><li>Migrationshintergrund:</li></ul></td>
-                        <td style="padding-left:10px">{{ developer.migrant }}</td>
-                    </tr>
-                    <tr>
-                        <td><ul><li>Politische Ansicht:</li></ul></td>
-                        <td style="padding-left:10px">{{ developer.politics }}</td>
-                    </tr>
-                </table>
-            </td>
-            <td class="treatment_elem">
-                <table>
-                    <tr>
-                        <td style="padding-left:10px">Die <b>Genauigkeit</b> des Algorithmus beträgt <b>{{ if player.participant.tasks_order }} 40%{{ else }} 45%{{ endif }}. </b></td>
-                    </tr>
-                    <tr>
-                        <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen, beträgt weniger als 10%. Sollten Sie
-                        also einfach raten, kann die KI Ihre Chance mehr als vervierfachen.</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-</div>
-<br>
+    {{ if player.participant.info_first == "dev" }}
+        <div class="treatment">
+            <table>
+                <tr>
+                    <td style="width:15%;vertical-align: top"><img src="{{ static 'global/expert.png' }}" style="width: 20%" /></td>
+                    <td style="width:15%;vertical-align: top"><img src="{{ static 'global/KI.png' }}" style="width: 30%" /></td>
+                </tr>
+                <tr>
+                    <td class="treatment_elem">
+                        Der <b>Entwickler</b> des Algorithmus besitzt folgende Eigenschaften:<br><br>
+                        <table>
+                            <tr>
+                                <td><ul><li>Geschlecht:</li></ul></td>
+                                <td style="padding-left:10px">{{ developer.gender }}</td>
+                            </tr>
+                            <tr>
+                                <td><ul><li>Migrationshintergrund:</li></ul></td>
+                                <td style="padding-left:10px">{{ developer.migrant }}</td>
+                            </tr>
+                            <tr>
+                                <td><ul><li>Politische Ansicht:</li></ul></td>
+                                <td style="padding-left:10px">{{ developer.politics }}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td class="treatment_elem">
+                        <table>
+                            <tr>
+                                <td style="padding-left:10px">Die <b>Genauigkeit</b> des Algorithmus beträgt <b>{{ if player.participant.tasks_order }} 40%{{ else }} 45%{{ endif }}. </b></td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen, beträgt weniger als 10%.
+                                    Sollten Sie also einfach raten, <b>kann die KI Ihre Chance mehr als vervierfachen</b>.</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    {{ else }}
+        <div class="treatment">
+            <table>
+                <tr>
+                    <td style="width:15%;vertical-align: top"><img src="{{ static 'global/KI.png' }}" style="width: 30%" /></td>
+                    <td style="width:15%;vertical-align: top"><img src="{{ static 'global/expert.png' }}" style="width: 20%" /></td>
+                </tr>
+                <tr>
+                    <td class="treatment_elem">
+                        <table>
+                            <tr>
+                                <td style="padding-left:10px">Die <b>Genauigkeit</b> des Algorithmus beträgt <b>{{ if player.participant.tasks_order }} 40%{{ else }} 45%{{ endif }}. </b></td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen, beträgt weniger als 10%.
+                                    Sollten Sie also einfach raten, <b>kann die KI Ihre Chance mehr als vervierfachen</b>.</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td class="treatment_elem">
+                        Der <b>Entwickler</b> des Algorithmus besitzt folgende Eigenschaften:<br><br>
+                        <table>
+                            <tr>
+                                <td><ul><li>Geschlecht:</li></ul></td>
+                                <td style="padding-left:10px">{{ developer.gender }}</td>
+                            </tr>
+                            <tr>
+                                <td><ul><li>Migrationshintergrund:</li></ul></td>
+                                <td style="padding-left:10px">{{ developer.migrant }}</td>
+                            </tr>
+                            <tr>
+                                <td><ul><li>Politische Ansicht:</li></ul></td>
+                                <td style="padding-left:10px">{{ developer.politics }}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    {{ endif }}
+    <br>
 
 
 {{ elif player.participant.treatment == "dev" }}
@@ -108,7 +148,7 @@
                     </tr>
                     <tr>
                         <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen, beträgt weniger als 10%. Sollten Sie
-                        also einfach raten, kann die KI Ihre Chance mehr als vervierfachen.</td>
+                            also einfach raten, <b>kann die KI Ihre Chance mehr als vervierfachen</b>.</td>
                     </tr>
                 </table>
             </td>
@@ -123,7 +163,7 @@
 
 {{ if player.participant.treatment in ["both", "dev"] }}
 <p>
-    <b>Aufgabe:</b> Bitte geben Sie Ihre persönliche Einstellung zu folgenden Aussagen an.
+    Bitte geben Sie Ihre persönliche Einstellung zu folgenden Aussagen an.
 </p>
 <table class="likert">
     <col span="1" class="wide">
@@ -156,7 +196,7 @@
 <br>
 <br>
 <p>
-    <b>Aufgabe:</b> Bitte ordnen Sie die Attribute der Wichtigkeit an, nach der Sie Ihre "social distance" zum Entwickler angegeben haben.
+    Bitte ordnen Sie die Attribute der Wichtigkeit an, nach der Sie die vorherigen Aussagen zum Entwickler getroffen haben.
 </p>
 {{ for field in ranks }}
     {{ formfield field }}
@@ -169,7 +209,7 @@
 {{ endif }}
 
 <p>
-    <b>Aufgabe:</b> Bitte geben Sie Ihre persönliche Einstellung zu folgenden Aussagen an.
+    Bitte geben Sie Ihre persönliche Einstellung zu folgenden Aussagen an.
 </p>
 <table class="likert">
     <col span="1" class="wide">
@@ -189,14 +229,14 @@
         {{endfor}}
     </tr>
     {{ for field in form }}
-    {{ if forloop.counter > 7 }}
-    <tr>
-        <td class="likert_label">{{ field.label }}</td>
-        {{ for choice in field }}
-            <td class="likert_choice">{{ choice }}</td>
-        {{ endfor }}
-    </tr>
-    {{ endif }}
+        {{ if forloop.counter > 7 }}
+            <tr>
+                <td class="likert_label">{{ field.label }}</td>
+                {{ for choice in field }}
+                    <td class="likert_choice">{{ choice }}</td>
+                {{ endfor }}
+            </tr>
+        {{ endif }}
     {{ endfor }}
 </table>
 <br>

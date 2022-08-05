@@ -1,6 +1,6 @@
 ,home_ownership,purpose,job_new,loan_amnt,term,open_acc,emp_length,annual_inc,dti,installment,pred_,y_
 18,zur Miete,größere Anschaffung,Krankenpflege,20700.0,60.0,9.0,9.0,45000.0,13.04,537.32,80.0,70.0
-19,zur Miete,Kreditkarte,Sonstiges,20400.0,60.0,9.0,2.0,43800.0,27.64,456.79,50.0,40.0
+19,zur Miete,Kreditkartenausgleich,Sonstiges,20400.0,60.0,9.0,2.0,43800.0,27.64,456.79,50.0,40.0
 20,Hypothek,Schuldenkonsolidierung,Sonstiges,7500.0,36.0,6.0,0.0,35000.0,12.31,234.92,30.0,30.0
 21,Hypothek,Haus Sanierung/Ausbau,Techniker/in,10000.0,36.0,8.0,0.0,95000.0,19.82,342.17,50.0,60.0
 22,zur Miete,Schuldenkonsolidierung,Operativer Bereich,8000.0,36.0,10.0,9.0,75000.0,19.42,257.24,20.0,40.0
@@ -8,4 +8,4 @@
 24,Eigentum,Schuldenkonsolidierung,Sonstiges,14325.0,60.0,8.0,10.0,40000.0,26.64,362.68,90.0,80.0
 25,zur Miete,Schuldenkonsolidierung,Sonstiges,22250.0,60.0,10.0,10.0,53000.0,14.83,547.61,80.0,80.0
 26,Hypothek,Sonstiges,Management,10000.0,36.0,11.0,10.0,52000.0,10.96,324.61,30.0,30.0
-27,zur Miete,Kreditkarte,Fernfahrer/in,15175.0,36.0,12.0,10.0,60000.0,31.56,555.03,90.0,90.0
+27,zur Miete,Kreditkartenausgleich,Fernfahrer/in,15175.0,36.0,12.0,10.0,60000.0,31.56,555.03,90.0,90.0

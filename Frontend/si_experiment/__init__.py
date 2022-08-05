@@ -3,18 +3,6 @@ import pandas as pd
 import random
 
 
-# custom function to get German number format
-def format_german_number(number, precision=0):
-    # build format string
-    format_str = '{{:,.{}f}}'.format(precision)
-
-    # make number string
-    number_str = format_str.format(number)
-
-    # replace chars
-    return number_str.replace(',', 'X').replace('.', ',').replace('X', '.')
-
-
 doc = """
 The impact of social identity on reliance / trust in AI
 """
@@ -46,6 +34,17 @@ def make_field(label):
     )
 
 
+def format_german_number(number, precision=0):
+    # build format string
+    format_str = '{{:,.{}f}}'.format(precision)
+
+    # make number string
+    number_str = format_str.format(number)
+
+    # replace chars
+    return number_str.replace(',', 'X').replace('.', ',').replace('X', '.')
+
+
 def make_rank_field(label):
     return models.StringField(choices=C.CHOICES, label=label, blank=True)
 
@@ -66,6 +65,8 @@ def shuffle_form_fields(fields, blocksize=3, subblocks=True):
 def creating_session(subsession):
     for player in subsession.get_players():
         participant = player.participant
+
+        # treatment and question/task order randomization
         treatments = ["none", "dev", "acc", "both"]
         pers_inno = ["pers_inno1", "pers_inno2", "pers_inno3", "pers_inno4"]
         post_questions_t1 = [
@@ -84,19 +85,38 @@ def creating_session(subsession):
         tasks_order = random.choice([True, False])  # True = Immo task first
         post_questions_t1 = shuffle_form_fields(post_questions_t1, 3, True)
         post_questions_t2 = shuffle_form_fields(post_questions_t2, 3, True)
-
         participant.treatment = random.choice(treatments)
         participant.pers_inno_order = pers_inno
         participant.post_questions_order_t1 = post_questions_t1
         participant.post_questions_order_t2 = post_questions_t2
         participant.tasks_order = tasks_order
+
+        # task object randomization
         participant.apartment_row = random.randint(0, 9)
         participant.lender_row = random.randint(0, 9)
 
-        dev_rows = [0, 1, 2]  # TODO: check if we indeed want developers guaranteed to be different from each other
+        # dev profile randomization
+        dev_rows = [0, 1, 2]
         participant.dev_row1 = random.choice(dev_rows)
         dev_rows.remove(participant.dev_row1)
         participant.dev_row2 = random.choice(dev_rows)
+
+        # dev vs acc order in display (relevant for treatment=both only)
+        if participant.treatment == "both":
+            info_first = random.choice(["dev", "acc"])
+        else:
+            info_first = "not_applicable"
+        participant.info_first = info_first
+
+        # post question task adaption
+        if tasks_order:
+            t1_str = "Immobilienpreise"
+            t2_str = "Kreditausfallwahrscheinlichkeiten"
+        else:
+            t1_str = "Kreditausfallwahrscheinlichkeiten"
+            t2_str = "Immobilienpreise"
+        participant.t1_str = t1_str
+        participant.t2_str = t2_str
 
 
 class Player(BasePlayer):
@@ -105,9 +125,6 @@ class Player(BasePlayer):
     consent = models.BooleanField(choices=["Ich möchte an der Studie teilnehmen."],
                                   label="Durch das Ankreuzen des Kästchens erkläre ich mich mit der Teilnahme an der Studie einverstanden.",
                                   blank=True)
-
-    # Treatments: Baseline, Accuracy, Developer and Accuracy
-    treatment = models.IntegerField()
 
     # Preliminary Questions
     age = models.IntegerField(label="Bitte geben Sie Ihr Alter an.", min=18, max=99, blank=True)
@@ -126,18 +143,17 @@ class Player(BasePlayer):
     #                               widget=widgets.RadioSelectHorizontal, label="Bitte geben Sie an, ob Sie studieren.", blank=True)
     job_status = models.IntegerField(
         choices=[[0, "Vollzeitbeschäftigung"], [1, "Teilzeitbeschäftigung"], [2, "Selbstständig"],
-                 [3, "Hausfrau/mann"], [4, "Student"], [5, "Rentner"]],
+                 [3, "Hausfrau/mann"], [4, "Studium"], [5, "Rente"]],
         label="Wie ist Ihr derzeitiger Beschäftigungsstatus?", blank=True)
 
-    # todo: Tbd
-    job = models.IntegerField(choices=[[0, "Baden-Württemberg"], [1, "Bayern"], [2, "Berlin"], [3, "Brandenburg"],
-                                       [4, "Bremen"], [5, "Hamburg"], [6, "Hessen"], [7, "Mecklenburg-Vorpommern"],
-                                       [8, "Niedersachsen"], [9, "Nordrhein-Westfalen"], [10, "Rheinland-Pfalz"],
-                                       [11, "Saarland"],
-                                       [12, "Sachsen-Anhalt"], [13, "Sachsen"], [14, "Schleswig-Holstein"],
-                                       [15, "Thüringen"]],
-                              label="TBD: Bitte geben Sie an, in welchem Arbeitsbereich Sie arbeiten bzw. studieren.",
-                              blank=True)
+    # job = models.IntegerField(choices=[[0, "Baden-Württemberg"], [1, "Bayern"], [2, "Berlin"], [3, "Brandenburg"],
+    #                                    [4, "Bremen"], [5, "Hamburg"], [6, "Hessen"], [7, "Mecklenburg-Vorpommern"],
+    #                                    [8, "Niedersachsen"], [9, "Nordrhein-Westfalen"], [10, "Rheinland-Pfalz"],
+    #                                    [11, "Saarland"],
+    #                                    [12, "Sachsen-Anhalt"], [13, "Sachsen"], [14, "Schleswig-Holstein"],
+    #                                    [15, "Thüringen"]],
+    #                           label="TBD: Bitte geben Sie an, in welchem Arbeitsbereich Sie arbeiten bzw. studieren.",
+    #                           blank=True)
 
     pol_views = models.IntegerField(choices=[[0, "0 (ganz links)"], [1, 1], [2, 2], [3, 3],
                                              [4, 4], [5, 5], [6, 6], [7, 7],
@@ -230,54 +246,53 @@ class Player(BasePlayer):
     click_pol_views_open2, click_pol_views_close2 = models.IntegerField(), models.IntegerField()
     click_acc_open2, click_acc_close2 = models.IntegerField(), models.IntegerField()
 
-    # todo add items for credit task
-    ###################
-    # algorithm items #
-    ###################
-    transparency_t1 = make_field("Ich verstehe, wie der Algorithmus zu seiner Empfehlung kommt.")
-    transparency_t2 = make_field("Ich verstehe, wie der Algorithmus zu seiner Empfehlung kommt.")
+    # TASK 2 post questions
 
-    anthro_t1_1 = make_field("Der Algorithmus ist für mich natürlich.")
-    anthro_t1_2 = make_field("Der Algorithmus ist für mich menschenähnlich.")
-    anthro_t1_3 = make_field("Der Algorithmus ist für mich lebensähnlich.")
+    transparency_t1 = make_field("Ich verstehe, wie diese KI zu ihrer Empfehlung kommt.")
 
-    anthro_t2_1 = make_field("Der Algorithmus ist für mich natürlich.")
-    anthro_t2_2 = make_field("Der Algorithmus ist für mich menschenähnlich.")
-    anthro_t2_3 = make_field("Der Algorithmus ist für mich lebensähnlich.")
+    anthro_t1_1 = make_field("Diese KI ist für mich natürlich.")
+    anthro_t1_2 = make_field("Diese KI ist für mich menschenähnlich.")
+    anthro_t1_3 = make_field("Diese KI ist für mich lebensähnlich.")
 
-    # trust_t1
-    cog_trust_t1_1 = make_field("Der Algorithmus ist kompetent und effektiv bei der Vorhersage der Immobilienpreise.")
-    cog_trust_t1_2 = make_field("Der Algorithmus erfüllt seine Aufgabe, die Immobilienpreise vorherzusagen, sehr gut.")
+    cog_trust_t1_1 = make_field("Diese KI ist kompetent und effektiv bei der Vorhersage.")  # der Immobilienpreise
+    cog_trust_t1_2 = make_field("Diese KI erfüllt ihre Aufgabe der Vorhersage sehr gut.")  # , die Immobilienpreise vorherzusagen,
     cog_trust_t1_3 = make_field(
-        "Insgesamt ist der Algorithmus ein fähiges und kompetentes Werkzeug für die Vorhersage der Immobilienpreise.")
-    integ_trust_t1_1 = make_field("Der Algorithmus gibt unvoreingenommene Empfehlungen.")
+        "Insgesamt ist diese KI ein fähiges und kompetentes Werkzeug für die Vorhersage.")  # der Immobilienpreise
+    integ_trust_t1_1 = make_field("Diese KI gibt unvoreingenommene Empfehlungen.")
     # attention check 1
-    integ_trust_t1_2 = make_field("Der Algorithmus ist unehrlich.")
-    integ_trust_t1_3 = make_field("Ich halte diesen Algorithmus für integer.")
+    integ_trust_t1_2 = make_field("Diese KI ist unehrlich.")
+    integ_trust_t1_3 = make_field("Ich halte diese KI für integer.")
     # attention check 2
     emo_trust_t1_1 = make_field(
-        "Ich fühle mich unsicher, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.")
+        "Ich fühle mich unsicher, wenn ich mich bei meiner Entscheidung auf diese KI verlasse.")  # der Immobilienpreise
     emo_trust_t1_2 = make_field(
-        "Ich fühle mich wohl, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.")
+        "Ich fühle mich wohl, wenn ich mich bei meiner Entscheidung auf diese KI verlasse.")  # der Immobilienpreise
     emo_trust_t1_3 = make_field(
-        "Ich fühle mich zufrieden, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.")
+        "Ich fühle mich zufrieden, wenn ich mich bei meiner Entscheidung auf diese KI verlasse.")  # der Immobilienpreise
 
-    # trust_t2
-    cog_trust_t2_1 = make_field("Der Algorithmus ist kompetent und effektiv bei der Vorhersage der Immobilienpreise.")
-    cog_trust_t2_2 = make_field("Der Algorithmus erfüllt seine Aufgabe, die Immobilienpreise vorherzusagen, sehr gut.")
+    # TASK 2 post questions
+
+    transparency_t2 = make_field("Ich verstehe, wie diese KI zu ihrer Empfehlung kommt.")
+
+    anthro_t2_1 = make_field("Diese KI ist für mich natürlich.")
+    anthro_t2_2 = make_field("Diese KI ist für mich menschenähnlich.")
+    anthro_t2_3 = make_field("Diese KI ist für mich lebensähnlich.")
+
+    cog_trust_t2_1 = make_field("Diese KI ist kompetent und effektiv bei der Vorhersage.")  # der Immobilienpreise
+    cog_trust_t2_2 = make_field("Diese KI erfüllt ihre Aufgabe der Vorhersage sehr gut.")  # , die Immobilienpreise vorherzusagen,
     cog_trust_t2_3 = make_field(
-        "Insgesamt ist der Algorithmus ein fähiges und kompetentes Werkzeug für die Vorhersage der Immobilienpreise.")
-    integ_trust_t2_1 = make_field("Der Algorithmus gibt unvoreingenommene Empfehlungen.")
+        "Insgesamt ist diese KI ein fähiges und kompetentes Werkzeug für die Vorhersage.")  # der Immobilienpreise
+    integ_trust_t2_1 = make_field("Diese KI gibt unvoreingenommene Empfehlungen.")
     # attention check 1
-    integ_trust_t2_2 = make_field("Der Algorithmus ist unehrlich.")
-    integ_trust_t2_3 = make_field("Ich halte diesen Algorithmus für integer.")
+    integ_trust_t2_2 = make_field("Diese KI ist unehrlich.")
+    integ_trust_t2_3 = make_field("Ich halte diese KI für integer.")
     # attention check 2
     emo_trust_t2_1 = make_field(
-        "Ich fühle mich unsicher, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.")
+        "Ich fühle mich unsicher, wenn ich mich bei meiner Entscheidung auf diese KI verlasse.")  # der Immobilienpreise
     emo_trust_t2_2 = make_field(
-        "Ich fühle mich wohl, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.")
+        "Ich fühle mich wohl, wenn ich mich bei meiner Entscheidung auf diese KI verlasse.")  # der Immobilienpreise
     emo_trust_t2_3 = make_field(
-        "Ich fühle mich zufrieden, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.")
+        "Ich fühle mich zufrieden, wenn ich mich bei meiner Entscheidung auf diese KI verlasse.")  # der Immobilienpreise
 
 
 # PAGES
@@ -292,16 +307,15 @@ class PreQuestions(Page):
     @staticmethod
     def get_form_fields(player: Player):
         form_fields = ["importance_sex", "importance_migration_bg", "importance_pol_views",
-                       "age", "sex", "nationality", "migration_bg", "job_status", "job", "immo_exp", "credit_exp",
-                       "risk_aver",
-                       "pol_views", "soc_norms"]
+                       "age", "sex", "nationality", "migration_bg", "job_status", "immo_exp", "credit_exp",
+                       "risk_aver", "pol_views", "soc_norms"]
         form_fields += player.participant.pers_inno_order
         return form_fields
 
     @staticmethod
     def vars_for_template(player: Player):
         # removed "sex", "migration_bg"
-        demo = ["age", "nationality", "job_status", "job", "immo_exp", "credit_exp", "risk_aver", ]
+        demo = ["age", "nationality", "job_status", "immo_exp", "credit_exp", "risk_aver", ]
         return dict(
             demo=demo,
         )
@@ -398,12 +412,30 @@ class PostQuestions(Page):
         developers = pd.read_csv("Data/dev_profiles.csv")
         developer = dict(developers.iloc[player.participant.dev_row1])
 
+        # TODO: @Johannes, das war ein Versuch die labels direkt an die Page zu spielen; da hat man dann aber wieder
+        # TODO: das Problem der eingeschränkten Funktionalität in den {{ ... }} brackets
+        # labels
+        label_var_dic = {"anthro_t1_1": "Der Algorithmus ist für mich natürlich.",
+                         "anthro_t1_2": "Der Algorithmus ist für mich menschenähnlich.",
+                         "anthro_t1_3": "Der Algorithmus ist für mich lebensähnlich.",
+                         "cog_trust_t1_1": f"Der Algorithmus ist kompetent und effektiv bei der Vorhersage der Immobilienpreise.",
+                         "cog_trust_t1_2": f"Der Algorithmus erfüllt seine Aufgabe, die Immobilienpreise vorherzusagen, sehr gut.",
+                         "cog_trust_t1_3": f"Insgesamt ist der Algorithmus ein fähiges und kompetentes Werkzeug für die Vorhersage der Immobilienpreise.",
+                         "integ_trust_t1_1": "Der Algorithmus gibt unvoreingenommene Empfehlungen.",
+                         "integ_trust_t1_2": "Der Algorithmus ist unehrlich.",
+                         "integ_trust_t1_3": "Ich halte diesen Algorithmus für integer.",
+                         "emo_trust_t1_1": f"Ich fühle mich unsicher, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.",
+                         "emo_trust_t1_2": f"Ich fühle mich wohl, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.",
+                         "emo_trust_t1_3": f"Ich fühle mich zufrieden, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse."}
+        labels_order = [label_var_dic[var] for var in player.participant.post_questions_order_t1]
+
         # rank q
         ranks = ["soc_distance_rank_t1_1", "soc_distance_rank_t1_2", "soc_distance_rank_t1_3"]
 
         return dict(
             ranks=ranks,
-            developer=developer
+            developer=developer,
+            labels_order=labels_order
         )
 
     # @staticmethod

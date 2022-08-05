@@ -23,7 +23,7 @@ SESSION_CONFIG_DEFAULTS = dict(
 )
 
 PARTICIPANT_FIELDS = ["treatment", "pers_inno_order", "post_questions_order_t1", "post_questions_order_t2",
-                      "tasks_order", "apartment_row", "lender_row", "dev_row1", "dev_row2"]
+                      "tasks_order", "apartment_row", "lender_row", "dev_row1", "dev_row2", "info_first"]
 SESSION_FIELDS = []
 
 # ISO-639 code

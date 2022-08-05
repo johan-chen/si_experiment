@@ -75,46 +75,87 @@
 <br>
 
 {{ if player.participant.treatment == "both" }}
-<div class="treatment">
-    <table>
-        <tr>
-            <td style="width:15%;vertical-align: top"><img src="{{ static 'global/expert.png' }}" style="width: 20%" /></td>
-            <td style="width:15%;vertical-align: top"><img src="{{ static 'global/KI.png' }}" style="width: 30%" /></td>
-        </tr>
-        <tr>
-            <td class="treatment_elem">
-                Der <b>Entwickler</b> des Algorithmus besitzt folgende Eigenschaften:<br><br>
-                <table>
-                    <tr>
-                        <td><ul><li>Geschlecht:</li></ul></td>
-                        <td style="padding-left:10px">{{ developer.gender }}</td>
-                    </tr>
-                    <tr>
-                        <td><ul><li>Migrationshintergrund:</li></ul></td>
-                        <td style="padding-left:10px">{{ developer.migrant }}</td>
-                    </tr>
-                    <tr>
-                        <td><ul><li>Politische Ansicht:</li></ul></td>
-                        <td style="padding-left:10px">{{ developer.politics }}</td>
-                    </tr>
-                </table>
-            </td>
-            <td class="treatment_elem">
-                <table>
-                    <tr>
-                        <td style="padding-left:10px">Die <b>Genauigkeit</b> des Algorithmus beträgt <b>{{ if player.participant.tasks_order }} 40%{{ else }} 45%{{ endif }}. </b></td>
-                    </tr>
-                    <tr>
-                        <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen, beträgt weniger als 10%. Sollten Sie
-                        also einfach raten, kann die KI Ihre Chance mehr als vervierfachen.</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-</div>
-<br>
+    {{ if player.participant.info_first == "dev" }}
+        <div class="treatment">
+            <table>
+                <tr>
+                    <td style="width:15%;vertical-align: top"><img src="{{ static 'global/expert.png' }}" style="width: 20%" /></td>
+                    <td style="width:15%;vertical-align: top"><img src="{{ static 'global/KI.png' }}" style="width: 30%" /></td>
+                </tr>
+                <tr>
+                    <td class="treatment_elem">
+                        Der <b>Entwickler</b> des Algorithmus besitzt folgende Eigenschaften:<br><br>
+                        <table>
+                            <tr>
+                                <td><ul><li>Geschlecht:</li></ul></td>
+                                <td style="padding-left:10px">{{ developer.gender }}</td>
+                            </tr>
+                            <tr>
+                                <td><ul><li>Migrationshintergrund:</li></ul></td>
+                                <td style="padding-left:10px">{{ developer.migrant }}</td>
+                            </tr>
+                            <tr>
+                                <td><ul><li>Politische Ansicht:</li></ul></td>
+                                <td style="padding-left:10px">{{ developer.politics }}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td class="treatment_elem">
+                        <table>
+                            <tr>
+                                <td style="padding-left:10px">Die <b>Genauigkeit</b> des Algorithmus beträgt <b>{{ if player.participant.tasks_order }} 40%{{ else }} 45%{{ endif }}. </b></td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen, beträgt weniger als 10%.
+                                    Sollten Sie also einfach raten, <b>kann die KI Ihre Chance mehr als vervierfachen</b>.</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
 
+    {{ else }}
+        <div class="treatment">
+            <table>
+                <tr>
+                    <td style="width:15%;vertical-align: top"><img src="{{ static 'global/KI.png' }}" style="width: 30%" /></td>
+                    <td style="width:15%;vertical-align: top"><img src="{{ static 'global/expert.png' }}" style="width: 20%" /></td>
+                </tr>
+                <tr>
+                    <td class="treatment_elem">
+                        <table>
+                            <tr>
+                                <td style="padding-left:10px">Die <b>Genauigkeit</b> des Algorithmus beträgt <b>{{ if player.participant.tasks_order }} 40%{{ else }} 45%{{ endif }}. </b></td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen, beträgt weniger als 10%.
+                                    Sollten Sie also einfach raten, <b>kann die KI Ihre Chance mehr als vervierfachen</b>.</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td class="treatment_elem">
+                        Der <b>Entwickler</b> des Algorithmus besitzt folgende Eigenschaften:<br><br>
+                        <table>
+                            <tr>
+                                <td><ul><li>Geschlecht:</li></ul></td>
+                                <td style="padding-left:10px">{{ developer.gender }}</td>
+                            </tr>
+                            <tr>
+                                <td><ul><li>Migrationshintergrund:</li></ul></td>
+                                <td style="padding-left:10px">{{ developer.migrant }}</td>
+                            </tr>
+                            <tr>
+                                <td><ul><li>Politische Ansicht:</li></ul></td>
+                                <td style="padding-left:10px">{{ developer.politics }}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    {{ endif }}
+    <br>
 
 {{ elif player.participant.treatment == "dev" }}
 <div class="treatment">
@@ -153,8 +194,8 @@
                         <td style="padding-left:10px">Die <b>Genauigkeit</b> des Algorithmus beträgt <b>{{ if player.participant.tasks_order }} 40%{{ else }} 45%{{ endif }}. </b></td>
                     </tr>
                     <tr>
-                        <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen, beträgt weniger als 10%. Sollten Sie
-                        also einfach raten, kann die KI Ihre Chance mehr als vervierfachen.</td>
+                        <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen,
+                            beträgt weniger als 10%. Sollten Sie also einfach raten, <b>kann die KI Ihre Chance mehr als vervierfachen</b>.</td>
                     </tr>
                 </table>
             </td>
@@ -169,7 +210,8 @@
 {{ endif }}
 <div>
     Sie erhalten <b>1,50€ für Ihre bisherige Teilnahme</b> am Experiment. Sie haben nun die Möglichkeit, dieses <b>Geld einzusetzen,</b>
-    um entweder die Wahrscheinlichkeit zu erhöhen, eine <b>KI-Vorhersage für den Preis der Wohnung zu sehen</b>, oder um diese
+    um entweder die Wahrscheinlichkeit zu erhöhen, eine <b>KI-Vorhersage für
+    {{ if player.participant.tasks_order }}den Preis der Wohnung{{ else }}die Kreditausfallwahrscheinlichkeit{{ endif }}</b> zu sehen, oder um diese
     Wahrscheinlichkeit zu verringern. Wenn Sie zum Beispiel 80% wählen, besteht eine 80%ige Chance, dass Sie die KI-Vorhersage sehen.
     Wenn Sie 20% wählen, besteht eine 20%ige Chance, dass Sie die KI-Vorhersage sehen. In beiden Fällen bezahlen Sie 1,50€.
     <br><br>

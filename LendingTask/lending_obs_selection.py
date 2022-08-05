@@ -50,7 +50,7 @@ data_selected = data.iloc[18:28, ].copy(deep=True)
 
 # prepare selected data for frontend
 home_ownership_dic = {'MORTGAGE': 'Hypothek', 'RENT': 'zur Miete', 'OWN': 'Eigentum', 'ANY': 'Sonstiges'}
-purpose_dic = {'debt_consolidation': 'Schuldenkonsolidierung', 'credit_card': 'Kreditkarte',
+purpose_dic = {'debt_consolidation': 'Schuldenkonsolidierung', 'credit_card': 'Kreditkartenausgleich',
                'home_improvement': 'Haus Sanierung/Ausbau', 'medical': 'Gesundheit (medizinische Gründe)',
                'major_purchase': 'größere Anschaffung', 'moving': 'Umzug', 'other': 'Sonstiges',
                'vacation': 'Urlaub', 'house': 'Hauskauf', 'small_business': 'Kleinunternehmen',
