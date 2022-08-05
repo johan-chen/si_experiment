@@ -60,7 +60,7 @@
             })
 
             slider.noUiSlider.on("update", function(values, handle){
-                budget2.innerHTML = (1.50 - values[handle].substring(1,values[handle].length-1)).toFixed(2) + "€";
+                budget2.innerHTML = ((1.50 - values[handle].substring(1,values[handle].length-1)).toFixed(2) + "€").replace(".", ",");
             })
 
 
