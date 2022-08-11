@@ -1,77 +1,21 @@
 {{ extends "si_experiment/Page.html" }}
 {{ block title }}
-    KI und Entwickler
+    {{ if player.participant.treatment == "both" }}
+        {{ if player.participant.info_first == "dev" }}
+        Entwickler und KI
+        {{ else }}
+        KI und Entwickler
+        {{ endif }}
+    {{ elif player.participant.treatment == "dev" }}
+    KI Entwickler
+    {{ elif player.participant.treatment == "acc" }}
+    KI
+    {{ else }}
+    KI zur Vorhersage
+    {{ endif }}
 {{ endblock }}
 
 {{ block content }}
-<script>
-        $(document).ready(function() {
-            var slider = document.getElementById('slider_wtp2');
-                // WTP slider
-            function filterPipsWTP(value) {
-                if (value == 80 || value == 20 || value == 50) {
-                    return 1;
-                } else {
-                    return value % 10 == 0 ? 2 : -1;
-                }
-            }
-                function toEncoderMoney(value) {
-                    if (value == 50) {
-                        return "-0€"
-                    } else if (value == 40 || parseInt(value) == 60) {
-                        return "-0.50€"
-                    } else if (value == 30 || value == 70){
-                        return "-1€"
-                    } else {
-                        return "-1.50€"
-                    }
-                }
-            function createSliderWTP(slider) {
-                noUiSlider.create(slider, {
-                    start: [50],
-                    step: 10,
-                    tooltips: true,
-                    range: {
-                        'min': [20],
-                        'max': [80]
-                    },
-                    pips: {
-                        mode: 'steps',
-                        filter: filterPipsWTP,
-                        format: {
-                            from: fromDecoder,
-                            to: toEncoderPercentage,
-                        }
-                    },
-                    format: {
-                        from: fromDecoder,
-                        to: toEncoderMoney,
-                    }
-                });
-            }
-            createSliderWTP(slider)
-
-            // show remaining budget and probability to see prediction
-            var budget2 = document.getElementById("budget2");
-            var wtp_probab2 = document.getElementById("wtp_probab2");
-
-            slider.noUiSlider.on("update", function(){
-                wtp_probab2.innerHTML = parseInt(slider.noUiSlider.get(true)) + "%";
-            })
-
-            slider.noUiSlider.on("update", function(values, handle){
-                budget2.innerHTML = ((1.50 - values[handle].substring(1,values[handle].length-1)).toFixed(2) + "€").replace(".", ",");
-            })
-
-
-
-            // write slider results into form field for data export
-            document.getElementById("next-button").addEventListener("click", function (){
-                 document.getElementById("wtp2").value = parseInt(slider.noUiSlider.get(true))
-             });
-
-        })
-</script>
 <br>
 
 {{ if player.participant.treatment == "both" }}
@@ -84,7 +28,7 @@
                 </tr>
                 <tr>
                     <td class="treatment_elem">
-                        Der <b>Entwickler</b> des Algorithmus besitzt folgende Eigenschaften:<br><br>
+                        Der <b>Entwickler</b> der KI besitzt folgende Eigenschaften:<br><br>
                         <table>
                             <tr>
                                 <td><ul><li>Geschlecht:</li></ul></td>
@@ -103,7 +47,7 @@
                     <td class="treatment_elem">
                         <table>
                             <tr>
-                                <td style="padding-left:10px">Die <b>Genauigkeit</b> des Algorithmus beträgt <b>{{ if player.participant.tasks_order }} 45%{{ else }} 40%{{ endif }}. </b></td>
+                                <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order }} 45%{{ else }} 40%{{ endif }}. </b></td>
                             </tr>
                             <tr>
                                 <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen, beträgt weniger als 10%.
@@ -126,7 +70,7 @@
                     <td class="treatment_elem">
                         <table>
                             <tr>
-                                <td style="padding-left:10px">Die <b>Genauigkeit</b> des Algorithmus beträgt <b>{{ if player.participant.tasks_order }} 45%{{ else }} 40%{{ endif }}. </b></td>
+                                <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order }} 45%{{ else }} 40%{{ endif }}. </b></td>
                             </tr>
                             <tr>
                                 <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen, beträgt weniger als 10%.
@@ -135,7 +79,7 @@
                         </table>
                     </td>
                     <td class="treatment_elem">
-                        Der <b>Entwickler</b> des Algorithmus besitzt folgende Eigenschaften:<br><br>
+                        Der <b>Entwickler</b> der KI besitzt folgende Eigenschaften:<br><br>
                         <table>
                             <tr>
                                 <td><ul><li>Geschlecht:</li></ul></td>
@@ -162,7 +106,7 @@
     <table>
         <tr>
             <td class="treatment_elem">
-                Der <b>Entwickler</b> des Algorithmus besitzt folgende Eigenschaften:
+                Der <b>Entwickler</b> der KI besitzt folgende Eigenschaften:
                 <table>
                     <tr>
                         <td><ul><li>Geschlecht:</li></ul></td>
@@ -191,7 +135,7 @@
             <td class="treatment_elem">
                 <table>
                     <tr>
-                        <td style="padding-left:10px">Die <b>Genauigkeit</b> des Algorithmus beträgt <b>{{ if player.participant.tasks_order }} 45%{{ else }} 40%{{ endif }}. </b></td>
+                        <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order }} 45%{{ else }} 40%{{ endif }}. </b></td>
                     </tr>
                     <tr>
                         <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen,
@@ -208,35 +152,6 @@
 <br>
 
 {{ endif }}
-
-<div>
-    Sie erhalten <b>1,50€ für Ihre bisherige Teilnahme</b> am Experiment. Sie haben nun die Möglichkeit, dieses <b>Geld einzusetzen,</b>
-    um entweder die Wahrscheinlichkeit zu erhöhen, eine <b>KI-Vorhersage für
-    {{ if player.participant.tasks_order }}die Kreditausfallwahrscheinlichkeit{{ else }}den Preis der Wohnung{{ endif }}</b> zu sehen,
-    oder um diese Wahrscheinlichkeit zu verringern. Wenn Sie zum Beispiel 80% wählen, besteht eine 80%ige Chance, dass Sie die KI-Vorhersage sehen.
-    Wenn Sie 20% wählen, besteht eine 20%ige Chance, dass Sie die KI-Vorhersage sehen. In beiden Fällen bezahlen Sie 1,50€.
-    <br><br>
-    Nutzen Sie den Schieberegler, um zu bestimmen, mit welcher Wahrscheinlichkeit Sie die KI-Vorhersage
-    sehen möchten.
-    <br><br>Am Ende erhalten Sie eine <b>variable Vergütung</b>, die von der <b>Genauigkeit Ihrer Preisschätzungen</b> abhängt.
-</div>
-<br>
-<div>
-    <b>Ihr übriges Geld: <span id="budget2"></span></b>
-</div>
-<br>
-<br>
-<div style="padding-left: 50px; padding-right: 50px" >
-    <div id="slider_wtp2" ></div>
-</div>
-<br>
-<br>
-<br>
-<div>
-    <b>Die Wahrscheinlichkeit, die KI-Vorhersage zu sehen: <span id="wtp_probab2"></span></b>
-</div>
-
-<input type="hidden" name="wtp2" id="wtp2" />
 
 <br>
 <button id="next-button" class="otree-btn-next btn btn-primary">

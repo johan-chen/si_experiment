@@ -66,15 +66,6 @@
             document.getElementById("click_pol_views_close2").value = c_close["pol_views2"];
             document.getElementById("click_acc_open2").value = c_open["acc2"];
             document.getElementById("click_acc_close2").value = c_close["acc2"];
-
-            // create slider
-            var slider = document.getElementById('slider_estimator');
-            createSliderPerAcc(slider)
-
-            // write slider results into form field for data export
-            document.getElementById("next-button").addEventListener("click", function (){
-                document.getElementById("revision2").value = parseInt(slider.noUiSlider.get(true))
-            });
         })
     </script>
 </head>
@@ -82,12 +73,14 @@
 In diesem Schritt erhalten Sie die <b>Möglichkeit</b>, Ihre abgegebene <b>{{ if player.participant.tasks_order }} Preisschätzung {{ else }} Schätzung der Ausfallwahrscheinlichkeit {{ endif }}
     noch einmal anzupassen</b>. Dazu zeigen wir Ihnen erneut die Eigenschaften
 {{ if player.participant.tasks_order }} des Kreditbewerbers {{ else }} der Immobilie {{ endif }}
-sowie die Vorhersage der KI. Außerdem können Sie sich noch einmal -- falls gewünscht -- die Vorhersagegenauigkeit der KI
-und das Profil der KI-Entwicklerin ansehen: klicken Sie dazu einfach auf den entsprechenden Button.
+sowie die Vorhersage der KI. {{ if player.participant.treatment != "none" }}Außerdem können Sie sich noch einmal -- falls gewünscht -- {{ if player.participant.treatment == "both" }}die Vorhersagegenauigkeit der KI
+und das Profil des KI Entwicklers ansehen:{{ elif player.participant.treatment == "acc" }}die Vorhersagegenauigkeit der KI:{{ elif player.participant.treatment == "dev"}}das Profil des KI Entwicklers ansehen:{{ endif }} Klicken Sie dazu auf den entsprechenden Button.
+{{ endif }}
 
 <br><br>
 
-<table id="button_table2">
+{{ if player.participant.treatment == "both" }}
+<table id="button_table">
     <tr>
         <td>
             <div style="text-align:center" >
@@ -124,7 +117,7 @@ und das Profil der KI-Entwicklerin ansehen: klicken Sie dazu einfach auf den ent
                  <table>
                         <tr>
                             <td class="treatment_elem">Geschlecht:</td>
-                            <td style="padding-left:10px">männlich</td>
+                            <td style="padding-left:10px">{{ developer.gender }}</td>
                         </tr>
                  </table>
             </div>
@@ -134,7 +127,7 @@ und das Profil der KI-Entwicklerin ansehen: klicken Sie dazu einfach auf den ent
                  <table>
                         <tr>
                             <td class="treatment_elem">Migrationshintergrund:</td>
-                            <td style="padding-left:10px">nein</td>
+                            <td style="padding-left:10px">{{ developer.migrant }}</td>
                         </tr>
                  </table>
             </div>
@@ -144,7 +137,7 @@ und das Profil der KI-Entwicklerin ansehen: klicken Sie dazu einfach auf den ent
                  <table>
                         <tr>
                             <td class="treatment_elem">Politische Ansicht:</td>
-                            <td style="padding-left:10px">eher rechts</td>
+                            <td style="padding-left:10px">{{ developer.politics }}</td>
                         </tr>
                  </table>
             </div>
@@ -154,7 +147,7 @@ und das Profil der KI-Entwicklerin ansehen: klicken Sie dazu einfach auf den ent
                  <table>
                     <tr>
                         <td class="treatment_elem">
-                            Die <b>Genauigkeit</b> des Algorithmus: 80 %
+                            Die <b>Genauigkeit</b> des Algorithmus:{{ if player.participant.tasks_order }} 45%{{ else }} 40%{{ endif }}
                         </td>
                     </tr>
                  </table>
@@ -162,7 +155,92 @@ und das Profil der KI-Entwicklerin ansehen: klicken Sie dazu einfach auf den ent
         </td>
     </tr>
 </table>
-
+{{ endif }}
+{{ if player.participant.treatment == "dev"}}
+<table id="button_table">
+    <tr>
+        <td>
+            <div style="text-align:center" >
+                <button type="button"  class="btn btn-secondary" onclick="showDivAndCount('sex2')" style="margin:10px">
+                    KI Entwickler: Geschlecht
+                </button>
+            </div>
+        </td>
+        <td>
+            <div style="text-align:center" >
+                <button type="button"  class="btn btn-secondary" onclick="showDivAndCount('migration_bg2')" style="margin:10px">
+                    KI Entwickler: Migrationshintergrund
+                </button>
+            </div>
+        </td>
+        <td>
+            <div style="text-align:center" >
+                <button type="button"  class="btn btn-secondary" onclick="showDivAndCount('pol_views2')" style="margin:10px">
+                    KI Entwickler: Politische Ansichten
+                </button>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="sex2" style="display:none; border: 1px solid grey; padding: 10px">
+                 <table>
+                        <tr>
+                            <td class="treatment_elem">Geschlecht:</td>
+                            <td style="padding-left:10px">{{ developer.gender }}</td>
+                        </tr>
+                 </table>
+            </div>
+        </td>
+        <td>
+            <div id="migration_bg2" style="display:none; border: 1px solid grey; padding: 10px">
+                 <table>
+                        <tr>
+                            <td class="treatment_elem">Migrationshintergrund:</td>
+                            <td style="padding-left:10px">{{ developer.migrant }}</td>
+                        </tr>
+                 </table>
+            </div>
+        </td>
+        <td>
+            <div id="pol_views2" style="display:none; border: 1px solid grey; padding: 10px">
+                 <table>
+                        <tr>
+                            <td class="treatment_elem">Politische Ansicht:</td>
+                            <td style="padding-left:10px">{{ developer.politics }}</td>
+                        </tr>
+                 </table>
+            </div>
+        </td>
+    </tr>
+</table>
+{{ endif }}
+{{ if player.participant.treatment == "acc"}}
+<table id="button_table">
+    <tr>
+        <td>
+            <div style="text-align:center" >
+                <button type="button" class="btn btn-secondary" onclick="showDivAndCount('acc2')" style="margin:10px">
+                    KI: Vorhersagegenauigkeit
+                </button>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+             <div id="acc2" style="display:none; border: 1px solid grey; padding: 10px">
+                 <table>
+                    <tr>
+                        <td class="treatment_elem">
+                            Die <b>Genauigkeit</b> des Algorithmus:{{ if player.participant.tasks_order }} 45%{{ else }} 40%{{ endif }}
+                        </td>
+                    </tr>
+                 </table>
+             </div>
+        </td>
+    </tr>
+</table>
+{{ endif }}
 
 <input type="hidden" name="click_sex_open2" id="click_sex_open2" />
 {{ formfield_errors "click_sex_open2" }}

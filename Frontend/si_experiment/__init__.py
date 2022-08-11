@@ -212,16 +212,14 @@ class Player(BasePlayer):
     wtp = models.FloatField()
     wtp2 = models.FloatField()
 
-    # todo immobilien-expertise
-    # todo credit default expertise
     immo_exp = models.IntegerField(
         choices=[[0, "Keine Erfahrungen"], [1, "Wenige Erfahrungen"], [2, "Einige Erfahrungen"],
                  [3, "Viel Erfahrungen"]],
-        label="TBD: Bitte geben Sie an, wie gut Ihre Erfahrungen mit Immobilien sind.", blank=True)
+        label="Bitte geben Sie an, wie gut Ihre Erfahrungen mit Immobilien sind.", blank=True)
     credit_exp = models.IntegerField(
         choices=[[0, "Keine Erfahrungen"], [1, "Wenige Erfahrungen"], [2, "Einige Erfahrungen"],
                  [3, "Viel Erfahrungen"]],
-        label="TBD: Bitte geben Sie an, wie gut Ihre Erfahrungen mit Krediten sind.", blank=True)
+        label="Bitte geben Sie an, wie gut Ihre Erfahrungen mit Krediten sind.", blank=True)
 
     risk_aver = models.IntegerField(
         choices=[[0, "0 (völlig risikoscheu)"], [1, 1], [2, 2], [3, 3],
@@ -374,6 +372,10 @@ class Revision(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
+        # developer
+        developers = pd.read_csv("Data/dev_profiles.csv")
+        developer = dict(developers.iloc[player.participant.dev_row1])
+
         # real estate revision
         apartments = pd.read_csv("Data/immonet_data_selected.csv")
         apartments = apartments[['garden', 'basement', 'elevator', 'balcony',
@@ -391,7 +393,8 @@ class Revision(Page):
             borrowers[col] = borrowers[col].astype(int)
         borrower = dict(borrowers.iloc[player.participant.lender_row])
 
-        return dict(original_estimate=format_german_number(player.task1Estimate),
+        return dict(developer=developer,
+                    original_estimate=format_german_number(player.task1Estimate),
                     apartment=apartment,
                     borrower=borrower)
 
@@ -483,7 +486,13 @@ class PercAccuracy2(Page):
 
 class WTP2(Page):
     form_model = "player"
-    form_fields = ["wtp2"]
+
+    @staticmethod
+    def is_displayed(player: Player):
+        if player.participant.treatment == "none":
+            return False
+        else:
+            return True
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -504,6 +513,9 @@ class Revision2(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
+        # developer
+        developers = pd.read_csv("Data/dev_profiles.csv")
+        developer = dict(developers.iloc[player.participant.dev_row2])
         # real estate revision
         apartments = pd.read_csv("Data/immonet_data_selected.csv")
         apartments = apartments[['garden', 'basement', 'elevator', 'balcony',
@@ -521,7 +533,8 @@ class Revision2(Page):
             borrowers[col] = borrowers[col].astype(int)
         borrower = dict(borrowers.iloc[player.participant.lender_row])
 
-        return dict(original_estimate=format_german_number(player.task2Estimate),
+        return dict(developer=developer,
+                    original_estimate=format_german_number(player.task2Estimate),
                     apartment=apartment,
                     borrower=borrower)
 

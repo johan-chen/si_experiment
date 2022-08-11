@@ -17,7 +17,7 @@
 
     <i><b><u>Was muss ich tun?</u></b></i><br>
     Ihre Aufgabe ist es, zwei Schätzungen in verschiedenen Kontexten abzugeben.
-    Eine Aufgabe beschäftigt sich mit der Schätzung von Listenpreisen von Immobilien, während es bei der anderen Aufgabe um die Schätzung des Ausfallrisikos von Kreditbewerbern geht.
+    Eine Aufgabe beschäftigt sich mit der {{ if player.participant.tasks_order }}Schätzung von Listenpreisen von Immobilien{{ else }}Schätzung des Ausfallrisikos von Kreditbewerbern{{ endif }}, während es bei der anderen Aufgabe um die {{ if player.participant.tasks_order }}Schätzung des Ausfallrisikos von Kreditbewerbern{{ else }}Schätzung von Listenpreisen von Immobilien{{ endif }} geht.
     Beide Aufgaben müssen bearbeitet werden, um die Studie erfolgreich abzuschließen.
     <br>
     <br>
