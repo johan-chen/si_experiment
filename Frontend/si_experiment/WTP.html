@@ -84,6 +84,11 @@
         })
 </script>
 
+Im <b>nächsten Schritt</b> werden Sie die Möglichkeit erhalten, Ihre <b>Schätzung noch einmal anzupassen</b>.
+Dabei kann Ihnen die soeben <b>vorgestellte KI behilflich</b> sein. Beachten Sie, dass die angepasste Schätzung
+final ist und damit potenziell Ihre variable Vergütung bestimmt.
+
+<br>
 <br>
 
 {{ if player.participant.treatment == "both" }}
@@ -118,8 +123,8 @@
                                 <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order }} 40%{{ else }} 45%{{ endif }}. </b></td>
                             </tr>
                             <tr>
-                                <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen, beträgt weniger als 10%.
-                                    Sollten Sie also einfach raten, <b>kann die KI Ihre Chance mehr als vervierfachen</b>.</td>
+                                <td style="padding-left:10px"><br><b>Die KI kann Ihre Chance mehr als vervierfachen:</b>.
+                                Die Chance, aus Zufall den richtigen Schritt auf dem Schieberegler zu treffen, beträgt weniger als 10%.</td>
                             </tr>
                         </table>
                     </td>
@@ -141,8 +146,8 @@
                                 <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order }} 40%{{ else }} 45%{{ endif }}. </b></td>
                             </tr>
                             <tr>
-                                <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen, beträgt weniger als 10%.
-                                    Sollten Sie also einfach raten, <b>kann die KI Ihre Chance mehr als vervierfachen</b>.</td>
+                                <td style="padding-left:10px"><br><b>Die KI kann Ihre Chance mehr als vervierfachen</b>:
+                                Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen, beträgt weniger als 10%.</td>
                             </tr>
                         </table>
                     </td>
@@ -223,14 +228,15 @@
 <div>
     Sie erhalten jetzt <b>0,30€</b> als Budget, mit der Möglichkeit dieses <b>Geld einzusetzen</b>,
     um entweder die Wahrscheinlichkeit zu erhöhen, eine <b>KI-Vorhersage für
-    {{ if player.participant.tasks_order }}den Preis der Wohnung{{ else }}die Kreditausfallwahrscheinlichkeit{{ endif }}</b> zu sehen, oder um diese
-    Wahrscheinlichkeit zu verringern. Pro 10% Erhöhung oder Senkung der Wahrscheinlichkeit werden Ihrem Budget jeweils 0,10€ abgezogen.
+    {{ if player.participant.tasks_order }}den Preis der Wohnung{{ else }}das Kreditausfallrisiko{{ endif }}</b> zu sehen, oder um diese
+    Wahrscheinlichkeit zu verringern (Ausgangswahrscheinlichkeit ist 50%). Pro 10% Erhöhung oder Senkung der Wahrscheinlichkeit werden Ihrem Budget jeweils 0,10€ abgezogen.
+    <br><br>
     Wenn Sie zum Beispiel 80% wählen, besteht eine 80%ige Chance, dass Sie die KI-Vorhersage sehen.
     Wenn Sie 20% wählen, besteht eine 20%ige Chance, dass Sie die KI-Vorhersage sehen. In beiden Fällen bezahlen Sie 0,30€.
     <br><br>
     Nutzen Sie den Schieberegler, um zu bestimmen, mit welcher Wahrscheinlichkeit Sie die KI-Vorhersage
     sehen möchten.
-    <br><br>Am Ende erhalten Sie eine <b>variable Vergütung</b>, die von der <b>Genauigkeit Ihrer Preisschätzungen</b> abhängt.
+    <br><br>Am Ende erhalten Sie eine <b>variable Vergütung</b>, die von der <b>Genauigkeit Ihrer Schätzungen</b> abhängt.
 </div>
 <br>
 <div>

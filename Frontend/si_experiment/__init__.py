@@ -222,10 +222,10 @@ class Player(BasePlayer):
         label="Bitte geben Sie an, wie gut Ihre Erfahrungen mit Krediten sind.", blank=True)
 
     risk_aver = models.IntegerField(
-        choices=[[0, "0 (völlig risikoscheu)"], [1, 1], [2, 2], [3, 3],
+        choices=[[0, "0 (äußerst risikoscheu)"], [1, 1], [2, 2], [3, 3],
                  [4, 4], [5, 5], [6, 6], [7, 7],
-                 [8, 8], [9, 9], [10, "10 (sehr risikofreudig)"]],
-        label="Bitte geben Sie an, wie risikobereit oder risikoscheu Sie im Allgemeinen sind. Bitte nutzen Sie eine Skala von 0 bis 10, wobei 0 'völlig risikoscheu' und 10 'sehr risikofreudig' bedeutet.",
+                 [8, 8], [9, 9], [10, "10 (äußerst risikofreudig)"]],
+        label="Bitte geben Sie an, wie risikobereit oder risikoscheu Sie im Allgemeinen sind. Bitte nutzen Sie eine Skala von 0 bis 10, wobei 0 'äußerst risikoscheu' und 10 'äußerst risikofreudig' bedeutet.",
         blank=True)
 
     # Revision 1

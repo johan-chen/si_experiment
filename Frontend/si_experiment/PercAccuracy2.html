@@ -22,9 +22,9 @@
 </head>
 
 {{ if player.participant.tasks_order }}
-    Wir stellen Ihnen nun eine <b>Künstliche Intelligenz (KI)</b> vor, die darauf trainiert ist, die Kreditausfallwahrscheinlichkeit
+    Wir stellen Ihnen nun eine <b>Künstliche Intelligenz (KI)</b> vor, die darauf trainiert ist, das Kreditausfallrisiko
     von Kreditbewerbern vorherzusagen. Die KI nutzt die gleichen zehn Eigenschaften von
-    Kreditbewerbern, um die Ausfallwahrscheinlichkeit vorherzusagen.
+    Kreditbewerbern, um das Ausfallrisiko vorherzusagen.
 {{ else }}
 Wir stellen Ihnen nun eine <b>Künstliche Intelligenz (KI)</b> vor, die darauf trainiert ist, den Verkaufspreis von auf der
     Plattform gelisteten Wohnungen vorherzusagen. Die KI nutzt die gleichen zehn Eigenschaften von
@@ -37,7 +37,7 @@ Wir stellen Ihnen nun eine <b>Künstliche Intelligenz (KI)</b> vor, die darauf t
 Die KI basiert auf einem Random Forest, eine der einfachsten, aber auch eine der
 leistungsfähigsten KI-Methoden. Ein Random Forest nutzt eine Vielzahl unterschiedlicher Entscheidungsbäume,
 die jeweils einen einzelnen Wert vorhersagen (hier:
-{{ if player.participant.tasks_order }}die Kreditausfallwahrscheinlichkeit{{ else }}den Verkaufspreis{{ endif }}).
+{{ if player.participant.tasks_order }}das Kreditausfallrisiko{{ else }}den Verkaufspreis{{ endif }}).
 Die Mehrheitsvorhersage alle Entscheidungsbäume bestimmt dann die endgültige Vorhersage. Mit anderen Worten:
 Der Random Forest nutzt die "Weisheit der Menge".
 <br><br>

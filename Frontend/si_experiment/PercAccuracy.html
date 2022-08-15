@@ -22,13 +22,15 @@
 </head>
 
 {{ if player.participant.tasks_order }}
-    Wir stellen Ihnen nun eine <b>Künstliche Intelligenz (KI)</b> vor, die darauf trainiert ist, den Verkaufspreis von auf der
+    Wir stellen Ihnen nun eine <b>Künstliche Intelligenz (KI)</b> vor, die darauf trainiert ist, die gleiche Aufgabe wie
+    Sie zu lösen -- nämlich den Verkaufspreis von auf der
     Plattform gelisteten Wohnungen vorherzusagen. Die KI nutzt die gleichen zehn Eigenschaften von
     Wohnungen, um den angebotenen Preis vorherzusagen.
 {{ else }}
-    Wir stellen Ihnen nun eine <b>Künstliche Intelligenz (KI)</b> vor, die darauf trainiert ist, die Kreditausfallwahrscheinlichkeit
+    Wir stellen Ihnen nun eine <b>Künstliche Intelligenz (KI)</b> vor, die darauf trainiert ist, die gleiche Aufgabe wie
+    Sie zu lösen -- das Kreditausfallrisiko
     von Kreditbewerbern vorherzusagen. Die KI nutzt die gleichen zehn Eigenschaften von
-    Kreditbewerbern, um die Ausfallwahrscheinlichkeit vorherzusagen.
+    Kreditbewerbern, um das Ausfallrisiko vorherzusagen.
 {{ endif }}
 
 
@@ -36,21 +38,21 @@
 Die KI basiert auf einem Random Forest, eine der einfachsten, aber auch eine der
 leistungsfähigsten KI-Methoden. Ein Random Forest nutzt eine Vielzahl unterschiedlicher Entscheidungsbäume,
 die jeweils einen einzelnen Wert vorhersagen (hier:{{ if player.participant.tasks_order }} den Verkaufspreis{{ else }}
-die Kreditausfallwahrscheinlichkeit{{ endif }}).
+das Kreditausfallrisiko{{ endif }}).
 Die Mehrheitsvorhersage alle Entscheidungsbäume bestimmt dann die endgültige Vorhersage. Mit anderen Worten:
 Der Random Forest nutzt die "Weisheit der Menge".
 <br><br>
 
 {{ if player.participant.tasks_order }}
-Die <b>Genauigkeit der KI</b> bemisst sich daran, <b>wie häufig der echte Verkaufspreis der Wohnung vorhergesagt wird</b>.
-    Die KI kann dabei zwischen den selben 11 Werten auswählen, die auch Ihnen zur Auswahl standen.
+    Wir möchten gerne wissen, für wie genau Sie die KI halten. Die <b>Genauigkeit der KI</b> bemisst sich daran, <b>wie häufig der echte Verkaufspreis der Wohnung vorhergesagt wird</b>.
+    Die KI kann dabei zwischen den selben 11 Schritten des Schiebereglers auswählen, die auch Ihnen zur Auswahl standen.
     100% Genauigkeit bedeutet, dass die KI immer den richtigen Wert vorhersagt, während 0% bedeutet, dass sie nie den richtigen Wert vorhersagt.
     Zum Vergleich: Falls der Wert einfach zufällig ausgewählt würde, wäre die Genauigkeit 1/11 und somit weniger als 10%.
     <br><br>
     Wie hoch schätzen Sie die Genauigkeit der KI ein?
 {{ else }}
-Die <b>Genauigkeit der KI</b> bemisst sich daran, <b>wie häufig das korrekte Kreditausfallrisiko vorhergesagt</b> wird.
-    Die KI kann dabei zwischen den selben 11 Werten auswählen, die auch Ihnen zur Auswahl standen.
+    Wir möchten gerne wissen, für wie genau Sie die KI halten. Die <b>Genauigkeit der KI</b> bemisst sich daran, <b>wie häufig das korrekte Kreditausfallrisiko vorhergesagt</b> wird.
+    Die KI kann dabei zwischen den selben 11 Schritten des Schiebereglers auswählen, die auch Ihnen zur Auswahl standen.
     100% Genauigkeit bedeutet, dass die KI immer den richtigen Wert vorhersagt, während 0% bedeutet, dass sie nie den richtigen Wert vorhersagt.
     Zum Vergleich: Falls der Wert einfach zufällig ausgewählt würde, wäre die Genauigkeit 1/11 und somit weniger als 10%.
     <br><br>

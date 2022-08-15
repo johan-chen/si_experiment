@@ -73,7 +73,10 @@
 In diesem Schritt erhalten Sie die <b>Möglichkeit</b>, Ihre abgegebene <b>{{ if player.participant.tasks_order }} Preisschätzung {{ else }} Schätzung der Ausfallwahrscheinlichkeit {{ endif }}
     noch einmal anzupassen</b>. Dazu zeigen wir Ihnen erneut die Eigenschaften
 {{ if player.participant.tasks_order }} der Immobilie {{ else }} des Kreditbewerbers {{ endif }}
-sowie die Vorhersage der KI. {{ if player.participant.treatment != "none" }}Außerdem können Sie sich noch einmal -- falls gewünscht -- {{ if player.participant.treatment == "both" }}die Vorhersagegenauigkeit der KI
+sowie die Vorhersage der KI. Beachten Sie, dass diese <b>angepasste Schätzung Ihre vorherige Schätzung überschreibt</b>,
+es Ihre <b>letzte Möglichkeit zur Anpassung</b> ist und somit auch <b>für Ihre variable Vergütung relevant</b> ist.
+
+{{ if player.participant.treatment != "none" }}Außerdem können Sie sich noch einmal&nbsp;&ndash; falls gewünscht&nbsp;&ndash; {{ if player.participant.treatment == "both" }}die Vorhersagegenauigkeit der KI
 und das Profil des KI Entwicklers ansehen:{{ elif player.participant.treatment == "acc" }}die Vorhersagegenauigkeit der KI:{{ elif player.participant.treatment == "dev"}}das Profil des KI Entwicklers ansehen:{{ endif }} Klicken Sie dazu auf den entsprechenden Button.
 {{ endif }}
 
