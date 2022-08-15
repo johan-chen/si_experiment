@@ -40,15 +40,15 @@
                         <table>
                             <tr>
                                 <td><ul><li>Geschlecht:</li></ul></td>
-                                <td style="padding-left:10px">{{ developer.gender }}</td>
+                                <td style="padding-left:10px"><b>{{ developer.gender }}</b></td>
                             </tr>
                             <tr>
                                 <td><ul><li>Migrationshintergrund:</li></ul></td>
-                                <td style="padding-left:10px">{{ developer.migrant }}</td>
+                                <td style="padding-left:10px"><b>{{ developer.migrant }}</b></td>
                             </tr>
                             <tr>
                                 <td><ul><li>Politische Ansicht:</li></ul></td>
-                                <td style="padding-left:10px">{{ developer.politics }}</td>
+                                <td style="padding-left:10px"><b>{{ developer.politics }}</b></td>
                             </tr>
                         </table>
                     </td>
@@ -91,15 +91,15 @@
                         <table>
                             <tr>
                                 <td><ul><li>Geschlecht:</li></ul></td>
-                                <td style="padding-left:10px">{{ developer.gender }}</td>
+                                <td style="padding-left:10px"><b>{{ developer.gender }}</b></td>
                             </tr>
                             <tr>
                                 <td><ul><li>Migrationshintergrund:</li></ul></td>
-                                <td style="padding-left:10px">{{ developer.migrant }}</td>
+                                <td style="padding-left:10px"><b>{{ developer.migrant }}</b></td>
                             </tr>
                             <tr>
                                 <td><ul><li>Politische Ansicht:</li></ul></td>
-                                <td style="padding-left:10px">{{ developer.politics }}</td>
+                                <td style="padding-left:10px"><b>{{ developer.politics }}</b></td>
                             </tr>
                         </table>
                     </td>
@@ -108,7 +108,6 @@
         </div>
     {{ endif }}
     <br>
-
 
 {{ elif player.participant.treatment == "dev" }}
 <div class="treatment">
@@ -119,15 +118,15 @@
                 <table>
                     <tr>
                         <td><ul><li>Geschlecht:</li></ul></td>
-                        <td style="padding-left:10px">{{ developer.gender }}</td>
+                        <td style="padding-left:10px"><b>{{ developer.gender }}</b></td>
                     </tr>
                     <tr>
                         <td><ul><li>Migrationshintergrund:</li></ul></td>
-                        <td style="padding-left:10px">{{ developer.migrant }}</td>
+                        <td style="padding-left:10px"><b>{{ developer.migrant }}</b></td>
                     </tr>
                     <tr>
                         <td><ul><li>Politische Ansicht:</li></ul></td>
-                        <td style="padding-left:10px">{{ developer.politics }}</td>
+                        <td style="padding-left:10px"><b>{{ developer.politics }}</b></td>
                     </tr>
                 </table>
             </td>
@@ -144,11 +143,11 @@
             <td class="treatment_elem">
                 <table>
                     <tr>
-                        <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order }} 40%{{ else }} 45%{{ endif }}. </b></td>
+                        <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order }} 45%{{ else }} 40%{{ endif }}. </b></td>
                     </tr>
                     <tr>
-                        <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen, beträgt weniger als 10%. Sollten Sie
-                            also einfach raten, <b>kann die KI Ihre Chance mehr als vervierfachen</b>.</td>
+                        <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen,
+                            beträgt weniger als 10%. Sollten Sie also einfach raten, <b>kann die KI Ihre Chance mehr als vervierfachen</b>.</td>
                     </tr>
                 </table>
             </td>
@@ -159,6 +158,7 @@
     </table>
 </div>
 <br>
+
 {{ endif }}
 
 {{ if player.participant.treatment in ["both", "dev"] }}

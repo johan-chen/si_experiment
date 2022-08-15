@@ -22,11 +22,13 @@
 </head>
 
 {{ if player.participant.tasks_order }}
-    Wir stellen Ihnen nun eine <b>Künstliche Intelligenz (KI)</b> vor, die darauf trainiert ist, das Kreditausfallrisiko
+    Wir stellen Ihnen nun eine <b>neue Künstliche Intelligenz (KI)</b>
+{{ if player.participant.treatment == "both" || player.participant.treatment == "dev" }}&nbsp;&ndash; von einer/s <b>anderen Entwickler/in</b> gebaut &nbsp;&ndash;{{ endif }} vor, die darauf trainiert ist, die Kreditausfallrisiko
     von Kreditbewerbern vorherzusagen. Die KI nutzt die gleichen zehn Eigenschaften von
     Kreditbewerbern, um das Ausfallrisiko vorherzusagen.
 {{ else }}
-Wir stellen Ihnen nun eine <b>Künstliche Intelligenz (KI)</b> vor, die darauf trainiert ist, den Verkaufspreis von auf der
+    Wir stellen Ihnen nun eine <b>neue Künstliche Intelligenz (KI)</b>
+    {{ if player.participant.treatment == "both" || player.participant.treatment == "dev" }}&nbsp;&ndash; von einer/s <b>anderen Entwickler/in</b> gebaut &nbsp;&ndash;{{ endif }} vor, die darauf trainiert ist, den Verkaufspreis von auf der
     Plattform gelisteten Wohnungen vorherzusagen. Die KI nutzt die gleichen zehn Eigenschaften von
     Wohnungen, um den angebotenen Preis vorherzusagen.
 

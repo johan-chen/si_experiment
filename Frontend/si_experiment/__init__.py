@@ -130,9 +130,9 @@ class Player(BasePlayer):
     age = models.IntegerField(label="Bitte geben Sie Ihr Alter an.", min=18, max=99, blank=True)
     sex = models.IntegerField(choices=[[0, "Divers"], [1, "Weiblich"], [2, "Männlich"]],
                               widget=widgets.RadioSelect, label="Bitte geben Sie Ihr Geschlecht an.", blank=True)
-    nationality = models.BooleanField(choices=[[True, "Deutsch"], [False, "Nichtdeutsch"]],
-                                      widget=widgets.RadioSelectHorizontal,
-                                      label="Bitte geben Sie an, ob Ihre Nationalität Deutsch ist.", blank=True)
+    # nationality = models.BooleanField(choices=[[True, "Deutsch"], [False, "Nichtdeutsch"]],
+    #                                   widget=widgets.RadioSelectHorizontal,
+    #                                   label="Bitte geben Sie an, ob Ihre Nationalität Deutsch ist.", blank=True)
     migration_bg = models.BooleanField(choices=[[True, "Ja, ich habe einen Migrationshintergrund"],
                                                 [False, "Nein, ich habe keinen Migrationshintergrund"]],
                                        widget=widgets.RadioSelect,
@@ -213,13 +213,13 @@ class Player(BasePlayer):
     wtp2 = models.FloatField()
 
     immo_exp = models.IntegerField(
-        choices=[[0, "Keine Erfahrungen"], [1, "Wenige Erfahrungen"], [2, "Einige Erfahrungen"],
-                 [3, "Viel Erfahrungen"]],
-        label="Bitte geben Sie an, wie gut Ihre Erfahrungen mit Immobilien sind.", blank=True)
+        choices=[[0, "Keine Kenntnisse"], [1, "Wenige Kenntnisse"], [2, "Einige Kenntnisse"],
+                 [3, "Viel Kenntnisse"]],
+        label="Wie würden Sie Ihre Kenntnisse in der Bewertung von Immobilien einschätzen.", blank=True)
     credit_exp = models.IntegerField(
-        choices=[[0, "Keine Erfahrungen"], [1, "Wenige Erfahrungen"], [2, "Einige Erfahrungen"],
-                 [3, "Viel Erfahrungen"]],
-        label="Bitte geben Sie an, wie gut Ihre Erfahrungen mit Krediten sind.", blank=True)
+        choices=[[0, "Keine Kenntnisse"], [1, "Wenige Kenntnisse"], [2, "Einige Kenntnisse"],
+                 [3, "Viel Kenntnisse"]],
+        label="Wie würden Sie Ihre Kenntnisse in der Bewertung von Kreditwürdigkeit einschätzen.", blank=True)
 
     risk_aver = models.IntegerField(
         choices=[[0, "0 (äußerst risikoscheu)"], [1, 1], [2, 2], [3, 3],
@@ -305,15 +305,15 @@ class PreQuestions(Page):
     @staticmethod
     def get_form_fields(player: Player):
         form_fields = ["importance_sex", "importance_migration_bg", "importance_pol_views",
-                       "age", "sex", "nationality", "migration_bg", "job_status", "immo_exp", "credit_exp",
+                       "age", "sex", "migration_bg", "job_status", "immo_exp", "credit_exp",
                        "risk_aver", "pol_views", "soc_norms"]
         form_fields += player.participant.pers_inno_order
         return form_fields
 
     @staticmethod
     def vars_for_template(player: Player):
-        # removed "sex", "migration_bg"
-        demo = ["age", "nationality", "job_status", "immo_exp", "credit_exp", "risk_aver", ]
+        # removed "sex", "migration_bg" "nationality",
+        demo = ["age",  "job_status", "immo_exp", "credit_exp", "risk_aver", ]
         return dict(
             demo=demo,
         )

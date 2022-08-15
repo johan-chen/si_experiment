@@ -44,15 +44,15 @@
 <!-- importance table -->
 <table class="importance-table">
     <tr>
-        <th>Aufgabe: Beantworten Sie bitte folgende Fragen. </th>
+        <th>Beantworten Sie bitte folgende Fragen. </th>
         <th>Antwortmöglichkeit</th>
-        <th>Aufgabe: Geben Sie bitte an, wie wichtig Ihnen persönlich die entsprechenden Faktoren sind.
+        <th>Geben Sie bitte an, wie wichtig Ihnen die entsprechenden Faktoren für Ihre Identität sind.
         <p style="font-weight: normal">Legende: 1 (nicht wichtig), 5 (wichtig)</p></th>
     </tr>
     <tr>
         <td style="vertical-align: middle">{{ form.sex.label }}</td>
         <td style="vertical-align: middle">{{ form.sex }}</td>
-        <td style="width:270px">{{ form.importance_sex }}</td>
+        <td style="width:280px">{{ form.importance_sex }}</td>
     </tr>
     <tr>
         <td style="vertical-align: middle">{{ form.migration_bg.label }}</td>
@@ -72,7 +72,7 @@
 <br>
 
 <p>
-    <b>Aufgabe:</b> Bitte geben Sie Ihre persönliche Einstellung zu folgenden Aussagen an.
+    Bitte geben Sie Ihre persönliche Einstellung zu folgenden Aussagen an.
 </p>
 <table class="likert">
     <col span="1" class="wide">
@@ -93,7 +93,7 @@
     </tr>
     {{ for field in form }}
 <!--    counter starts at 1 / skip non-Likert formfields -->
-    {{ if forloop.counter > 13 }}
+    {{ if forloop.counter > 11 }}
     <tr>
         <td class="likert_label">{{ field.label }}</td>
         {{ for choice in field }}
