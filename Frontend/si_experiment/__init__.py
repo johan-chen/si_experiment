@@ -214,11 +214,11 @@ class Player(BasePlayer):
 
     immo_exp = models.IntegerField(
         choices=[[0, "Keine Kenntnisse"], [1, "Wenige Kenntnisse"], [2, "Einige Kenntnisse"],
-                 [3, "Viel Kenntnisse"]],
+                 [3, "Viele Kenntnisse"]],
         label="Wie würden Sie Ihre Kenntnisse in der Bewertung von Immobilien einschätzen.", blank=True)
     credit_exp = models.IntegerField(
         choices=[[0, "Keine Kenntnisse"], [1, "Wenige Kenntnisse"], [2, "Einige Kenntnisse"],
-                 [3, "Viel Kenntnisse"]],
+                 [3, "Viele Kenntnisse"]],
         label="Wie würden Sie Ihre Kenntnisse in der Bewertung von Kreditwürdigkeit einschätzen.", blank=True)
 
     risk_aver = models.IntegerField(

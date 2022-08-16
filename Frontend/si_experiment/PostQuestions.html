@@ -31,24 +31,24 @@
         <div class="treatment">
             <table>
                 <tr>
-                    <td style="width:15%;vertical-align: top"><img src="{{ static 'global/expert.png' }}" style="width: 20%" /></td>
+                    <td style="width:15%;vertical-align: top;"><img src="{{ static 'global/expert.png' }}" style="width: 20%" /></td>
                     <td style="width:15%;vertical-align: top"><img src="{{ static 'global/KI.png' }}" style="width: 30%" /></td>
                 </tr>
                 <tr>
                     <td class="treatment_elem">
-                        Der <b>Entwickler</b> der KI besitzt folgende Eigenschaften:<br><br>
+                        Der <b>Entwickler</b> der KI des Forscherteams besitzt folgende Eigenschaften:<br><br>
                         <table>
                             <tr>
                                 <td><ul><li>Geschlecht:</li></ul></td>
-                                <td style="padding-left:10px">{{ developer.gender }}</td>
+                                <td style="padding-left:10px"><b>{{ developer.gender }}</b></td>
                             </tr>
                             <tr>
                                 <td><ul><li>Migrationshintergrund:</li></ul></td>
-                                <td style="padding-left:10px">{{ developer.migrant }}</td>
+                                <td style="padding-left:10px"><b>{{ developer.migrant }}</b></td>
                             </tr>
                             <tr>
                                 <td><ul><li>Politische Ansicht:</li></ul></td>
-                                <td style="padding-left:10px">{{ developer.politics }}</td>
+                                <td style="padding-left:10px"><b>{{ developer.politics }}</b></td>
                             </tr>
                         </table>
                     </td>
@@ -58,8 +58,8 @@
                                 <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order }} 40%{{ else }} 45%{{ endif }}. </b></td>
                             </tr>
                             <tr>
-                                <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen, beträgt weniger als 10%.
-                                    Sollten Sie also einfach raten, <b>kann die KI Ihre Chance mehr als vervierfachen</b>.</td>
+                                <td style="padding-left:10px"><br><b>Die KI kann Ihre Chance mehr als vervierfachen:</b>.
+                                Die Chance, aus Zufall den richtigen Schritt auf dem Schieberegler zu treffen, beträgt weniger als 10%.</td>
                             </tr>
                         </table>
                     </td>
@@ -81,25 +81,25 @@
                                 <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order }} 40%{{ else }} 45%{{ endif }}. </b></td>
                             </tr>
                             <tr>
-                                <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen, beträgt weniger als 10%.
-                                    Sollten Sie also einfach raten, <b>kann die KI Ihre Chance mehr als vervierfachen</b>.</td>
+                                <td style="padding-left:10px"><br><b>Die KI kann Ihre Chance mehr als vervierfachen</b>:
+                                Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen, beträgt weniger als 10%.</td>
                             </tr>
                         </table>
                     </td>
                     <td class="treatment_elem">
-                        Der <b>Entwickler</b> der KI besitzt folgende Eigenschaften:<br><br>
+                        Der <b>Entwickler</b> der KI des Forscherteams besitzt folgende Eigenschaften:<br><br>
                         <table>
                             <tr>
                                 <td><ul><li>Geschlecht:</li></ul></td>
-                                <td style="padding-left:10px">{{ developer.gender }}</td>
+                                <td style="padding-left:10px"><b>{{ developer.gender }}</b></td>
                             </tr>
                             <tr>
                                 <td><ul><li>Migrationshintergrund:</li></ul></td>
-                                <td style="padding-left:10px">{{ developer.migrant }}</td>
+                                <td style="padding-left:10px"><b>{{ developer.migrant }}</b></td>
                             </tr>
                             <tr>
                                 <td><ul><li>Politische Ansicht:</li></ul></td>
-                                <td style="padding-left:10px">{{ developer.politics }}</td>
+                                <td style="padding-left:10px"><b>{{ developer.politics }}</b></td>
                             </tr>
                         </table>
                     </td>
@@ -109,25 +109,24 @@
     {{ endif }}
     <br>
 
-
 {{ elif player.participant.treatment == "dev" }}
 <div class="treatment">
     <table>
         <tr>
             <td class="treatment_elem">
-                Der <b>Entwickler</b> der KI besitzt folgende Eigenschaften:
+                Der <b>Entwickler</b> der KI des Forscherteams besitzt folgende Eigenschaften:
                 <table>
                     <tr>
                         <td><ul><li>Geschlecht:</li></ul></td>
-                        <td style="padding-left:10px">{{ developer.gender }}</td>
+                        <td style="padding-left:10px"><b>{{ developer.gender }}</b></td>
                     </tr>
                     <tr>
                         <td><ul><li>Migrationshintergrund:</li></ul></td>
-                        <td style="padding-left:10px">{{ developer.migrant }}</td>
+                        <td style="padding-left:10px"><b>{{ developer.migrant }}</b></td>
                     </tr>
                     <tr>
                         <td><ul><li>Politische Ansicht:</li></ul></td>
-                        <td style="padding-left:10px">{{ developer.politics }}</td>
+                        <td style="padding-left:10px"><b>{{ developer.politics }}</b></td>
                     </tr>
                 </table>
             </td>
@@ -147,8 +146,8 @@
                         <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order }} 40%{{ else }} 45%{{ endif }}. </b></td>
                     </tr>
                     <tr>
-                        <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen, beträgt weniger als 10%. Sollten Sie
-                            also einfach raten, <b>kann die KI Ihre Chance mehr als vervierfachen</b>.</td>
+                        <td style="padding-left:10px"><br>Die Chance, aus Zufall den richtigen Wert auf dem Schieberegler zu treffen,
+                            beträgt weniger als 10%. Sollten Sie also einfach raten, <b>kann die KI Ihre Chance mehr als vervierfachen</b>.</td>
                     </tr>
                 </table>
             </td>
@@ -159,6 +158,7 @@
     </table>
 </div>
 <br>
+
 {{ endif }}
 
 {{ if player.participant.treatment in ["both", "dev"] }}
