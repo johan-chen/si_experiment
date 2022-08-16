@@ -14,10 +14,43 @@
     KI zur Vorhersage
     {{ endif }}
 {{ endblock }}
+<head>
+        <script>
+        var c_open = {"sex2": 0, "migration_bg2": 0, "pol_views2": 0, "acc2": 0};
+        var c_close = {"sex2": 0, "migration_bg2": 0, "pol_views2": 0, "acc2": 0};
 
+
+        function showDivAndCount(my_button){
+            var div = document.getElementById(my_button);
+
+            if (div.style.display == "none") {
+                div.style.display = "block";
+                c_open[my_button] += 1;
+                document.getElementById("click_" + my_button + "_open2").value = c_open[my_button];
+            } else {
+                div.style.display = "none";
+                c_close[my_button] += 1;
+                document.getElementById("click_" + my_button + "_close2").value = c_close[my_button];
+            }
+        }
+
+
+        $(document).ready(function() {
+            // count clicks
+            document.getElementById("click_sex_open2").value = c_open["sex2"];
+            document.getElementById("click_sex_close2").value = c_close["sex2"];
+            document.getElementById("click_migration_bg_open2").value = c_open["migration_bg2"];
+            document.getElementById("click_migration_bg_close2").value = c_close["migration_bg2"];
+            document.getElementById("click_pol_views_open2").value = c_open["pol_views2"];
+            document.getElementById("click_pol_views_close2").value = c_close["pol_views2"];
+            document.getElementById("click_acc_open2").value = c_open["acc2"];
+            document.getElementById("click_acc_close2").value = c_close["acc2"];
+        })
+    </script>
+</head>
 {{ block content }}
 <br>
-
+{{ include "si_experiment/Treatment_t2.html" }}
 {{ if player.participant.treatment == "both" }}
     {{ if player.participant.info_first == "dev" }}
         <div class="treatment">

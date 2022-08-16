@@ -68,7 +68,7 @@ def creating_session(subsession):
 
         # treatment and question/task order randomization
         treatments = ["none", "dev", "acc", "both"]
-        pers_inno = ["pers_inno1", "pers_inno2", "pers_inno3", "pers_inno4"]
+        pers_inno = ["pers_inno1", "pers_inno2", "pers_inno3"]
         post_questions_t1 = [
             "anthro_t1_1", "anthro_t1_2", "anthro_t1_3",
             "cog_trust_t1_1", "cog_trust_t1_2", "cog_trust_t1_3",
@@ -111,9 +111,9 @@ def creating_session(subsession):
         # post question task adaption
         if tasks_order:
             t1_str = "Immobilienpreise"
-            t2_str = "Kreditausfallwahrscheinlichkeiten"
+            t2_str = "Kreditausfallrisiko"
         else:
-            t1_str = "Kreditausfallwahrscheinlichkeiten"
+            t1_str = "Kreditausfallrisiko"
             t2_str = "Immobilienpreise"
         participant.t1_str = t1_str
         participant.t2_str = t2_str
@@ -171,30 +171,30 @@ class Player(BasePlayer):
     soc_distance_rank_t1_2 = make_rank_field("2. Platz")
     soc_distance_rank_t1_3 = make_rank_field("3. Platz")
 
-    soc_distance_t1_1 = make_field("Der Entwickler könnte ähnliche Ansichten haben wie ich.")
-    soc_distance_t1_2 = make_field("Der Entwickler könnte ähnliche Werte haben wie ich.")
-    soc_distance_t1_3 = make_field("Ich könnte zur gleichen Gruppe gehören wie der Entwickler.")
-    soc_distance_t1_4 = make_field("Ich bin eine ähnlicher Mensch wie der Entwickler.")
+    soc_distance_t1_1 = make_field("Der/Die Entwickler/in könnte ähnliche Ansichten haben wie ich.")
+    soc_distance_t1_2 = make_field("Der/Die Entwickler/in könnte ähnliche Werte haben wie ich.")
+    soc_distance_t1_3 = make_field("Ich könnte zur gleichen Gruppe gehören wie der/die Entwickler/in.")
+    soc_distance_t1_4 = make_field("Ich bin eine ähnlicher Mensch wie der/die Entwickler/in.")
 
     # social distance var -- task 2
     soc_distance_rank_t2_1 = make_rank_field("1. Platz")
     soc_distance_rank_t2_2 = make_rank_field("2. Platz")
     soc_distance_rank_t2_3 = make_rank_field("3. Platz")
 
-    soc_distance_t2_1 = make_field("Der Entwickler könnte ähnliche Ansichten haben wie ich.")
-    soc_distance_t2_2 = make_field("Der Entwickler könnte ähnliche Werte haben wie ich.")
-    soc_distance_t2_3 = make_field("Ich könnte zur gleichen Gruppe gehören wie der Entwickler.")
-    soc_distance_t2_4 = make_field("Ich bin eine ähnlicher Mensch wie der Entwickler.")
+    soc_distance_t2_1 = make_field("Der/Die Entwickler/in könnte ähnliche Ansichten haben wie ich.")
+    soc_distance_t2_2 = make_field("Der/Die Entwickler/in könnte ähnliche Werte haben wie ich.")
+    soc_distance_t2_3 = make_field("Ich könnte zur gleichen Gruppe gehören wie der/die Entwickler/in.")
+    soc_distance_t2_4 = make_field("Ich bin eine ähnlicher Mensch wie der/die Entwickler/in.")
 
     soc_norms = make_field("Ich tue immer mein Bestes, um gesellschaftliche Normen zu befolgen.")
 
     # tech-savyness
+    # pers_inno1 = make_field(
+    #     "Wenn ich von einer neuen Technologie hören würde, würde ich nach Möglichkeiten suchen, damit zu experimentieren.")
     pers_inno1 = make_field(
-        "Wenn ich von einer neuen Technologie hören würde, würde ich nach Möglichkeiten suchen, damit zu experimentieren.")
-    pers_inno2 = make_field(
         "Unter meinen Kolleg*innen bzw. Kommiliton*innen bin ich in der Regel die/der erste, die/der neue Technologie ausprobiert.")
-    pers_inno3 = make_field("Im Allgemeinen zögere ich davor, neue Technologie auszuprobieren.")
-    pers_inno4 = make_field("Ich experimentiere gerne mit neuer Technologie.")
+    pers_inno2 = make_field("Im Allgemeinen zögere ich davor, neue Technologie auszuprobieren.")
+    pers_inno3 = make_field("Ich experimentiere gerne mit neuer Technologie.")
 
     # task1
     task1Estimate = models.FloatField()
@@ -231,18 +231,10 @@ class Player(BasePlayer):
     # Revision 1
     revision = models.FloatField()
     confRevision = make_field("Ich bin von meiner Schätzung überzeugt.")
-    click_sex_open, click_sex_close = models.IntegerField(), models.IntegerField()
-    click_migration_bg_open, click_migration_bg_close = models.IntegerField(), models.IntegerField()
-    click_pol_views_open, click_pol_views_close = models.IntegerField(), models.IntegerField()
-    click_acc_open, click_acc_close = models.IntegerField(), models.IntegerField()
 
     # Revision 2
     revision2 = models.FloatField()
     confRevision2 = make_field("Ich bin von meiner Schätzung überzeugt.")
-    click_sex_open2, click_sex_close2 = models.IntegerField(), models.IntegerField()
-    click_migration_bg_open2, click_migration_bg_close2 = models.IntegerField(), models.IntegerField()
-    click_pol_views_open2, click_pol_views_close2 = models.IntegerField(), models.IntegerField()
-    click_acc_open2, click_acc_close2 = models.IntegerField(), models.IntegerField()
 
     # TASK 2 post questions
 
@@ -348,6 +340,14 @@ class PercAccuracy(Page):
     form_model = 'player'
     form_fields = ["perc_acc"]
 
+    @staticmethod
+    def vars_for_template(player: Player):
+        # developer
+        developers = pd.read_csv("Data/dev_profiles.csv")
+        developer = dict(developers.iloc[player.participant.dev_row1])
+
+        return dict(developer=developer)
+
 
 class WTP(Page):
     form_model = "player"
@@ -364,11 +364,7 @@ class WTP(Page):
 
 class Revision(Page):
     form_model = 'player'
-    form_fields = ["revision", "confRevision",
-                   "click_sex_open", "click_sex_close",
-                   "click_migration_bg_open", "click_migration_bg_close",
-                   "click_pol_views_open", "click_pol_views_close",
-                   "click_acc_open", "click_acc_close"]
+    form_fields = ["revision", "confRevision"]
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -483,17 +479,6 @@ class PercAccuracy2(Page):
     form_model = 'player'
     form_fields = ["perc_acc2"]
 
-
-class WTP2(Page):
-    form_model = "player"
-
-    @staticmethod
-    def is_displayed(player: Player):
-        if player.participant.treatment == "none":
-            return False
-        else:
-            return True
-
     @staticmethod
     def vars_for_template(player: Player):
         # developer
@@ -502,14 +487,28 @@ class WTP2(Page):
 
         return dict(developer=developer)
 
+# class WTP2(Page):
+#     form_model = "player"
+#
+#     @staticmethod
+#     def is_displayed(player: Player):
+#         if player.participant.treatment == "none":
+#             return False
+#         else:
+#             return True
+#
+#     @staticmethod
+#     def vars_for_template(player: Player):
+#         # developer
+#         developers = pd.read_csv("Data/dev_profiles.csv")
+#         developer = dict(developers.iloc[player.participant.dev_row2])
+#
+#         return dict(developer=developer)
+
 
 class Revision2(Page):
     form_model = 'player'
-    form_fields = ["revision2", "confRevision2",
-                   "click_sex_open2", "click_sex_close2",
-                   "click_migration_bg_open2", "click_migration_bg_close2",
-                   "click_pol_views_open2", "click_pol_views_close2",
-                   "click_acc_open2", "click_acc_close2"]
+    form_fields = ["revision2", "confRevision2"]
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -570,6 +569,63 @@ class PostQuestions2(Page):
     #     if len(set(choices)) != len(choices):
     #         return "Sie können nicht dasselbe Element mehrfach auswählen."
 
+class SocDist1(Page):
+    form_model = "player"
+
+    @staticmethod
+    def get_form_fields(player: Player):
+        form_fields = ["soc_distance_t1_1", "soc_distance_t1_2", "soc_distance_t1_3", "soc_distance_t1_4",
+                       "soc_distance_rank_t1_1", "soc_distance_rank_t1_2", "soc_distance_rank_t1_3"]
+        return form_fields
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        # developer
+        developers = pd.read_csv("Data/dev_profiles.csv")
+        developer = dict(developers.iloc[player.participant.dev_row1])
+
+        # rank q
+        ranks = ["soc_distance_rank_t1_1", "soc_distance_rank_t1_2", "soc_distance_rank_t1_3"]
+        return dict(
+            ranks=ranks,
+            developer=developer
+        )
+
+    @staticmethod
+    def is_displayed(player: Player):
+        if player.participant.treatment in ["none", "acc"]:
+            return True
+        else:
+            return False
+
+class SocDist2(Page):
+    form_model = "player"
+
+    @staticmethod
+    def get_form_fields(player: Player):
+        form_fields = ["soc_distance_t2_1", "soc_distance_t2_2", "soc_distance_t2_3", "soc_distance_t2_4",
+                       "soc_distance_rank_t2_1", "soc_distance_rank_t2_2", "soc_distance_rank_t2_3"]
+        return form_fields
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        # developer
+        developers = pd.read_csv("Data/dev_profiles.csv")
+        developer = dict(developers.iloc[player.participant.dev_row2])
+
+        # rank q
+        ranks = ["soc_distance_rank_t2_1", "soc_distance_rank_t2_2", "soc_distance_rank_t2_3"]
+        return dict(
+            ranks=ranks,
+            developer=developer
+        )
+
+    @staticmethod
+    def is_displayed(player: Player):
+        if player.participant.treatment in ["none", "acc"]:
+            return True
+        else:
+            return False
 
 class End(Page):
     pass
@@ -585,7 +641,8 @@ page_sequence = [Intro,
                  Stage2,
                  Task2,
                  PercAccuracy2,
-                 WTP2,
                  Revision2,
                  PostQuestions2,
+                 SocDist1,
+                 SocDist2,
                  End]

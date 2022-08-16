@@ -1,17 +1,16 @@
 {{ extends "si_experiment/Page.html" }}
 {{ block title }}
-    Fragen
+    Aufgabe 1: KI Entwickler/in
 {{ endblock }}
 
 {{ block content }}
 <head>
 
 </head>
+Wir stellen Ihnen nun {{ if developer.gender == "weiblich" }}die <b>Entwicklerin</b>{{ else }}den <b>Entwickler</b>{{ endif }} der KI der <b>ersten Aufgabe zur Vorhersage {{ if player.participant.tasks_order }}der Immobilienpreise{{ else }}des Kreditausfallrisikos{{ endif }}</b> vor.
+<br> <br>
+{{ include "si_experiment/dev.html" }}
 
-<br>
-{{ include "si_experiment/Treatment_t2.html" }}
-
-{{ if player.participant.treatment in ["both", "dev"] }}
 <p>
     Bitte geben Sie Ihre persönliche Einstellung zu folgenden Aussagen an.
 </p>
@@ -28,7 +27,7 @@
 
     <tr>
         <th></th>
-        {{for choice in form.soc_distance_t2_1.choices}}
+        {{for choice in form.soc_distance_t1_1.choices}}
             <th>{{choice}}</th>
         {{endfor}}
     </tr>
@@ -51,44 +50,6 @@
 {{ for field in ranks }}
     {{ formfield field }}
 {{ endfor }}
-
-<br>
-<hr style="border-top:3px dashed black; background: transparent; opacity: 1 ">
-<br>
-{{ endif }}
-
-<p>
-    Bitte geben Sie Ihre persönliche Einstellung zu folgenden Aussagen an.
-</p>
-<table class="likert">
-    <col span="1" class="wide">
-    <tr>
-        <th></th>
-        <th>Stimme <br> nicht zu</th>
-        <th>Stimme eher <br> nicht zu</th>
-        <th>Neutral</th>
-        <th>Stimme eher <br> zu</th>
-        <th>Stimme <br> zu</th>
-    </tr>
-
-    <tr>
-        <th></th>
-        {{for choice in form.anthro_t2_1.choices}}
-            <th>{{choice}}</th>
-        {{endfor}}
-    </tr>
-    {{ for field in form }}
-    {{ if forloop.counter > 7 }}
-    <tr>
-        <td class="likert_label">{{ field.label }}</td>
-        {{ for choice in field }}
-            <td class="likert_choice">{{ choice }}</td>
-        {{ endfor }}
-    </tr>
-    {{ endif }}
-    {{ endfor }}
-</table>
-<br>
 
 <br>
 <button id="next-button" class="otree-btn-next btn btn-primary">

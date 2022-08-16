@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="treatment">
+    <table>
+        <tr>
+            <td class="treatment_elem">
+                {{ if developer.gender == "weiblich" }}Die <b>Entwicklerin</b>{{ else }}Der <b>Entwickler</b>{{ endif }} der KI des Forscherteams besitzt folgende Eigenschaften:
+                <table>
+                    <tr>
+                        <td><ul><li>Geschlecht:</li></ul></td>
+                        <td style="padding-left:10px"><b>{{ developer.gender }}</b></td>
+                    </tr>
+                    <tr>
+                        <td><ul><li>Migrationshintergrund:</li></ul></td>
+                        <td style="padding-left:10px"><b>{{ developer.migrant }}</b></td>
+                    </tr>
+                    <tr>
+                        <td><ul><li>Politische Ansicht:</li></ul></td>
+                        <td style="padding-left:10px"><b>{{ developer.politics }}</b></td>
+                    </tr>
+                </table>
+            </td>
+            <td style="width:30%;vertical-align: center"><img src="{{ static 'global/expert.png' }}" style="width: 30%" /></td>
+        </tr>
+    </table>
+</div>
+<br>
+</body>
+</html>
