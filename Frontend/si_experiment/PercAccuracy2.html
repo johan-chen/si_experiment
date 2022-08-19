@@ -24,17 +24,21 @@
     {{ include "si_experiment/dev.html" }}
 {{ endif }}
 
+Im nächsten Schritt haben Sie die Chance, Ihre Schätzung zu revidieren. Damit Sie eine bessere Entscheidung treffen,
+stellen wir Ihnen eine <b>neue Künstliche Intelligenz (KI)</b> zur Unterstützung vor.
+<br><br>
+
+
 {{ if player.participant.tasks_order }}
-    Wir stellen Ihnen nun eine <b>neue Künstliche Intelligenz (KI)</b>
-{{ if player.participant.treatment == "both" || player.participant.treatment == "dev" }}&nbsp;&ndash; von einem/r <b>anderen Entwickler/in</b> gebaut &nbsp;&ndash;{{ endif }} vor, die darauf trainiert ist, die Kreditausfallrisiko
-    von Kreditbewerbern vorherzusagen. Die KI nutzt die gleichen zehn Eigenschaften von
-    Kreditbewerbern, um das Ausfallrisiko vorherzusagen.
+    Die KI
+    {{ if player.participant.treatment == "both" || player.participant.treatment == "dev" }}&nbsp;&ndash; von einem/r <b>anderen Entwickler/in</b> gebaut &nbsp;&ndash;{{ endif }} ist darauf trainiert, das Kreditausfallrisiko
+        von Kreditbewerbern vorherzusagen. Die KI nutzt die gleichen zehn Eigenschaften von
+        Kreditbewerbern, um das Ausfallrisiko vorherzusagen.
 {{ else }}
-    Wir stellen Ihnen nun eine <b>neue Künstliche Intelligenz (KI)</b>
-    {{ if player.participant.treatment == "both" || player.participant.treatment == "dev" }}&nbsp;&ndash; von einem/r <b>anderen Entwickler/in</b> gebaut &nbsp;&ndash;{{ endif }} vor, die darauf trainiert ist, den Verkaufspreis von auf der
+    Die KI
+    {{ if player.participant.treatment == "both" || player.participant.treatment == "dev" }}&nbsp;&ndash; von einem/r <b>anderen Entwickler/in</b> gebaut &nbsp;&ndash;{{ endif }} ist darauf trainiert, den Verkaufspreis von auf der
     Plattform gelisteten Wohnungen vorherzusagen. Die KI nutzt die gleichen zehn Eigenschaften von
     Wohnungen, um den angebotenen Preis vorherzusagen.
-
 {{ endif }}
 
 
