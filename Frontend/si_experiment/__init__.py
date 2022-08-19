@@ -91,6 +91,9 @@ def creating_session(subsession):
         participant.post_questions_order_t2 = post_questions_t2
         participant.tasks_order = tasks_order
 
+        # task payment relevance (random)
+        participant.task_payment_relevance = random.randint(1, 2)
+
         # task object randomization
         participant.apartment_row = random.randint(0, 9)
         participant.lender_row = random.randint(0, 9)
@@ -197,11 +200,11 @@ class Player(BasePlayer):
     pers_inno3 = make_field("Ich experimentiere gerne mit neuer Technologie.")
 
     # task1
-    task1Estimate = models.FloatField()
+    task1Estimate = models.IntegerField()
     conf1Estimate = make_field("Ich bin von meiner Schätzung überzeugt.")
 
     # task2
-    task2Estimate = models.FloatField()
+    task2Estimate = models.IntegerField()
     conf2Estimate = make_field("Ich bin von meiner Schätzung überzeugt.")
 
     # perceived accuracy of AI -- task 1 and 2
@@ -628,7 +631,19 @@ class SocDist2(Page):
             return False
 
 class End(Page):
-    pass
+    def vars_for_template(player: Player):
+        # real estate task
+        apartments = pd.read_csv("Data/immonet_data_selected.csv")
+        apartments = round((apartments['price']- 300_000) / 40_000)*40_000 + 300_000
+        apartment = int(apartments.iloc[player.participant.apartment_row])
+
+        # lending task
+        borrowers = pd.read_csv("Data/lending_data_selected.csv")
+        borrowers = borrowers['y_']
+        borrower = int(borrowers.iloc[player.participant.lender_row])
+
+        return dict(apartment=apartment,
+                    borrower=borrower)
 
 
 page_sequence = [Intro,

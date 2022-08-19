@@ -5,6 +5,56 @@
 {{ block content }}
 <div>Ihre Antworten wurden anonymisiert gespeichert.</div>
 <br>
+
+{{ if player.participant.tasks_order }}
+    <div>In Aufgabe 1 haben Sie den Preis der Immobilie auf {{ player.task1Estimate }} EUR geschätzt,
+        die richtige Antwort war {{ apartment }} EUR.<br>
+    In Aufgabe 2 haben Sie das Kreditausfallrisiko auf {{ player.task2Estimate }}% geschätzt,
+        die richtige Antwort war {{ borrower }}%.</div>
+    <br>
+    <div>Für Ihre Bezahlung ist Aufgabe {{ player.participant.task_payment_relevance }} ausschlaggebend.
+        {{ if player.participant.task_payment_relevance == 1 }}
+            {{ if player.task1Estimate == apartment }}
+                Herzlichen Glückwunsch, Sie haben richtig geschätzt! Wir werden Ihnen die zusätzlichen 5 EUR
+                variable Vergütung über Profilic in den nächsten Tagen zukommen lassen.
+            {{ else }}
+                Hier haben Sie leider nicht den richtigen Wert geschätzt.
+            {{ endif }}
+        {{ else }}
+            {{ if player.task2Estimate == borrower }}
+                Herzlichen Glückwunsch, Sie haben richtig geschätzt! Wir werden Ihnen die zusätzlichen 5 EUR
+                variable Vergütung über Profilic in den nächsten Tagen zukommen lassen.
+            {{ else }}
+                Hier haben Sie leider nicht den richtigen Wert geschätzt.
+            {{ endif }}
+        {{ endif }}
+    </div>
+
+{{ else }}
+    <div>In Aufgabe 1 haben Sie das Kreditausfallrisiko auf {{ player.task1Estimate }}% geschätzt,
+        die richtige Antwort war {{ borrower }} %.<br>
+    In Aufgabe 2 haben Sie den Preis der Immobilie auf {{ player.task2Estimate }} EUR geschätzt,
+        die richtige Antwort war {{ apartment }} EUR.</div>
+    <br>
+    <div>Für Ihre Bezahlung ist Aufgabe {{ player.participant.task_payment_relevance }} ausschlaggebend.
+        {{ if player.participant.task_payment_relevance == 1 }}
+            {{ if player.task2Estimate == apartment }}
+                Herzlichen Glückwunsch, Sie haben richtig geschätzt! Wir werden Ihnen die zusätzlichen 5 EUR
+                variable Vergütung über Profilic in den nächsten Tagen zukommen lassen.
+            {{ else }}
+                Hier haben Sie leider nicht den richtigen Wert geschätzt.
+            {{ endif }}
+        {{ else }}
+            {{ if player.task1Estimate == borrower }}
+                Herzlichen Glückwunsch, Sie haben richtig geschätzt! Wir werden Ihnen die zusätzlichen 5 EUR
+                variable Vergütung über Profilic in den nächsten Tagen zukommen lassen.
+            {{ else }}
+                Hier haben Sie leider nicht den richtigen Wert geschätzt.
+            {{ endif }}
+        {{ endif }}
+    </div>
+{{ endif }}
+<br>
 <div>Sie können dieses Fenster schließen.</div>
 {{ endblock }}
 

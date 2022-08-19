@@ -38,15 +38,16 @@
 <head>
 
 </head>
-
-In diesem Schritt erhalten Sie die <b>Möglichkeit</b>, Ihre abgegebene <b>{{ if player.participant.tasks_order }} Preisschätzung {{ else }} Schätzung der Ausfallwahrscheinlichkeit {{ endif }}
+<!--todo: if else für Satzteil über Vorhersage der KI falls diese wirklich angezeigt wird -->
+In diesem Schritt erhalten Sie die <b>Möglichkeit</b>, Ihre abgegebene <b>{{ if player.participant.tasks_order }} Schätzung des Ausfallrisikos {{ else }} Preisschätzung {{ endif }}
     noch einmal anzupassen</b>. Dazu zeigen wir Ihnen erneut die Eigenschaften
-{{ if player.participant.tasks_order }} des Kreditbewerbers {{ else }} der Immobilie {{ endif }}
-sowie die Vorhersage der KI.
+{{ if player.participant.tasks_order }} des  Kreditbewerbers {{ else }} der Immobilie {{ endif }}
+sowie die Vorhersage der KI. Beachten Sie, dass diese <b>angepasste Schätzung Ihre vorherige Schätzung überschreibt</b>,
+es Ihre <b>letzte Möglichkeit zur Anpassung</b> ist und somit auch <b>für Ihre variable Vergütung relevant</b> ist.
 
-{{ if player.participant.treatment != "none" }}Außerdem können Sie sich noch einmal {{ if player.participant.treatment == "both" }}die Vorhersagegenauigkeit der KI
-und das Profil des KI Entwicklers ansehen.{{ elif player.participant.treatment == "acc" }}die Vorhersagegenauigkeit der KI ansehen.{{ elif player.participant.treatment == "dev"}}das Profil des KI Entwicklers ansehen.{{ endif }}
-{{ endif }}
+<!--{{ if player.participant.treatment != "none" }}Außerdem können Sie sich noch einmal {{ if player.participant.treatment == "both" }}die Vorhersagegenauigkeit der KI-->
+<!--und das Profil des KI Entwicklers ansehen.{{ elif player.participant.treatment == "acc" }}die Vorhersagegenauigkeit der KI ansehen.{{ elif player.participant.treatment == "dev"}}das Profil des KI Entwicklers ansehen.{{ endif }}-->
+<!--{{ endif }}-->
 
 <br><br>
 
