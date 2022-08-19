@@ -24,18 +24,18 @@
     {{ include "si_experiment/dev.html" }}
 {{ endif }}
 
-Im nächsten Schritt haben Sie die Chance, Ihre Schätzung zu revidieren. Damit Sie eine bessere Entscheidung treffen,
+Im nächsten Schritt haben Sie die Chance, Ihre Schätzung anzupassen. Damit Sie eine bessere Entscheidung treffen,
 stellen wir Ihnen eine <b>Künstliche Intelligenz (KI)</b> zur potentiellen Unterstützung vor.
 <br><br>
 
 {{ if player.participant.tasks_order }}
     Die KI ist darauf trainiert, die gleiche Aufgabe wie
-    Sie zu lösen -- nämlich den Verkaufspreis von auf der
+    Sie zu lösen, nämlich den Verkaufspreis von auf der
     Plattform gelisteten Wohnungen vorherzusagen. Die KI nutzt die gleichen zehn Eigenschaften von
     Wohnungen, die Ihnen auch gerade angezeigt wurden, um den angebotenen Preis vorherzusagen.
 {{ else }}
     Die KI ist darauf trainiert, die gleiche Aufgabe wie
-    Sie zu lösen -- das Kreditausfallrisiko
+    Sie zu lösen, das Kreditausfallrisiko
     von Kreditbewerbern vorherzusagen. Die KI nutzt die gleichen zehn Eigenschaften von
     Kreditbewerbern, die Ihnen auch gerade angezeigt wurden, um das Ausfallrisiko vorherzusagen.
 {{ endif }}
@@ -51,7 +51,7 @@ Der Random Forest nutzt die "Weisheit der Menge".
 <br><br>
 
 {{ if player.participant.tasks_order }}
-    Wir möchten gerne wissen, für wie genau Sie die KI halten. Die <b>Genauigkeit der KI</b> bemisst sich daran, <b>wie häufig der echte Verkaufspreis der Wohnung vorhergesagt wird</b>.
+    Wir möchten gerne wissen, für wie genau Sie die KI halten. Die <b>Genauigkeit der KI</b> bemisst sich daran, <b>wie häufig der tatsächliche Verkaufspreis der Wohnung vorhergesagt wird</b>.
     Die KI kann dabei zwischen den selben 11 Schritten des Schiebereglers auswählen, die auch Ihnen zur Auswahl standen.
     100% Genauigkeit bedeutet, dass die KI immer den richtigen Wert vorhersagt, während 0% bedeutet, dass sie nie den richtigen Wert vorhersagt.
     Zum Vergleich: Falls der Schritt auf dem Schieberegler einfach zufällig ausgewählt würde, wäre die Genauigkeit 1/11 und somit weniger als 10%.

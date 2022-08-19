@@ -36,7 +36,10 @@ REAL_WORLD_CURRENCY_CODE = 'USD'
 USE_POINTS = True
 
 ROOMS = [
-    dict(name='study', display_name='Studie')
+    dict(
+        name='SI_lab',
+        display_name='Experiment'
+    )
 ]
 
 ADMIN_USERNAME = 'admin'

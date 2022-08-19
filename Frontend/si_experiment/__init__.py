@@ -139,7 +139,7 @@ class Player(BasePlayer):
     migration_bg = models.BooleanField(choices=[[True, "Ja, ich habe einen Migrationshintergrund"],
                                                 [False, "Nein, ich habe keinen Migrationshintergrund"]],
                                        widget=widgets.RadioSelect,
-                                       label="Bitte geben Sie an, ob Sie einen Migrationshintergrund besitzen.",
+                                       label="Bitte geben Sie an, ob Sie einen Migrationshintergrund haben.",
                                        blank=True)
     # student = models.BooleanField(choices=[[True, "Ja"],
     #                                        [False, "Nein"]],
@@ -177,7 +177,7 @@ class Player(BasePlayer):
     soc_distance_t1_1 = make_field("Der/Die Entwickler/in könnte ähnliche Ansichten haben wie ich.")
     soc_distance_t1_2 = make_field("Der/Die Entwickler/in könnte ähnliche Werte haben wie ich.")
     soc_distance_t1_3 = make_field("Ich könnte zur gleichen Gruppe gehören wie der/die Entwickler/in.")
-    soc_distance_t1_4 = make_field("Ich bin eine ähnlicher Mensch wie der/die Entwickler/in.")
+    soc_distance_t1_4 = make_field("Ich bin ein ähnlicher Mensch wie der/die Entwickler/in.")
 
     # social distance var -- task 2
     soc_distance_rank_t2_1 = make_rank_field("1. Platz")
@@ -187,7 +187,7 @@ class Player(BasePlayer):
     soc_distance_t2_1 = make_field("Der/Die Entwickler/in könnte ähnliche Ansichten haben wie ich.")
     soc_distance_t2_2 = make_field("Der/Die Entwickler/in könnte ähnliche Werte haben wie ich.")
     soc_distance_t2_3 = make_field("Ich könnte zur gleichen Gruppe gehören wie der/die Entwickler/in.")
-    soc_distance_t2_4 = make_field("Ich bin eine ähnlicher Mensch wie der/die Entwickler/in.")
+    soc_distance_t2_4 = make_field("Ich bin ein ähnlicher Mensch wie der/die Entwickler/in.")
 
     soc_norms = make_field("Ich tue immer mein Bestes, um gesellschaftliche Normen zu befolgen.")
 
@@ -218,11 +218,11 @@ class Player(BasePlayer):
     immo_exp = models.IntegerField(
         choices=[[0, "Keine Kenntnisse"], [1, "Wenige Kenntnisse"], [2, "Einige Kenntnisse"],
                  [3, "Viele Kenntnisse"]],
-        label="Wie würden Sie Ihre Kenntnisse in der Bewertung von Immobilien einschätzen.", blank=True)
+        label="Wie würden Sie Ihre Kenntnisse in der Bewertung von Immobilien einschätzen?", blank=True)
     credit_exp = models.IntegerField(
         choices=[[0, "Keine Kenntnisse"], [1, "Wenige Kenntnisse"], [2, "Einige Kenntnisse"],
                  [3, "Viele Kenntnisse"]],
-        label="Wie würden Sie Ihre Kenntnisse in der Bewertung von Kreditwürdigkeit einschätzen.", blank=True)
+        label="Wie würden Sie Ihre Kenntnisse in der Bewertung von Kreditwürdigkeit einschätzen?", blank=True)
 
     risk_aver = models.IntegerField(
         choices=[[0, "0 (äußerst risikoscheu)"], [1, 1], [2, 2], [3, 3],

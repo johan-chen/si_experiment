@@ -2,18 +2,21 @@
     Herzlich Willkommen
 {{ endblock }}
 {{ block content }}
+
+            <div style="color: red"><small>Randomization (for testing only)<br>treatmentgroup: {{ player.participant.treatment }} | RealEstate first: {{ player.participant.tasks_order }} |
+    RealEstateRow: {{ player.participant.apartment_row }} | LendingRow: {{ player.participant.lender_row }} |
+        DeveloperProfiles: {{ player.participant.dev_row1 }}, {{ player.participant.dev_row2 }} | InfoFirst: {{ player.participant.info_first}} |
+    Task for payment: {{ player.participant.task_payment_relevance }}</small></div>
+    <br>
+
 <head>
         <link rel="stylesheet" href="{{ static 'global/styles.css' }}">
 </head>
 
 <div class="instrucText">
 
+
     Die Studie wird von Forschern der <b>Goethe-Universität Frankfurt</b> durchgeführt.<br>
-    <br>
-    <div style="color: red">Randomization (for testing only)<br>treatmentgroup: {{ player.participant.treatment }} | RealEstate first: {{ player.participant.tasks_order }} |
-    RealEstateRow: {{ player.participant.apartment_row }} | LendingRow: {{ player.participant.lender_row }} |
-        DeveloperProfiles: {{ player.participant.dev_row1 }}, {{ player.participant.dev_row2 }} | InfoFirst: {{ player.participant.info_first}} |
-    Task for payment: {{ player.participant.task_payment_relevance }}</div>
     <br>
 
     <i><b><u>Was muss ich tun?</u></b></i><br>
@@ -28,9 +31,9 @@
 
     Für die Teilnahme erhalten Sie <b>zusätzlich zu der fixen Vergütung</b> auch eine <b>variable Vergütung</b>, die von
     der <b>Genauigkeit Ihrer Schätzungen</b> abhängt. Dazu wählen wir zufällig eine der beiden
-    Aufgaben aus, die für die variable Vergütung ausschlaggebend ist. Diese variable Vergütung beträgt bis zu <b style="color: red">5 EUR</b>.
+    Aufgaben aus, die für die variable Vergütung ausschlaggebend ist. Diese variable Vergütung beträgt bis zu <b>5 EUR</b>.
     Die gesamte Vergütung werden wir Ihnen in den nächsten Tagen/Wochen über Prolific
-    zukommen lassen. Die Studie <b>nur ca. <b style="color: red">Y</b> Minuten</b>.
+    zukommen lassen. Die Studie <b>nur ca. 10 Minuten</b>.
 
     <br>
     Selbstverständlich behandeln wir alle Daten zu jeder Zeit streng vertraulich und nutzen diese nur für wissenschaftlichen Zwecke.
