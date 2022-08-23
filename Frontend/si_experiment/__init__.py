@@ -130,7 +130,7 @@ class Player(BasePlayer):
                                   blank=True)
 
     # Preliminary Questions
-    age = models.IntegerField(label="Bitte geben Sie Ihr Alter an.", min=18, max=99, blank=True)
+    age = models.IntegerField(label="Bitte geben Sie Ihr Alter an.", min=18, max=99, blank=True)  # TODO: keine Fehlermeldung wenn unter 18 eingegeben wird
     sex = models.IntegerField(choices=[[0, "Divers"], [1, "Weiblich"], [2, "Männlich"]],
                               widget=widgets.RadioSelect, label="Bitte geben Sie Ihr Geschlecht an.", blank=True)
     # nationality = models.BooleanField(choices=[[True, "Deutsch"], [False, "Nichtdeutsch"]],
@@ -195,9 +195,9 @@ class Player(BasePlayer):
     # pers_inno1 = make_field(
     #     "Wenn ich von einer neuen Technologie hören würde, würde ich nach Möglichkeiten suchen, damit zu experimentieren.")
     pers_inno1 = make_field(
-        "Unter meinen Kolleg*innen bzw. Kommiliton*innen bin ich in der Regel die/der erste, die/der neue Technologie ausprobiert.")
-    pers_inno2 = make_field("Im Allgemeinen zögere ich davor, neue Technologie auszuprobieren.")
-    pers_inno3 = make_field("Ich experimentiere gerne mit neuer Technologie.")
+        "Unter meinen Kolleg*innen bzw. Kommiliton*innen bin ich in der Regel die/der Erste, die/der neue Technologie ausprobiert.")
+    pers_inno2 = make_field("Im Allgemeinen zögere ich neue Technologien auszuprobieren.")
+    pers_inno3 = make_field("Ich experimentiere gerne mit neuen Technologien.")
 
     # task1
     task1Estimate = models.IntegerField()
@@ -228,7 +228,8 @@ class Player(BasePlayer):
         choices=[[0, "0 (äußerst risikoscheu)"], [1, 1], [2, 2], [3, 3],
                  [4, 4], [5, 5], [6, 6], [7, 7],
                  [8, 8], [9, 9], [10, "10 (äußerst risikofreudig)"]],
-        label="Bitte geben Sie an, wie risikobereit oder risikoscheu Sie im Allgemeinen sind. Bitte nutzen Sie eine Skala von 0 bis 10, wobei 0 'äußerst risikoscheu' und 10 'äußerst risikofreudig' bedeutet.",
+        label="Bitte geben Sie auf einer Skala von 0 bis 10 an, wie risikofreudig oder risikoscheu Sie sind,"
+              " wobei 0 'äußerst risikoscheu' und 10 'äußerst risikofreudig' bedeutet.",
         blank=True)
 
     # Revision 1

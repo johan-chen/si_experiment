@@ -2,12 +2,12 @@
 {{ block title }}
     {{ if player.participant.treatment == "both" }}
         {{ if player.participant.info_first == "dev" }}
-        Entwickler/in und KI
+            {{ if developer.gender == "weiblich" }}Entwicklerin{{ else }}Entwickler{{ endif }} und KI
         {{ else }}
-        KI und Entwickler/in
+            KI und  {{ if developer.gender == "weiblich" }}Entwicklerin{{ else }}Entwickler{{ endif }}
         {{ endif }}
     {{ elif player.participant.treatment == "dev" }}
-    KI Entwickler/in
+    KI {{ if developer.gender == "weiblich" }}Entwicklerin{{ else }}Entwickler{{ endif }}
     {{ else }}
     KI zur Vorhersage
     {{ endif }}
@@ -90,17 +90,19 @@ final ist und damit potenziell Ihre variable Vergütung bestimmt.
 <br>
 {{ include "si_experiment/Treatment_t1.html" }}
 <div>
-    Sie erhalten jetzt <b>0,30€</b> als Budget, mit der Möglichkeit dieses <b>Geld einzusetzen</b>.
+    Sie erhalten jetzt <b>0,30€ als Budget</b>, mit der Möglichkeit, dieses <b>Geld einzusetzen</b>. <br><br>
     Sie können entweder die Wahrscheinlichkeit erhöhen, eine <b>KI-Vorhersage für
     {{ if player.participant.tasks_order }}den Preis der Wohnung{{ else }}das Kreditausfallrisiko{{ endif }}</b> zu sehen, oder Sie können diese
     Wahrscheinlichkeit verringern (Ausgangswahrscheinlichkeit ist 50%). Pro 10% Erhöhung oder Senkung der Wahrscheinlichkeit werden Ihrem Budget jeweils 0,10€ abgezogen.
+    Ihr nicht genutztes Budget, um die KI zu sehen, wird der variablen Vergütung hinzugefügt und Ihnen am Schluss ausgezahlt.
     <br><br>
-    Wenn Sie zum Beispiel 80% wählen, besteht eine 80%ige Chance, dass Sie die KI-Vorhersage sehen.
-    Wenn Sie 20% wählen, besteht eine 20%ige Chance, dass Sie die KI-Vorhersage sehen. In beiden Fällen bezahlen Sie 0,30€.
-    <br><br>
+    <b>Beispiel:</b> Wenn Sie 70% wählen, besteht eine 70%ige Chance, dass Sie die KI-Vorhersage sehen.
+    Wenn Sie 30% wählen, besteht eine 30%ige Chance, dass Sie die KI-Vorhersage sehen. In beiden Fällen bezahlen Sie 0,20€,
+    sodass 0,10€ zu Ihrer variablen Vergütung hinzugefügt werden.
+    <br><br>Am Ende erhalten Sie eine <b>variable Vergütung</b>, die von der <b>Genauigkeit Ihrer Schätzungen</b> abhängt.
+        <br><br>
     Nutzen Sie den Schieberegler, um zu bestimmen, mit welcher Wahrscheinlichkeit Sie die KI-Vorhersage
     sehen möchten.
-    <br><br>Am Ende erhalten Sie eine <b>variable Vergütung</b>, die von der <b>Genauigkeit Ihrer Schätzungen</b> abhängt.
 </div>
 <br>
 <div>

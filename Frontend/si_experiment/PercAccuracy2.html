@@ -1,6 +1,6 @@
 {{ extends "si_experiment/Page.html" }}
 {{ block title }}
-    KI zur Vorhersage
+    Künstliche Intelligenz (KI) zur Vorhersage
 {{ endblock }}
 
 {{ block content }}
@@ -20,14 +20,14 @@
         })
     </script>
 </head>
-{{ if player.participant.treatment in ["both", "dev"] }}
-    {{ include "si_experiment/dev.html" }}
-{{ endif }}
 
 Im nächsten Schritt haben Sie die Chance, Ihre Schätzung anzupassen. Damit Sie eine bessere Entscheidung treffen,
 stellen wir Ihnen eine <b>neue Künstliche Intelligenz (KI)</b> zur Unterstützung vor.
 <br><br>
 
+{{ if player.participant.treatment in ["both", "dev"] }}
+    {{ include "si_experiment/dev.html" }}
+{{ endif }}
 
 {{ if player.participant.tasks_order }}
     Die KI
