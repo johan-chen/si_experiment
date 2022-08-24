@@ -176,7 +176,7 @@ class Player(BasePlayer):
 
     soc_distance_t1_1 = make_field("Der/Die Entwickler/in könnte ähnliche Ansichten haben wie ich.")
     soc_distance_t1_2 = make_field("Der/Die Entwickler/in könnte ähnliche Werte haben wie ich.")
-    soc_distance_t1_3 = make_field("Ich könnte zur gleichen Gruppe gehören wie der/die Entwickler/in.")
+    # soc_distance_t1_3 = make_field("Ich könnte zur gleichen Gruppe gehören wie der/die Entwickler/in.")
     soc_distance_t1_4 = make_field("Ich bin ein ähnlicher Mensch wie der/die Entwickler/in.")
 
     # social distance var -- task 2
@@ -186,7 +186,7 @@ class Player(BasePlayer):
 
     soc_distance_t2_1 = make_field("Der/Die Entwickler/in könnte ähnliche Ansichten haben wie ich.")
     soc_distance_t2_2 = make_field("Der/Die Entwickler/in könnte ähnliche Werte haben wie ich.")
-    soc_distance_t2_3 = make_field("Ich könnte zur gleichen Gruppe gehören wie der/die Entwickler/in.")
+    # soc_distance_t2_3 = make_field("Ich könnte zur gleichen Gruppe gehören wie der/die Entwickler/in.")
     soc_distance_t2_4 = make_field("Ich bin ein ähnlicher Mensch wie der/die Entwickler/in.")
 
     soc_norms = make_field("Ich tue immer mein Bestes, um gesellschaftliche Normen zu befolgen.")
@@ -404,7 +404,7 @@ class PostQuestions(Page):
 
     @staticmethod
     def get_form_fields(player: Player):
-        form_fields = ["soc_distance_t1_1", "soc_distance_t1_2", "soc_distance_t1_3", "soc_distance_t1_4",
+        form_fields = ["soc_distance_t1_1", "soc_distance_t1_2", "soc_distance_t1_4",  # "soc_distance_t1_3",
                        "soc_distance_rank_t1_1", "soc_distance_rank_t1_2", "soc_distance_rank_t1_3", "transparency_t1"]
         form_fields += player.participant.post_questions_order_t1
         return form_fields
@@ -547,7 +547,7 @@ class PostQuestions2(Page):
 
     @staticmethod
     def get_form_fields(player: Player):
-        form_fields = ["soc_distance_t2_1", "soc_distance_t2_2", "soc_distance_t2_3", "soc_distance_t2_4",
+        form_fields = ["soc_distance_t2_1", "soc_distance_t2_2", "soc_distance_t2_4",  # "soc_distance_t2_3",
                        "soc_distance_rank_t2_1", "soc_distance_rank_t2_2", "soc_distance_rank_t2_3", "transparency_t2"]
         form_fields += player.participant.post_questions_order_t2
         return form_fields
@@ -573,12 +573,13 @@ class PostQuestions2(Page):
     #     if len(set(choices)) != len(choices):
     #         return "Sie können nicht dasselbe Element mehrfach auswählen."
 
+
 class SocDist1(Page):
     form_model = "player"
 
     @staticmethod
     def get_form_fields(player: Player):
-        form_fields = ["soc_distance_t1_1", "soc_distance_t1_2", "soc_distance_t1_3", "soc_distance_t1_4",
+        form_fields = ["soc_distance_t1_1", "soc_distance_t1_2", "soc_distance_t1_4",  # "soc_distance_t1_3",
                        "soc_distance_rank_t1_1", "soc_distance_rank_t1_2", "soc_distance_rank_t1_3"]
         return form_fields
 
@@ -602,12 +603,13 @@ class SocDist1(Page):
         else:
             return False
 
+
 class SocDist2(Page):
     form_model = "player"
 
     @staticmethod
     def get_form_fields(player: Player):
-        form_fields = ["soc_distance_t2_1", "soc_distance_t2_2", "soc_distance_t2_3", "soc_distance_t2_4",
+        form_fields = ["soc_distance_t2_1", "soc_distance_t2_2", "soc_distance_t2_4",  # "soc_distance_t2_3",
                        "soc_distance_rank_t2_1", "soc_distance_rank_t2_2", "soc_distance_rank_t2_3"]
         return form_fields
 
@@ -630,6 +632,7 @@ class SocDist2(Page):
             return True
         else:
             return False
+
 
 class End(Page):
     def vars_for_template(player: Player):

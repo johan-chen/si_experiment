@@ -50,20 +50,23 @@
         <td>{{ apartment.construction_year }}</td>
     </tr>
     <tr>
-        <td>Arbeitslosenquote Stadtteil  <span data-bs-toggle="tooltip" data-bs-placement="top" title=
-                "Anteil der arbeitslosen Bevölkerung im Stadtteil im Vergleich zum Rest Berlins." class="question_mark">?</span>
-            <br>(innerstädt. Vergleich)</td>
+        <td>Arbeitslosenquote Stadtteil*
+<!--            <span data-bs-toggle="tooltip" data-bs-placement="top" title=-->
+<!--                "Anteil der arbeitslosen Bevölkerung im Stadtteil im Vergleich zum Rest Berlins." class="question_mark">?</span>--><br>(innerstädt. Vergleich)</td>
         <td>{{ apartment.unemployment }}</td>
     </tr>
         <tr>
-        <td>Anteil Grünenwähler Stadtteil  <span data-bs-toggle="tooltip" data-bs-placement="top" title=
-            "Anteil der Bevölkerung im Stadtteil, die bei der Bundestagswahl 2021 die Partei 'Bündnis 90/Die Grünen' gewählt hat, im Vergleich zum Rest Berlins." class="question_mark">?</span>
+        <td>Anteil Grünenwähler Stadtteil**
+<!--            <span data-bs-toggle="tooltip" data-bs-placement="top" title=-->
+<!--            "Anteil der Bevölkerung im Stadtteil, die bei der Bundestagswahl 2021 die Partei 'Bündnis 90/Die Grünen' gewählt hat, im Vergleich zum Rest Berlins." class="question_mark">?</span>-->
             <br>(innerstädt. Vergleich)</td>
         <td>{{ apartment.share_green }}</td>
     </tr>
 </table>
 
-    <div style="margin-left: 5%;"><i><small>Bewegen Sie die Maus über das Fragezeichen, um eine Beschreibung der Eigenschaft zu sehen.</small></i></div>
+    <div style="margin-left: 5%;"><i><small>*Anteil der arbeitslosen Bevölkerung im Stadtteil im Vergleich zum Rest Berlins.<br>
+        **Anteil der Bevölkerung im Stadtteil, die bei der Bundestagswahl 2021 die Partei <br>'Bündnis 90/Die Grünen' gewählt hat, im Vergleich zum Rest Berlins.
+    </small></i></div>
 
 <br>
 

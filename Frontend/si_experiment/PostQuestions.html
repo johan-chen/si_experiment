@@ -33,7 +33,7 @@
         {{endfor}}
     </tr>
     {{ for field in form }}
-    {{ if forloop.counter < 5 }}
+    {{ if forloop.counter < 4 }}
     <tr>
         <td class="likert_label">{{ field.label }}</td>
         {{ for choice in field }}
@@ -79,7 +79,7 @@
         {{endfor}}
     </tr>
     {{ for field in form }}
-        {{ if forloop.counter > 7 }}
+        {{ if forloop.counter > 6 }}
             <tr>
                 <td class="likert_label">{{ field.label }}</td>
                 {{ for choice in field }}

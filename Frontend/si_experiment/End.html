@@ -16,14 +16,14 @@
         {{ if player.participant.task_payment_relevance == 1 }}
             {{ if player.task1Estimate == apartment }}
                 Herzlichen Glückwunsch, Sie haben richtig geschätzt! Wir werden Ihnen die zusätzlichen 5 EUR
-                variable Vergütung über Profilic in den nächsten Tagen zukommen lassen.
+                variable Vergütung über Prolific in den nächsten Tagen zukommen lassen.
             {{ else }}
                 Hier haben Sie leider nicht den richtigen Wert geschätzt.
             {{ endif }}
         {{ else }}
             {{ if player.task2Estimate == borrower }}
                 Herzlichen Glückwunsch, Sie haben richtig geschätzt! Wir werden Ihnen die zusätzlichen 5 EUR
-                variable Vergütung über Profilic in den nächsten Tagen zukommen lassen.
+                variable Vergütung über Prolific in den nächsten Tagen zukommen lassen.
             {{ else }}
                 Hier haben Sie leider nicht den richtigen Wert geschätzt.
             {{ endif }}
@@ -39,15 +39,15 @@
     <div>Für Ihre Bezahlung ist Aufgabe {{ player.participant.task_payment_relevance }} ausschlaggebend.
         {{ if player.participant.task_payment_relevance == 1 }}
             {{ if player.task2Estimate == apartment }}
-                Herzlichen Glückwunsch, Sie haben richtig geschätzt! Wir werden Ihnen die zusätzlichen 5 EUR
-                variable Vergütung über Profilic in den nächsten Tagen zukommen lassen.
+                Herzlichen Glückwunsch, Sie haben richtig geschätzt! Wir werden Ihnen die zusätzlichen 5 EUR variable
+                Vergütung über Prolific in den nächsten Tagen zukommen lassen.
             {{ else }}
                 Hier haben Sie leider nicht den richtigen Wert geschätzt.
             {{ endif }}
         {{ else }}
             {{ if player.task1Estimate == borrower }}
                 Herzlichen Glückwunsch, Sie haben richtig geschätzt! Wir werden Ihnen die zusätzlichen 5 EUR
-                variable Vergütung über Profilic in den nächsten Tagen zukommen lassen.
+                variable Vergütung über Prolific in den nächsten Tagen zukommen lassen.
             {{ else }}
                 Hier haben Sie leider nicht den richtigen Wert geschätzt.
             {{ endif }}
@@ -55,7 +55,11 @@
     </div>
 {{ endif }}
 <br>
-<div>Sie können dieses Fenster schließen.</div>
+
+
+
+<div>Klicken Sie <a href="https://app.prolific.co/submissions/complete?cc=CA03AWEI">hier</a>, um die Studie abzuschließen.</div>
+
 {{ endblock }}
 
 
