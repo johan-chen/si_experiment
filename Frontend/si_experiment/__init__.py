@@ -49,15 +49,19 @@ def make_rank_field(label):
     return models.StringField(choices=C.CHOICES, label=label, blank=True)
 
 
-def shuffle_form_fields(fields, blocksize=3, subblocks=True):
+def shuffle_form_fields(fields):
     form_fields = fields
-    blocksize = blocksize
+    blocksize = 3
 
+    single_item = form_fields[0]
+    print(single_item)
+    form_fields.remove(single_item)
     blocks = [form_fields[i:i + blocksize] for i in range(0, len(form_fields), blocksize)]
+    blocks.append([single_item])
     random.shuffle(blocks)
-    if subblocks:
-        for subblock in blocks:
-            random.shuffle(subblock)
+
+    for subblock in blocks:
+        random.shuffle(subblock)
     form_fields = [formfield for subblock in blocks for formfield in subblock]
     return form_fields
 
@@ -68,25 +72,20 @@ def creating_session(subsession):
 
         # treatment and question/task order randomization
         treatments = ["none", "dev", "acc", "both"]
-        pers_inno = ["pers_inno1", "pers_inno2", "pers_inno3"]
+        pre_questions = [
+            "soc_norms", "pers_inno1", "pers_inno2", "pers_inno3"]
         post_questions_t1 = [
-            "anthro_t1_1", "anthro_t1_2", "anthro_t1_3",
+            "transparency_t1", "anthro_t1_1", "anthro_t1_2", "anthro_t1_3",
             "cog_trust_t1_1", "cog_trust_t1_2", "cog_trust_t1_3",
             "integ_trust_t1_1", "integ_trust_t1_2", "integ_trust_t1_3",
             "emo_trust_t1_1", "emo_trust_t1_2", "emo_trust_t1_3",
         ]
-        post_questions_t2 = [
-            "anthro_t2_1", "anthro_t2_2", "anthro_t2_3",
-            "cog_trust_t2_1", "cog_trust_t2_2", "cog_trust_t2_3",
-            "integ_trust_t2_1", "integ_trust_t2_2", "integ_trust_t2_3",
-            "emo_trust_t2_1", "emo_trust_t2_2", "emo_trust_t2_3",
-        ]
-        random.shuffle(pers_inno)
         tasks_order = random.choice([True, False])  # True = Immo task first
-        post_questions_t1 = shuffle_form_fields(post_questions_t1, 3, True)
-        post_questions_t2 = shuffle_form_fields(post_questions_t2, 3, True)
+        pre_questions = shuffle_form_fields(pre_questions)
+        post_questions_t1 = shuffle_form_fields(post_questions_t1)
+        post_questions_t2 = [item.replace("t1", "t2") for item in post_questions_t1]
         participant.treatment = random.choice(treatments)
-        participant.pers_inno_order = pers_inno
+        participant.pre_questions_order = pre_questions
         participant.post_questions_order_t1 = post_questions_t1
         participant.post_questions_order_t2 = post_questions_t2
         participant.tasks_order = tasks_order
@@ -177,7 +176,7 @@ class Player(BasePlayer):
     soc_distance_t1_1 = make_field("Der/Die Entwickler/in könnte ähnliche Ansichten haben wie ich.")
     soc_distance_t1_2 = make_field("Der/Die Entwickler/in könnte ähnliche Werte haben wie ich.")
     # soc_distance_t1_3 = make_field("Ich könnte zur gleichen Gruppe gehören wie der/die Entwickler/in.")
-    soc_distance_t1_4 = make_field("Ich bin ein ähnlicher Mensch wie der/die Entwickler/in.")
+    soc_distance_t1_3 = make_field("Ich bin ein ähnlicher Mensch wie der/die Entwickler/in.")
 
     # social distance var -- task 2
     soc_distance_rank_t2_1 = make_rank_field("1. Platz")
@@ -187,7 +186,7 @@ class Player(BasePlayer):
     soc_distance_t2_1 = make_field("Der/Die Entwickler/in könnte ähnliche Ansichten haben wie ich.")
     soc_distance_t2_2 = make_field("Der/Die Entwickler/in könnte ähnliche Werte haben wie ich.")
     # soc_distance_t2_3 = make_field("Ich könnte zur gleichen Gruppe gehören wie der/die Entwickler/in.")
-    soc_distance_t2_4 = make_field("Ich bin ein ähnlicher Mensch wie der/die Entwickler/in.")
+    soc_distance_t2_3 = make_field("Ich bin ein ähnlicher Mensch wie der/die Entwickler/in.")
 
     soc_norms = make_field("Ich tue immer mein Bestes, um gesellschaftliche Normen zu befolgen.")
 
@@ -213,7 +212,7 @@ class Player(BasePlayer):
 
     # wtp -- task 1 and 2
     wtp = models.FloatField()
-    wtp2 = models.FloatField()
+    # wtp2 = models.FloatField()
 
     immo_exp = models.IntegerField(
         choices=[[0, "Keine Kenntnisse"], [1, "Wenige Kenntnisse"], [2, "Einige Kenntnisse"],
@@ -302,8 +301,8 @@ class PreQuestions(Page):
     def get_form_fields(player: Player):
         form_fields = ["importance_sex", "importance_migration_bg", "importance_pol_views",
                        "age", "sex", "migration_bg", "job_status", "immo_exp", "credit_exp",
-                       "risk_aver", "pol_views", "soc_norms"]
-        form_fields += player.participant.pers_inno_order
+                       "risk_aver", "pol_views"]
+        form_fields += player.participant.pre_questions_order
         return form_fields
 
     @staticmethod
@@ -404,8 +403,10 @@ class PostQuestions(Page):
 
     @staticmethod
     def get_form_fields(player: Player):
-        form_fields = ["soc_distance_t1_1", "soc_distance_t1_2", "soc_distance_t1_4",  # "soc_distance_t1_3",
-                       "soc_distance_rank_t1_1", "soc_distance_rank_t1_2", "soc_distance_rank_t1_3", "transparency_t1"]
+        form_fields = []
+        if player.participant.treatment in ["dev", "both"]:
+            form_fields = ["soc_distance_t1_1", "soc_distance_t1_2", "soc_distance_t1_3", # "soc_distance_t1_4",
+                           "soc_distance_rank_t1_1", "soc_distance_rank_t1_2", "soc_distance_rank_t1_3"]
         form_fields += player.participant.post_questions_order_t1
         return form_fields
 
@@ -418,19 +419,19 @@ class PostQuestions(Page):
         # TODO: @Johannes, das war ein Versuch die labels direkt an die Page zu spielen; da hat man dann aber wieder
         # TODO: das Problem der eingeschränkten Funktionalität in den {{ ... }} brackets
         # labels
-        label_var_dic = {"anthro_t1_1": "Der Algorithmus ist für mich natürlich.",
-                         "anthro_t1_2": "Der Algorithmus ist für mich menschenähnlich.",
-                         "anthro_t1_3": "Der Algorithmus ist für mich lebensähnlich.",
-                         "cog_trust_t1_1": f"Der Algorithmus ist kompetent und effektiv bei der Vorhersage der Immobilienpreise.",
-                         "cog_trust_t1_2": f"Der Algorithmus erfüllt seine Aufgabe, die Immobilienpreise vorherzusagen, sehr gut.",
-                         "cog_trust_t1_3": f"Insgesamt ist der Algorithmus ein fähiges und kompetentes Werkzeug für die Vorhersage der Immobilienpreise.",
-                         "integ_trust_t1_1": "Der Algorithmus gibt unvoreingenommene Empfehlungen.",
-                         "integ_trust_t1_2": "Der Algorithmus ist unehrlich.",
-                         "integ_trust_t1_3": "Ich halte diesen Algorithmus für integer.",
-                         "emo_trust_t1_1": f"Ich fühle mich unsicher, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.",
-                         "emo_trust_t1_2": f"Ich fühle mich wohl, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.",
-                         "emo_trust_t1_3": f"Ich fühle mich zufrieden, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse."}
-        labels_order = [label_var_dic[var] for var in player.participant.post_questions_order_t1]
+        # label_var_dic = {"anthro_t1_1": "Der Algorithmus ist für mich natürlich.",
+        #                  "anthro_t1_2": "Der Algorithmus ist für mich menschenähnlich.",
+        #                  "anthro_t1_3": "Der Algorithmus ist für mich lebensähnlich.",
+        #                  "cog_trust_t1_1": f"Der Algorithmus ist kompetent und effektiv bei der Vorhersage der Immobilienpreise.",
+        #                  "cog_trust_t1_2": f"Der Algorithmus erfüllt seine Aufgabe, die Immobilienpreise vorherzusagen, sehr gut.",
+        #                  "cog_trust_t1_3": f"Insgesamt ist der Algorithmus ein fähiges und kompetentes Werkzeug für die Vorhersage der Immobilienpreise.",
+        #                  "integ_trust_t1_1": "Der Algorithmus gibt unvoreingenommene Empfehlungen.",
+        #                  "integ_trust_t1_2": "Der Algorithmus ist unehrlich.",
+        #                  "integ_trust_t1_3": "Ich halte diesen Algorithmus für integer.",
+        #                  "emo_trust_t1_1": f"Ich fühle mich unsicher, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.",
+        #                  "emo_trust_t1_2": f"Ich fühle mich wohl, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse.",
+        #                  "emo_trust_t1_3": f"Ich fühle mich zufrieden, wenn ich mich bei meiner Entscheidung der Immobilienpreise auf diesen Algorithmus verlasse."}
+        # labels_order = [label_var_dic[var] for var in player.participant.post_questions_order_t1]
 
         # rank q
         ranks = ["soc_distance_rank_t1_1", "soc_distance_rank_t1_2", "soc_distance_rank_t1_3"]
@@ -438,16 +439,17 @@ class PostQuestions(Page):
         return dict(
             ranks=ranks,
             developer=developer,
-            labels_order=labels_order
+            # labels_order=labels_order
         )
 
-    # @staticmethod
-    # def error_message(player: Player, values):
-    #     choices = [values['soc_distance_rank1'], values['soc_distance_rank2'], values['soc_distance_rank3']]
-    #     # set() gives you distinct elements. if a list's length is different from its
-    #     # set length, that means it must have duplicates.
-    #     if len(set(choices)) != len(choices):
-    #         return "Sie können nicht dasselbe Element mehrfach auswählen."
+    @staticmethod
+    def error_message(player: Player, values):
+        if player.participant.treatment in ["dev", "both"]:
+            choices = [values['soc_distance_rank_t1_1'], values['soc_distance_rank_t1_2'], values['soc_distance_rank_t1_3']]
+            # set() gives you distinct elements. if a list's length is different from its
+            # set length, that means it must have duplicates.
+            if len(set(choices)) != len(choices):
+                return "Sie können nicht dasselbe Element mehrfach auswählen."
 
 
 class Stage2(Page):
@@ -547,8 +549,10 @@ class PostQuestions2(Page):
 
     @staticmethod
     def get_form_fields(player: Player):
-        form_fields = ["soc_distance_t2_1", "soc_distance_t2_2", "soc_distance_t2_4",  # "soc_distance_t2_3",
-                       "soc_distance_rank_t2_1", "soc_distance_rank_t2_2", "soc_distance_rank_t2_3", "transparency_t2"]
+        form_fields = []
+        if player.participant.treatment in ["dev", "both"]:
+            form_fields = ["soc_distance_t2_1", "soc_distance_t2_2", "soc_distance_t2_3",  # "soc_distance_t2_4",
+                           "soc_distance_rank_t2_1", "soc_distance_rank_t2_2", "soc_distance_rank_t2_3"]
         form_fields += player.participant.post_questions_order_t2
         return form_fields
 
@@ -565,13 +569,14 @@ class PostQuestions2(Page):
             developer=developer
         )
 
-    # @staticmethod
-    # def error_message(player: Player, values):
-    #     choices = [values['soc_distance_rank1'], values['soc_distance_rank2'], values['soc_distance_rank3']]
-    #     # set() gives you distinct elements. if a list's length is different from its
-    #     # set length, that means it must have duplicates.
-    #     if len(set(choices)) != len(choices):
-    #         return "Sie können nicht dasselbe Element mehrfach auswählen."
+    @staticmethod
+    def error_message(player: Player, values):
+        if player.participant.treatment in ["dev", "both"]:
+            choices = [values['soc_distance_rank_t2_1'], values['soc_distance_rank_t2_2'], values['soc_distance_rank_t2_3']]
+            # set() gives you distinct elements. if a list's length is different from its
+            # set length, that means it must have duplicates.
+            if len(set(choices)) != len(choices):
+                return "Sie können nicht dasselbe Element mehrfach auswählen."
 
 
 class SocDist1(Page):
@@ -579,7 +584,7 @@ class SocDist1(Page):
 
     @staticmethod
     def get_form_fields(player: Player):
-        form_fields = ["soc_distance_t1_1", "soc_distance_t1_2", "soc_distance_t1_4",  # "soc_distance_t1_3",
+        form_fields = ["soc_distance_t1_1", "soc_distance_t1_2", "soc_distance_t1_3",  #"soc_distance_t1_4",
                        "soc_distance_rank_t1_1", "soc_distance_rank_t1_2", "soc_distance_rank_t1_3"]
         return form_fields
 
@@ -603,13 +608,20 @@ class SocDist1(Page):
         else:
             return False
 
+    @staticmethod
+    def error_message(player: Player, values):
+        choices = [values['soc_distance_rank_t1_1'], values['soc_distance_rank_t1_2'], values['soc_distance_rank_t1_3']]
+        # set() gives you distinct elements. if a list's length is different from its
+        # set length, that means it must have duplicates.
+        if len(set(choices)) != len(choices):
+            return "Sie können nicht dasselbe Element mehrfach auswählen."
 
 class SocDist2(Page):
     form_model = "player"
 
     @staticmethod
     def get_form_fields(player: Player):
-        form_fields = ["soc_distance_t2_1", "soc_distance_t2_2", "soc_distance_t2_4",  # "soc_distance_t2_3",
+        form_fields = ["soc_distance_t2_1", "soc_distance_t2_2", "soc_distance_t2_3",  # "soc_distance_t2_4",
                        "soc_distance_rank_t2_1", "soc_distance_rank_t2_2", "soc_distance_rank_t2_3"]
         return form_fields
 
@@ -633,6 +645,13 @@ class SocDist2(Page):
         else:
             return False
 
+    @staticmethod
+    def error_message(player: Player, values):
+        choices = [values['soc_distance_rank_t2_1'], values['soc_distance_rank_t2_2'], values['soc_distance_rank_t2_3']]
+        # set() gives you distinct elements. if a list's length is different from its
+        # set length, that means it must have duplicates.
+        if len(set(choices)) != len(choices):
+            return "Sie können nicht dasselbe Element mehrfach auswählen."
 
 class End(Page):
     def vars_for_template(player: Player):

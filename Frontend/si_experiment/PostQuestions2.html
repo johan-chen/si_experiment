@@ -78,14 +78,14 @@
         {{endfor}}
     </tr>
     {{ for field in form }}
-    {{ if forloop.counter > 6 }}
-    <tr>
-        <td class="likert_label">{{ field.label }}</td>
-        {{ for choice in field }}
-            <td class="likert_choice">{{ choice }}</td>
-        {{ endfor }}
-    </tr>
-    {{ endif }}
+        {{ if player.participant.treatment in ["both", "dev"] && forloop.counter > 6 || player.participant.treatment in ["none", "acc"]}}
+            <tr>
+                <td class="likert_label">{{ field.label }}</td>
+                {{ for choice in field }}
+                    <td class="likert_choice">{{ choice }}</td>
+                {{ endfor }}
+            </tr>
+        {{ endif }}
     {{ endfor }}
 </table>
 <br>
