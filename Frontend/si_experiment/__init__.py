@@ -657,7 +657,7 @@ class End(Page):
     def vars_for_template(player: Player):
         # real estate task
         apartments = pd.read_csv("Data/immonet_data_selected.csv")
-        apartments = round((apartments['price']- 300_000) / 40_000)*40_000 + 300_000
+        apartments = round((apartments['price'] - 300_000) / 40_000)*40_000 + 300_000
         apartment = int(apartments.iloc[player.participant.apartment_row])
 
         # lending task
@@ -665,8 +665,51 @@ class End(Page):
         borrowers = borrowers['y_']
         borrower = int(borrowers.iloc[player.participant.lender_row])
 
+        fail_str, succ_str = "Sie lagen leider daneben.", "Sie haben richtig geschätzt!"
+        apartment_res, borrower_res = fail_str, fail_str
+        if player.participant.tasks_order:
+            t1_correct = player.task1Estimate == apartment
+            apart_est, apart_correct = format_german_number(player.task1Estimate), format_german_number(apartment)
+
+            t2_correct = player.task2Estimate == borrower
+
+            if t1_correct:
+                apartment_res = succ_str
+            if t2_correct:
+                borrower_res = succ_str
+        else:
+            t1_correct = player.task1Estimate == borrower
+
+            t2_correct = player.task1Estimate == apartment
+            apart_est, apart_correct = format_german_number(player.task2Estimate), format_german_number(apartment)
+
+            if t1_correct:
+                borrower_res = succ_str
+            if t2_correct:
+                apartment_res = succ_str
+
+
+        feedback_str = f"Aufgabe {player.participant.task_payment_relevance} ist relevant für Ihre Auszahlung. "
+        if (player.participant.task_payment_relevance == 1 and t1_correct) or (player.participant.task_payment_relevance == 2 and t2_correct):
+            feedback_str = feedback_str + f"Herzlichen Glückwunsch, <b>Ihre variable Vergütung beträgt somit insgesamt " \
+                                          f"{format_german_number(0.01*(30 - abs(player.wtp - 50)) + 5, 2)} EUR</b> <br>" \
+                                          f"({format_german_number(5, 2)} für die Schätzung und " \
+                                          f"{format_german_number(0.01*(30 - abs(player.wtp - 50)), 2)} Restbudget)."
+        else:
+            feedback_str = feedback_str + f"Ihre <b>variable Vergütung beträgt somit insgesamt {format_german_number(0.01*(30 - abs(player.wtp - 50)), 2)} EUR</b> <br>" \
+                                          f"({format_german_number(0, 2)} EUR für die Schätzung und " \
+                                          f"{format_german_number(0.01*(30 - abs(player.wtp - 50)), 2)} EUR Restbudget)."
+
+
+
         return dict(apartment=apartment,
-                    borrower=borrower)
+                    borrower=borrower,
+                    apartment_res=apartment_res,
+                    apart_est=apart_est,
+                    apart_correct=apart_correct,
+                    borrower_res=borrower_res,
+                    feedback_str=feedback_str
+                    )
 
 
 page_sequence = [Intro,
