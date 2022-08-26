@@ -54,7 +54,6 @@ def shuffle_form_fields(fields):
     blocksize = 3
 
     single_item = form_fields[0]
-    print(single_item)
     form_fields.remove(single_item)
     blocks = [form_fields[i:i + blocksize] for i in range(0, len(form_fields), blocksize)]
     blocks.append([single_item])
@@ -69,6 +68,11 @@ def shuffle_form_fields(fields):
 def creating_session(subsession):
     for player in subsession.get_players():
         participant = player.participant
+
+        # random page seq
+        # True -> Stage 3 (Processing) first
+        # False -> Stage 2 (Demand) first
+        participant.stage_order = random.choice([True, False])
 
         # treatment and question/task order randomization
         treatments = ["none", "dev", "acc", "both"]
@@ -85,6 +89,7 @@ def creating_session(subsession):
         post_questions_t1 = shuffle_form_fields(post_questions_t1)
         post_questions_t2 = [item.replace("t1", "t2") for item in post_questions_t1]
         participant.treatment = random.choice(treatments)
+        print(participant.treatment)
         participant.pre_questions_order = pre_questions
         participant.post_questions_order_t1 = post_questions_t1
         participant.post_questions_order_t2 = post_questions_t2
@@ -120,6 +125,8 @@ def creating_session(subsession):
         participant.t1_str = t1_str
         participant.t2_str = t2_str
 
+        # probability to see AI prediction
+        participant.prob_ai = random.random()
 
 class Player(BasePlayer):
     # intro data
@@ -168,6 +175,11 @@ class Player(BasePlayer):
     importance_migration_bg = make_field("Der Migrationshintergrund")
     importance_pol_views = make_field("Die politische Einstellung")
 
+    #####################
+    # Task 1 = Demand
+    # Task 2 = Processing
+    #####################
+    
     # social distance var -- task 1
     soc_distance_rank_t1_1 = make_rank_field("1. Platz")
     soc_distance_rank_t1_2 = make_rank_field("2. Platz")
@@ -190,6 +202,8 @@ class Player(BasePlayer):
 
     soc_norms = make_field("Ich tue immer mein Bestes, um gesellschaftliche Normen zu befolgen.")
 
+    # TODO: adjust wording and likert table
+    del_grat = make_field("Ich glaube an 'Erst die Arbeit, dann das Vergnügen.' (Sacrifice now, enjoy later)")
     # tech-savyness
     # pers_inno1 = make_field(
     #     "Wenn ich von einer neuen Technologie hören würde, würde ich nach Möglichkeiten suchen, damit zu experimentieren.")
@@ -232,11 +246,11 @@ class Player(BasePlayer):
         blank=True)
 
     # Revision 1
-    revision = models.FloatField()
+    revision = models.IntegerField()
     confRevision = make_field("Ich bin von meiner Schätzung überzeugt.")
 
     # Revision 2
-    revision2 = models.FloatField()
+    revision2 = models.IntegerField()
     confRevision2 = make_field("Ich bin von meiner Schätzung überzeugt.")
 
     # TASK 2 post questions
@@ -287,12 +301,14 @@ class Player(BasePlayer):
     emo_trust_t2_3 = make_field(
         "Ich fühle mich zufrieden, wenn ich mich bei meiner Entscheidung auf diese KI verlasse.")  # der Immobilienpreise
 
+# def age_error_message(value):
+#     if (value < 18) or (value > 99):
+#         return "Bitte geben Sie ein Alter zwischen 18 und 99 Jahren an."
 
 # PAGES
 class Intro(Page):
     form_model = 'player'
     form_fields = ['is_mobile', 'consent']
-
 
 class PreQuestions(Page):
     form_model = "player"
@@ -301,18 +317,17 @@ class PreQuestions(Page):
     def get_form_fields(player: Player):
         form_fields = ["importance_sex", "importance_migration_bg", "importance_pol_views",
                        "age", "sex", "migration_bg", "job_status", "immo_exp", "credit_exp",
-                       "risk_aver", "pol_views"]
+                       "risk_aver", "del_grat", "pol_views"]
         form_fields += player.participant.pre_questions_order
         return form_fields
 
     @staticmethod
     def vars_for_template(player: Player):
         # removed "sex", "migration_bg" "nationality",
-        demo = ["age",  "job_status", "immo_exp", "credit_exp", "risk_aver", ]
+        demo = ["age",  "job_status", "immo_exp", "credit_exp", "risk_aver", "del_grat"]
         return dict(
             demo=demo,
         )
-
 
 class Task(Page):
     form_model = 'player'
@@ -392,10 +407,15 @@ class Revision(Page):
             borrowers[col] = borrowers[col].astype(int)
         borrower = dict(borrowers.iloc[player.participant.lender_row])
 
+        # probability to see AI prediction
+        prob = player.participant.prob_ai <= player.wtp/100
+        print(player.participant.prob_ai)
+        print(prob)
         return dict(developer=developer,
                     original_estimate=format_german_number(player.task1Estimate),
                     apartment=apartment,
-                    borrower=borrower)
+                    borrower=borrower,
+                    prob_ai=prob)
 
 
 class PostQuestions(Page):
@@ -442,14 +462,14 @@ class PostQuestions(Page):
             # labels_order=labels_order
         )
 
-    @staticmethod
-    def error_message(player: Player, values):
-        if player.participant.treatment in ["dev", "both"]:
-            choices = [values['soc_distance_rank_t1_1'], values['soc_distance_rank_t1_2'], values['soc_distance_rank_t1_3']]
-            # set() gives you distinct elements. if a list's length is different from its
-            # set length, that means it must have duplicates.
-            if len(set(choices)) != len(choices):
-                return "Sie können nicht dasselbe Element mehrfach auswählen."
+    # @staticmethod
+    # def error_message(player: Player, values):
+    #     if player.participant.treatment in ["dev", "both"]:
+    #         choices = [values['soc_distance_rank_t1_1'], values['soc_distance_rank_t1_2'], values['soc_distance_rank_t1_3']]
+    #         # set() gives you distinct elements. if a list's length is different from its
+    #         # set length, that means it must have duplicates.
+    #         if len(set(choices)) != len(choices):
+    #             return "Sie können nicht dasselbe Element mehrfach auswählen."
 
 
 class Stage2(Page):
@@ -538,10 +558,16 @@ class Revision2(Page):
             borrowers[col] = borrowers[col].astype(int)
         borrower = dict(borrowers.iloc[player.participant.lender_row])
 
+        # probability to always see AI prediction
+        prob = True
+        print(player.participant.prob_ai)
+        print(prob)
+
         return dict(developer=developer,
                     original_estimate=format_german_number(player.task2Estimate),
                     apartment=apartment,
-                    borrower=borrower)
+                    borrower=borrower,
+                    prob_ai=prob)
 
 
 class PostQuestions2(Page):
@@ -569,14 +595,14 @@ class PostQuestions2(Page):
             developer=developer
         )
 
-    @staticmethod
-    def error_message(player: Player, values):
-        if player.participant.treatment in ["dev", "both"]:
-            choices = [values['soc_distance_rank_t2_1'], values['soc_distance_rank_t2_2'], values['soc_distance_rank_t2_3']]
-            # set() gives you distinct elements. if a list's length is different from its
-            # set length, that means it must have duplicates.
-            if len(set(choices)) != len(choices):
-                return "Sie können nicht dasselbe Element mehrfach auswählen."
+    # @staticmethod
+    # def error_message(player: Player, values):
+    #     if player.participant.treatment in ["dev", "both"]:
+    #         choices = [values['soc_distance_rank_t2_1'], values['soc_distance_rank_t2_2'], values['soc_distance_rank_t2_3']]
+    #         # set() gives you distinct elements. if a list's length is different from its
+    #         # set length, that means it must have duplicates.
+    #         if len(set(choices)) != len(choices):
+    #             return "Sie können nicht dasselbe Element mehrfach auswählen."
 
 
 class SocDist1(Page):
@@ -608,13 +634,13 @@ class SocDist1(Page):
         else:
             return False
 
-    @staticmethod
-    def error_message(player: Player, values):
-        choices = [values['soc_distance_rank_t1_1'], values['soc_distance_rank_t1_2'], values['soc_distance_rank_t1_3']]
-        # set() gives you distinct elements. if a list's length is different from its
-        # set length, that means it must have duplicates.
-        if len(set(choices)) != len(choices):
-            return "Sie können nicht dasselbe Element mehrfach auswählen."
+    # @staticmethod
+    # def error_message(player: Player, values):
+    #     choices = [values['soc_distance_rank_t1_1'], values['soc_distance_rank_t1_2'], values['soc_distance_rank_t1_3']]
+    #     # set() gives you distinct elements. if a list's length is different from its
+    #     # set length, that means it must have duplicates.
+    #     if len(set(choices)) != len(choices):
+    #         return "Sie können nicht dasselbe Element mehrfach auswählen."
 
 class SocDist2(Page):
     form_model = "player"
@@ -645,13 +671,13 @@ class SocDist2(Page):
         else:
             return False
 
-    @staticmethod
-    def error_message(player: Player, values):
-        choices = [values['soc_distance_rank_t2_1'], values['soc_distance_rank_t2_2'], values['soc_distance_rank_t2_3']]
-        # set() gives you distinct elements. if a list's length is different from its
-        # set length, that means it must have duplicates.
-        if len(set(choices)) != len(choices):
-            return "Sie können nicht dasselbe Element mehrfach auswählen."
+    # @staticmethod
+    # def error_message(player: Player, values):
+    #     choices = [values['soc_distance_rank_t2_1'], values['soc_distance_rank_t2_2'], values['soc_distance_rank_t2_3']]
+    #     # set() gives you distinct elements. if a list's length is different from its
+    #     # set length, that means it must have duplicates.
+    #     if len(set(choices)) != len(choices):
+    #         return "Sie können nicht dasselbe Element mehrfach auswählen."
 
 class End(Page):
     def vars_for_template(player: Player):
@@ -668,20 +694,21 @@ class End(Page):
         fail_str, succ_str = "Sie lagen leider daneben.", "Sie haben richtig geschätzt!"
         apartment_res, borrower_res = fail_str, fail_str
         if player.participant.tasks_order:
-            t1_correct = player.task1Estimate == apartment
-            apart_est, apart_correct = format_german_number(player.task1Estimate), format_german_number(apartment)
+            # TODO: task estimate -> Revision
+            t1_correct = player.revision == apartment
+            apart_est, apart_correct = format_german_number(player.revision), format_german_number(apartment)
 
-            t2_correct = player.task2Estimate == borrower
+            t2_correct = player.revision2 == borrower
 
             if t1_correct:
                 apartment_res = succ_str
             if t2_correct:
                 borrower_res = succ_str
         else:
-            t1_correct = player.task1Estimate == borrower
+            t1_correct = player.revision == borrower
 
-            t2_correct = player.task1Estimate == apartment
-            apart_est, apart_correct = format_german_number(player.task2Estimate), format_german_number(apartment)
+            t2_correct = player.revision2 == apartment
+            apart_est, apart_correct = format_german_number(player.revision2), format_german_number(apartment)
 
             if t1_correct:
                 borrower_res = succ_str
@@ -695,11 +722,13 @@ class End(Page):
                                           f"{format_german_number(0.01*(30 - abs(player.wtp - 50)) + 5, 2)} EUR</b> <br>" \
                                           f"({format_german_number(5, 2)} für die Schätzung und " \
                                           f"{format_german_number(0.01*(30 - abs(player.wtp - 50)), 2)} Restbudget)."
+            player.participant.var_payment_amount = 0.01*(30 - abs(player.wtp - 50)) + 5
         else:
-            feedback_str = feedback_str + f"Ihre <b>variable Vergütung beträgt somit insgesamt {format_german_number(0.01*(30 - abs(player.wtp - 50)), 2)} EUR</b> <br>" \
+            feedback_str = feedback_str + f"Ihre <b>variable Vergütung beträgt somit insgesamt " \
+                                          f"{format_german_number(0.01*(30 - abs(player.wtp - 50)), 2)} EUR</b> <br>" \
                                           f"({format_german_number(0, 2)} EUR für die Schätzung und " \
                                           f"{format_german_number(0.01*(30 - abs(player.wtp - 50)), 2)} EUR Restbudget)."
-
+            player.participant.var_payment_amount = 0.01 * (30 - abs(player.wtp - 50))
 
 
         return dict(apartment=apartment,

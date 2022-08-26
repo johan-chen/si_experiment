@@ -9,10 +9,10 @@
 {{ if player.participant.tasks_order }}
     <div>In Aufgabe 1 haben Sie den Preis der Immobilie auf {{ apart_est }} EUR geschätzt,
         die richtige Antwort war {{ apart_correct }} EUR. {{ apartment_res }}<br><br>
-    In Aufgabe 2 haben Sie das Kreditausfallrisiko auf {{ player.task2Estimate }}% geschätzt,
+    In Aufgabe 2 haben Sie das Kreditausfallrisiko auf {{ player.revision2 }}% geschätzt,
         die richtige Antwort war {{ borrower }}%. {{ borrower_res }}</div>
 {{ else }}
-    <div>In Aufgabe 1 haben Sie das Kreditausfallrisiko auf {{ player.task1Estimate }}% geschätzt,
+    <div>In Aufgabe 1 haben Sie das Kreditausfallrisiko auf {{ player.revision }}% geschätzt,
         die richtige Antwort war {{ borrower }}%. {{ borrower_res }}<br><br>
     In Aufgabe 2 haben Sie den Preis der Immobilie auf {{ apart_est }} EUR geschätzt,
         die richtige Antwort war {{ apart_correct }} EUR. {{ apartment_res }}</div>

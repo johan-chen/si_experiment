@@ -9,7 +9,7 @@ SESSION_CONFIGS = [
     dict(
         name="si_experiment",
         app_sequence=['si_experiment'],
-        num_demo_participants=2,
+        num_demo_participants=50,
     )
 ]
 
@@ -24,7 +24,7 @@ SESSION_CONFIG_DEFAULTS = dict(
 
 PARTICIPANT_FIELDS = ["treatment", "pre_questions_order", "post_questions_order_t1", "post_questions_order_t2",
                       "tasks_order", "apartment_row", "lender_row", "dev_row1", "dev_row2", "info_first",
-                      "task_payment_relevance", "stage_order"]
+                      "task_payment_relevance", "stage_order", "prob_ai", "var_payment_amount"]
 SESSION_FIELDS = []
 
 # ISO-639 code
