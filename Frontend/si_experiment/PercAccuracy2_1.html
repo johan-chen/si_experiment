@@ -10,19 +10,19 @@
 
         $(document).ready(function() {
             // create slider
-            var slider = document.getElementById('slider_per_acc');
+            var slider = document.getElementById('slider_per_acc2');
             createSliderPerAcc(slider)
 
             // write slider results into form field for data export
             document.getElementById("next-button").addEventListener("click", function (){
-                document.getElementById("perc_acc").value = parseInt(slider.noUiSlider.get(true))
+                document.getElementById("perc_acc2").value = parseInt(slider.noUiSlider.get(true))
             });
         })
     </script>
 </head>
 
 Im nächsten Schritt haben Sie die Chance, Ihre Schätzung anzupassen. Damit Sie eine bessere Entscheidung treffen,
-stellen wir Ihnen eine <b>{{ if player.participant.stage_order }}neue {{ endif }}Künstliche Intelligenz (KI)</b> zur potentiellen Unterstützung vor.
+stellen wir Ihnen eine <b>{{ if player.participant.stage_order == False }}neue {{ endif }}Künstliche Intelligenz (KI)</b> zur Unterstützung vor.
 <br><br>
 
 {{ if player.participant.treatment in ["both", "dev"] }}
@@ -31,36 +31,36 @@ stellen wir Ihnen eine <b>{{ if player.participant.stage_order }}neue {{ endif }
 
 {{ if player.participant.tasks_order }}
     Die KI
-    {{ if player.participant.stage_order }}{{ if player.participant.treatment == "both" || player.participant.treatment == "dev" }}&nbsp;&ndash; von einem/r <b>anderen Entwickler/in</b> gebaut &nbsp;&ndash;{{ endif }}{{ endif }} ist darauf trainiert, den Verkaufspreis von auf der
-    Plattform gelisteten Wohnungen vorherzusagen. Die KI nutzt die gleichen zehn Eigenschaften von
-    Wohnungen, um den angebotenen Preis vorherzusagen.
-{{ else }}
-    Die KI
-    {{ if player.participant.stage_order }}{{ if player.participant.treatment == "both" || player.participant.treatment == "dev" }}&nbsp;&ndash; von einem/r <b>anderen Entwickler/in</b> gebaut &nbsp;&ndash;{{ endif }}{{ endif }} ist darauf trainiert, das Kreditausfallrisiko
+    {{ if player.participant.stage_order == False }}{{ if player.participant.treatment == "both" || player.participant.treatment == "dev" }}&nbsp;&ndash; von einem/r <b>anderen Entwickler/in</b> gebaut &nbsp;&ndash;{{ endif }}{{ endif }} ist darauf trainiert, das Kreditausfallrisiko
         von Kreditbewerbern vorherzusagen. Die KI nutzt die gleichen zehn Eigenschaften von
         Kreditbewerbern, um das Ausfallrisiko vorherzusagen.
+{{ else }}
+    Die KI
+    {{ if player.participant.stage_order == False }}{{ if player.participant.treatment == "both" || player.participant.treatment == "dev" }}&nbsp;&ndash; von einem/r <b>anderen Entwickler/in</b> gebaut &nbsp;&ndash;{{ endif }}{{ endif }} ist darauf trainiert, den Verkaufspreis von auf der
+    Plattform gelisteten Wohnungen vorherzusagen. Die KI nutzt die gleichen zehn Eigenschaften von
+    Wohnungen, um den angebotenen Preis vorherzusagen.
 {{ endif }}
 
 
 <br><br>
 Die KI basiert auf einem Random Forest, eine der einfachsten, aber auch eine der
 leistungsfähigsten KI-Methoden. Ein Random Forest nutzt eine Vielzahl unterschiedlicher Entscheidungsbäume,
-die jeweils einen einzelnen Wert vorhersagen (hier:{{ if player.participant.tasks_order }} den Verkaufspreis{{ else }}
-das Kreditausfallrisiko{{ endif }}).
+die jeweils einen einzelnen Wert vorhersagen (hier:
+{{ if player.participant.tasks_order }}das Kreditausfallrisiko{{ else }}den Verkaufspreis{{ endif }}).
 Die Mehrheitsvorhersage alle Entscheidungsbäume bestimmt dann die endgültige Vorhersage. Mit anderen Worten:
 Der Random Forest nutzt die "Weisheit der Menge".
 <br><br>
 
 {{ if player.participant.tasks_order }}
-    Wir möchten gerne wissen, für wie genau Sie die KI halten. Die <b>Genauigkeit der KI</b> bemisst sich daran, <b>wie häufig der tatsächliche Verkaufspreis der Wohnung vorhergesagt wird</b>.
-    Die KI kann dabei zwischen den selben 11 Schritten des Schiebereglers auswählen, die auch Ihnen zur Auswahl standen.
+Die <b>Genauigkeit der KI</b> bemisst sich daran, <b>wie häufig das korrekte Kreditausfallrisiko vorhergesagt</b> wird.
+    Die KI kann dabei zwischen den selben 11 Werten auswählen, die auch Ihnen zur Auswahl standen.
     100% Genauigkeit bedeutet, dass die KI immer den richtigen Wert vorhersagt, während 0% bedeutet, dass sie nie den richtigen Wert vorhersagt.
     Zum Vergleich: Falls der Schritt auf dem Schieberegler einfach zufällig ausgewählt würde, wäre die Genauigkeit 1/11 und somit weniger als 10%.
     <br><br>
     Wie hoch schätzen Sie die Genauigkeit der KI ein?
 {{ else }}
-    Wir möchten gerne wissen, für wie genau Sie die KI halten. Die <b>Genauigkeit der KI</b> bemisst sich daran, <b>wie häufig das korrekte Kreditausfallrisiko vorhergesagt</b> wird.
-    Die KI kann dabei zwischen den selben 11 Schritten des Schiebereglers auswählen, die auch Ihnen zur Auswahl standen.
+Die <b>Genauigkeit der KI</b> bemisst sich daran, <b>wie häufig der tatsächliche Verkaufspreis der Wohnung vorhergesagt wird</b>.
+    Die KI kann dabei zwischen den selben 11 Werten auswählen, die auch Ihnen zur Auswahl standen.
     100% Genauigkeit bedeutet, dass die KI immer den richtigen Wert vorhersagt, während 0% bedeutet, dass sie nie den richtigen Wert vorhersagt.
     Zum Vergleich: Falls der Schritt auf dem Schieberegler einfach zufällig ausgewählt würde, wäre die Genauigkeit 1/11 und somit weniger als 10%.
     <br><br>
@@ -70,13 +70,13 @@ Der Random Forest nutzt die "Weisheit der Menge".
 
 <br><br><br>
 
-<table id="perc_acc_tab" class="tab_slider">
+<table id="perc_acc_tab2" class="tab_slider">
     <tr>
-        <th><div id="slider_per_acc"></div></th>
+        <th><div id="slider_per_acc2"></div></th>
     </tr>
 </table>
 
-<input type="hidden" name="perc_acc" id="perc_acc" />
+<input type="hidden" name="perc_acc2" id="perc_acc2" />
 
 <br><br><br>
 <button id="next-button" class="otree-btn-next btn btn-primary">

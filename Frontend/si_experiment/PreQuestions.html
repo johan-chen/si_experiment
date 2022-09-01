@@ -4,7 +4,7 @@
 {{ endblock }}
 {{ block content }}
 <p>
-    Zu Beginn des Experiments bitten wir Sie, <b>ein paar Fragen wahrheitsgemäß zu beantworten</b>.
+    Zu Beginn des Experiments bitten wir Sie, <b>die folgenden Fragen wahrheitsgemäß zu beantworten</b>.
     Bitte beachten Sie, dass es bei diesen Antworten keine richtigen oder falschen Angaben gibt. Die Antworten
     beeinflussen weder Ihre variable Vergütung noch den weiteren Verlauf der Studie.
 </p>
@@ -68,7 +68,7 @@
     </tr>
     {{ for field in form }}
 <!--    counter starts at 1 / skip non-Likert formfields -->
-    {{ if forloop.counter > 12 }}
+    {{ if forloop.counter > 11 }}
     <tr>
         <td class="likert_label">{{ field.label }}</td>
         {{ for choice in field }}

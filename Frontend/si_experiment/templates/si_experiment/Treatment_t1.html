@@ -34,7 +34,7 @@
                     <td class="treatment_elem">
                         <table>
                             <tr>
-                                <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order }} 40%{{ else }} 45%{{ endif }}. </b></td>
+                                <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order && player.participant.stage_order || player.participant.tasks_order && player.participant.stage_order == False }} 40%{{ else }} 45%{{ endif }}. </b></td>
                             </tr>
                             <tr>
                                 <td style="padding-left:10px"><br><b>Die KI kann Ihre Chance mehr als vervierfachen:</b>
@@ -57,7 +57,7 @@
                     <td class="treatment_elem">
                         <table>
                             <tr>
-                                <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order }} 40%{{ else }} 45%{{ endif }}. </b></td>
+                                <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order && player.participant.stage_order || player.participant.tasks_order && player.participant.stage_order == False }} 40%{{ else }} 45%{{ endif }}. </b></td>
                             </tr>
                             <tr>
                                 <td style="padding-left:10px"><br><b>Die KI kann Ihre Chance mehr als vervierfachen:</b>
@@ -122,7 +122,7 @@
             <td class="treatment_elem">
                 <table>
                     <tr>
-                        <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order }} 40%{{ else }} 45%{{ endif }}. </b></td>
+                        <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order && player.participant.stage_order || player.participant.tasks_order && player.participant.stage_order == False }} 40%{{ else }} 45%{{ endif }}. </b></td>
                     </tr>
                     <tr>
                         <td style="padding-left:10px"><br><b>Die KI kann Ihre Chance mehr als vervierfachen:</b>

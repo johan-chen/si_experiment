@@ -14,7 +14,6 @@
                 });
             })
         </script>
-
     {{ else }}
         Revision Ihrer Schätzung
         <script>
@@ -29,7 +28,6 @@
                 });
             })
         </script>
-
     {{ endif }}
 {{ endblock }}
 
@@ -39,9 +37,16 @@
 
 </head>
 <!--todo: if else für Satzteil über Vorhersage der KI falls diese wirklich angezeigt wird -->
-In diesem Schritt erhalten Sie die <b>Möglichkeit</b>, Ihre abgegebene <b>{{ if player.participant.tasks_order }} Preisschätzung {{ else }} Schätzung des Ausfallrisikos {{ endif }}
+In diesem Schritt erhalten Sie die <b>Möglichkeit</b>, Ihre abgegebene <b>
+    {{ if player.participant.tasks_order }}
+        Preisschätzung
+    {{ else }}
+        Schätzung des Ausfallrisikos
+    {{ endif }}
     noch einmal anzupassen</b>. Dazu zeigen wir Ihnen erneut die Eigenschaften
-{{ if player.participant.tasks_order }} der Immobilie{{ else }} des Kreditbewerbers{{ endif }}{{ if prob_ai }} sowie die Vorhersage der KI{{ endif }}.
+    {{ if player.participant.tasks_order }}
+        der Immobilie{{ else }}
+        des Kreditbewerbers{{ endif }}{{ if prob_ai }} sowie die Vorhersage der KI{{ endif }}.
 Beachten Sie, dass diese <b>angepasste Schätzung Ihre vorherige Schätzung überschreibt</b> und
 es Ihre <b>letzte Möglichkeit zur Anpassung</b> ist. Somit könnte es auch <b>für Ihre variable Vergütung ausschlaggebend sein</b>.
 
@@ -54,7 +59,7 @@ es Ihre <b>letzte Möglichkeit zur Anpassung</b> ist. Somit könnte es auch <b>f
 {{ endif }}
 <br><br>
 
-{{ if player.participant.tasks_order}}
+{{ if player.participant.tasks_order }}
     {{ include "si_experiment/immoRevision.html" }}
 {{ else }}
     {{ include "si_experiment/creditRevision.html" }}

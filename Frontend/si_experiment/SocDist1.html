@@ -1,13 +1,13 @@
 {{ extends "si_experiment/Page.html" }}
 {{ block title }}
-    Aufgabe 1: KI Entwickler/in
+    Aufgabe {{ if player.participant.stage_order }}2{{ else }}1{{ endif }}: KI Entwickler/in
 {{ endblock }}
 
 {{ block content }}
 <head>
 
 </head>
-Wir stellen Ihnen nun {{ if developer.gender == "weiblich" }}die <b>Entwicklerin</b>{{ else }}den <b>Entwickler</b>{{ endif }} der KI der <b>ersten Aufgabe zur Vorhersage {{ if player.participant.tasks_order }}der Immobilienpreise{{ else }}des Kreditausfallrisikos{{ endif }}</b> vor.
+Wir stellen Ihnen nun {{ if developer.gender == "weiblich" }}die <b>Entwicklerin</b>{{ else }}den <b>Entwickler</b>{{ endif }} der KI der <b>{{ if player.participant.stage_order }}zweiten{{ else }}ersten{{ endif }} Aufgabe zur Vorhersage {{ if player.participant.tasks_order }}der Immobilienpreise{{ else }}des Kreditausfallrisikos{{ endif }}</b> vor.
 <br> <br>
 {{ include "si_experiment/dev.html" }}
 

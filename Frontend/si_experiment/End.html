@@ -6,16 +6,32 @@
 <div>Ihre Antworten wurden anonymisiert gespeichert.</div>
 <br>
 
-{{ if player.participant.tasks_order }}
+<!-- 1 Demand: Immo, 2 Processing: Credit  -->
+{{ if player.participant.tasks_order && player.participant.stage_order == False }}
     <div>In Aufgabe 1 haben Sie den Preis der Immobilie auf {{ apart_est }} EUR geschätzt,
         die richtige Antwort war {{ apart_correct }} EUR. {{ apartment_res }}<br><br>
-    In Aufgabe 2 haben Sie das Kreditausfallrisiko auf {{ player.revision2 }}% geschätzt,
+        In Aufgabe 2 haben Sie das Kreditausfallrisiko auf {{ player.revision2 }}% geschätzt,
         die richtige Antwort war {{ borrower }}%. {{ borrower_res }}</div>
-{{ else }}
+<!-- 1 Demand: Credit, 2 Processing: Immo  -->
+{{ elif player.participant.tasks_order == False && player.participant.stage_order == False }}
     <div>In Aufgabe 1 haben Sie das Kreditausfallrisiko auf {{ player.revision }}% geschätzt,
         die richtige Antwort war {{ borrower }}%. {{ borrower_res }}<br><br>
-    In Aufgabe 2 haben Sie den Preis der Immobilie auf {{ apart_est }} EUR geschätzt,
+        In Aufgabe 2 haben Sie den Preis der Immobilie auf {{ apart_est }} EUR geschätzt,
         die richtige Antwort war {{ apart_correct }} EUR. {{ apartment_res }}</div>
+<!-- 2 Processing: Immo, 1 Demand: Credit -->
+{{ elif player.participant.tasks_order == False && player.participant.stage_order }}
+    <div>In Aufgabe 1 haben Sie den Preis der Immobilie auf {{ apart_est }} EUR geschätzt,
+        die richtige Antwort war {{ apart_correct }} EUR. {{ apartment_res }}<br><br>
+        In Aufgabe 2 haben Sie das Kreditausfallrisiko auf {{ player.revision }}% geschätzt,
+        die richtige Antwort war {{ borrower }}%. {{ borrower_res }}
+        </div>
+<!-- 2 Processing: Credit, 1 Demand: Immo -->
+{{ elif player.participant.tasks_order && player.participant.stage_order }}
+    <div>In Aufgabe 1 haben Sie das Kreditausfallrisiko auf {{ player.revision2 }}% geschätzt,
+        die richtige Antwort war {{ borrower }}%. {{ borrower_res }}<br><br>
+        In Aufgabe 2 haben Sie den Preis der Immobilie auf {{ apart_est }} EUR geschätzt,
+        die richtige Antwort war {{ apart_correct }} EUR. {{ apartment_res }}
+    </div>
 {{ endif }}
 <br>
 <div>{{ feedback_str }}</div>
