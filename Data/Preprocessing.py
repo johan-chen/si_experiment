@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-data = pd.read_csv("Data/all_apps_wide-2022-09-02.csv", sep=',')
+data = pd.read_csv("Data/all_apps_wide-2022-09-06.csv", sep=',')
 data = data[data["participant._current_page_name"] == "End"]
 print("number of participants: ", data.shape[0])
 data.columns = data.columns.str.removeprefix("si_experiment.1.player.")
@@ -12,6 +12,25 @@ df = data.iloc[:,13:len(data.columns)-2]
 df.drop(list(df.filter(regex = 'session')), axis = 1, inplace = True)
 
 #%%
+# todo: extract advice (pred) of ai to use as variable to calc WOA for both tasks
+
+def format_german_number(number, precision=0):
+    # build format string
+    format_str = '{{:,.{}f}}'.format(precision)
+
+    # make number string
+    number_str = format_str.format(number)
+
+    # replace chars
+    return number_str.replace(',', 'X').replace('.', ',').replace('X', '.')
+
+
+apartments = pd.read_csv("Frontend/Data/immonet_data_selected.csv")
+apartments = apartments[['pred_price']]
+
+
+#%%
+
 # create dummy treatment var dev, acc for analyses
 df["treat_dev"] = np.where((df["treatment"] == "dev") | (df["treatment"] == "both"), 1, 0)
 df["treat_acc"] = np.where((df["treatment"] == "acc") | (df["treatment"] == "both"), 1, 0)
