@@ -34,10 +34,10 @@
                     <td class="treatment_elem">
                         <table>
                             <tr>
-                                <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order }} 45%{{ else }} 40%{{ endif }}. </b></td>
+                                <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order == False && player.participant.stage_order || player.participant.tasks_order == False && player.participant.stage_order == False }} 40%{{ else }} 45%{{ endif }}. </b></td>
                             </tr>
                             <tr>
-                                <td style="padding-left:10px"><br><b>Die KI kann Ihre Chance mehr als vervierfachen:</b>.
+                                <td style="padding-left:10px"><br><b>Die KI kann Ihre Chance mehr als vervierfachen:</b>
                                 Die Chance, aus Zufall den richtigen Schritt auf dem Schieberegler zu treffen, beträgt weniger als 10%.</td>
                             </tr>
                         </table>
@@ -57,7 +57,7 @@
                     <td class="treatment_elem">
                         <table>
                             <tr>
-                                <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order }} 45%{{ else }} 40%{{ endif }}. </b></td>
+                                <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order == False && player.participant.stage_order || player.participant.tasks_order == False && player.participant.stage_order == False }} 40%{{ else }} 45%{{ endif }}. </b></td>
                             </tr>
                             <tr>
                                 <td style="padding-left:10px"><br><b>Die KI kann Ihre Chance mehr als vervierfachen:</b>
@@ -122,10 +122,10 @@
             <td class="treatment_elem">
                 <table>
                     <tr>
-                        <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order }} 45%{{ else }} 40%{{ endif }}. </b></td>
+                        <td style="padding-left:10px">Die <b>Genauigkeit</b> der KI beträgt <b>{{ if player.participant.tasks_order == False && player.participant.stage_order || player.participant.tasks_order == False && player.participant.stage_order == False }} 40%{{ else }} 45%{{ endif }}. </b></td>
                     </tr>
                     <tr>
-                        <td style="padding-left:10px"><br><b>Die KI kann Ihre Chance mehr als vervierfachen:</b>.
+                        <td style="padding-left:10px"><br><b>Die KI kann Ihre Chance mehr als vervierfachen:</b>
                             Die Chance, aus Zufall den richtigen Schritt auf dem Schieberegler zu treffen, beträgt weniger als 10%.</td>
                     </tr>
                 </table>

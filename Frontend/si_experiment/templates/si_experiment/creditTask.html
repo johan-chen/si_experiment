@@ -15,8 +15,8 @@
     <div>
         In diesem Schritt sollen Sie das <b>Ausfallrisiko</b> eines Kreditbewerbers schätzen. Hierbei handelt
         es sich um eine reale Person. Das Ausfallrisiko liegt zwischen 0% und 100%.
-        Um das Ausfallrisiko besser zu schätzen, können Sie sich die unten gelisteten Eigenschaften des Kreditbewerbers ansehen.
-        Sie können diese Informationen nutzen, müssen es aber nicht. Bewegen Sie anschließend den <b>Schieberegler auf die entsprechende Position,</b>
+        Um das Ausfallrisiko besser zu schätzen, können Sie die unten gelisteten Eigenschaften des Kreditbewerbers nutzen.
+        Bewegen Sie anschließend den <b>Schieberegler auf die entsprechende Position</b>,
         um eine Schätzung abzugeben.<br>
 </div>
     <br>
@@ -59,9 +59,9 @@
         <td>{{borrower.home_ownership}}</td>
     </tr>
     <tr>
-        <td>DTI*</td>
+        <td>Debt-to-Income Ratio*</td>
 <!--        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Eine Kennzahl, die sich aus den monatlichen Gesamtzahlungen des Kreditnehmers für seine gesamten Verbindlichkeiten (ohne Hypotheken und den beantragten Kredit), geteilt durch sein selbst angegebenes Monatseinkommen, errechnet." class="question_mark">?</span>-->
-        <td>{{borrower.dti}}</td>
+        <td>{{borrower.dti}} %</td>
     </tr>
     <tr>
         <td>Anzahl offener Rechnungen</td>
@@ -69,7 +69,7 @@
     </tr>
 </table>
 
-        <div style="margin-left: 5%;"><i><small>*Eine Kennzahl, die sich aus den monatlichen Verbindlichkeiten (ohne Hypotheken) des <br>
+        <div style="margin-left: 5%;"><i><small>*Eine Kennzahl, die sich aus den monatlichen Schulden (ohne Hypotheken und ohne diesen Kredit)<br> des
             Kreditnehmers geteilt durch sein selbst angegebenes Monatseinkommen errechnet.</small></i></div>
         <br><br>
 <div>

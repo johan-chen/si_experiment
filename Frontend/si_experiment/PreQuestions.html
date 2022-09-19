@@ -3,30 +3,8 @@
     Fragen
 {{ endblock }}
 {{ block content }}
-<head>
-    <script>
-        var slider_importances = ["slider_importance_sex", "slider_importance_migration_bg", "slider_importance_pol_views"]
-        var importances = ["importance_sex", "importance_migration_bg", "importance_pol_views"]
-        $(document).ready(function() {
-
-            // create slider for importances
-            for (let [i, slid] of slider_importances.entries()) {
-                slider_importances[i] = document.getElementById(slid)
-                createSlider(slider_importances[i])
-            }
-
-            // write slider results into form field for data export
-            document.getElementById("next-button").addEventListener("click", function (){
-
-                for (let [i, imp] of importances.entries()) {
-                    document.getElementById(imp).value = parseInt(slider_importances[i].noUiSlider.get(true))
-            }
-            });
-        })
-    </script>
-</head>
 <p>
-    Zu Beginn des Experiments bitten wir Sie, <b>ein paar Fragen wahrheitsgemäß zu beantworten</b>.
+    Zu Beginn des Experiments bitten wir Sie, <b>die folgenden Fragen wahrheitsgemäß zu beantworten</b>.
     Bitte beachten Sie, dass es bei diesen Antworten keine richtigen oder falschen Angaben gibt. Die Antworten
     beeinflussen weder Ihre variable Vergütung noch den weiteren Verlauf der Studie.
 </p>
@@ -37,9 +15,6 @@
 
 <hr style="border-top:3px dashed black; background: transparent; opacity: 1 ">
 <br>
-
-<!-- otree hidden form field for slider -->
-<!--<input type="hidden" name="pol_views" id="pol_views" />-->
 
 <!-- importance table -->
 <table class="importance-table">
@@ -52,17 +27,17 @@
     <tr>
         <td style="vertical-align: middle">{{ form.sex.label }}</td>
         <td style="vertical-align: middle">{{ form.sex }}</td>
-        <td style="width:280px">{{ form.importance_sex }}</td>
+        <td style="vertical-align: middle; min-width: 280px;">{{ form.importance_sex }}</td>
     </tr>
     <tr>
         <td style="vertical-align: middle">{{ form.migration_bg.label }}</td>
         <td style="vertical-align: middle">{{ form.migration_bg }}</td>
-        <td>{{ form.importance_migration_bg }}</td>
+        <td style="vertical-align: middle">{{ form.importance_migration_bg }}</td>
     </tr>
     <tr>
         <td style="vertical-align: middle">{{ form.pol_views.label }}</td>
         <td style="vertical-align: middle">{{ form.pol_views }} </td>
-        <td>{{ form.importance_pol_views}}</td>
+        <td style="vertical-align: middle">{{ form.importance_pol_views}}</td>
     </tr>
 </table>
 
@@ -103,17 +78,6 @@
     {{ endif }}
     {{ endfor }}
 </table>
-<!--<table class="importance-table">-->
-<!--    {{ for args in form}}-->
-<!--    {{ if forloop.counter < 4 }}-->
-<!--   sequence: sex, migration_bg, pol_views -->
-<!--    <tr>-->
-<!--        <td style="vertical-align: middle">{{ args.label }}</td>-->
-<!--        <td class="importance-slider"><div id="slider_{{ args.name }}"></div></td>-->
-<!--    </tr>-->
-<!--    {{ endif }}-->
-<!--    {{ endfor }}-->
-<!--</table>-->
 <br>
 <button id="next-button" class="otree-btn-next btn btn-primary">
     Weiter

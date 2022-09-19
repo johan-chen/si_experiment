@@ -2,13 +2,6 @@
     Herzlich Willkommen
 {{ endblock }}
 {{ block content }}
-
-            <div style="color: red"><small>Randomization (for testing only)<br>treatmentgroup: {{ player.participant.treatment }} | RealEstate first: {{ player.participant.tasks_order }} |
-    RealEstateRow: {{ player.participant.apartment_row }} | LendingRow: {{ player.participant.lender_row }} |
-        DeveloperProfiles: {{ player.participant.dev_row1 }}, {{ player.participant.dev_row2 }} | InfoFirst: {{ player.participant.info_first}} |
-    Task for payment: {{ player.participant.task_payment_relevance }}</small></div>
-    <br>
-
 <head>
         <link rel="stylesheet" href="{{ static 'global/styles.css' }}">
 </head>
@@ -21,10 +14,19 @@
 
     <i><b><u>Was muss ich tun?</u></b></i><br>
     In der Studie bearbeiten Sie zwei Aufgaben. Bei beiden Aufgaben handelt es sich um Schätzungen, allerdings in
-    unterschiedlichen Kontexten: Die erste Aufgabe beschäftigt sich mit der {{ if player.participant.tasks_order }}Schätzung
-    von Listenpreisen von Immobilien{{ else }}Schätzung des Ausfallrisikos von Kreditbewerbern{{ endif }}, während es bei
-    der zweiten Aufgabe um die {{ if player.participant.tasks_order }}Schätzung des Ausfallrisikos von Kreditbewerbern{{ else }}
-    Schätzung von Listenpreisen von Immobilien{{ endif }} geht. Zudem werden wir Ihnen einige Fragen stellen.
+    unterschiedlichen Kontexten: Die erste Aufgabe beschäftigt sich mit der
+    {{ if player.participant.tasks_order && player.participant.stage_order == False || player.participant.tasks_order == False && player.participant.stage_order }}
+        Schätzung von Listenpreisen von Immobilien,
+    {{ else }}
+        Schätzung des Ausfallrisikos von Kreditbewerbern,
+    {{ endif }}
+    während es bei der zweiten Aufgabe um die
+    {{ if player.participant.tasks_order && player.participant.stage_order || player.participant.tasks_order == False && player.participant.stage_order == False }}
+        Schätzung von Listenpreisen von Immobilien
+    {{ else }}
+        Schätzung des Ausfallrisikos von Kreditbewerbern
+    {{ endif }}
+    geht. Zudem werden wir Ihnen einige Fragen stellen.
     Bitte bearbeiten Sie alle Aufgaben sorgfältig, um die Studie erfolgreich abzuschließen.
     <br>
     <br>
@@ -33,7 +35,7 @@
     Für die Teilnahme erhalten Sie <b>zusätzlich zu einer fixen Vergütung</b> auch eine <b>variable Vergütung</b>, die von
     der <b>Genauigkeit Ihrer Schätzungen</b> abhängt. Dazu wählen wir zufällig eine der beiden
     Aufgaben aus, die für die variable Vergütung ausschlaggebend ist. Diese variable Vergütung beträgt bis zu <b>5,30 EUR</b>.
-    Die gesamte Vergütung werden wir Ihnen in den nächsten Tagen/Wochen über Prolific
+    Die gesamte Vergütung werden wir Ihnen in den nächsten Tagen über Prolific
     zukommen lassen. Die Studie dauert <b>nur ca. 10 Minuten</b>.
     <br><br>
     Selbstverständlich behandeln wir alle Daten zu jeder Zeit streng vertraulich und nutzen diese nur für wissenschaftliche Zwecke.

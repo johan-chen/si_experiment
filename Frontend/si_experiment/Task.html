@@ -1,7 +1,7 @@
 {{ extends "si_experiment/Page.html" }}
 {{ block title }}
-    {{ if player.participant.tasks_order}}
-        Aufgabe 1: Ihre Preisschätzung einer Immobilie
+    {{ if player.participant.tasks_order }}
+        Aufgabe {{ if player.participant.stage_order }}2{{ else }}1{{ endif }}: Ihre Preisschätzung einer Immobilie
         <script>
             $(document).ready(function() {
                 // create slider
@@ -15,9 +15,8 @@
                 });
             })
         </script>
-
     {{ else }}
-        Aufgabe 1: Ihre Schätzung für einen Kreditausfall
+        Aufgabe {{ if player.participant.stage_order }}2{{ else }}1{{ endif }}: Ihre Schätzung für einen Kreditausfall
         <script>
             $(document).ready(function() {
             // create slider
@@ -31,13 +30,12 @@
             });
         })
         </script>
-
     {{ endif }}
 
 {{ endblock }}
 {{ block content }}
 
-{{ if player.participant.tasks_order}}
+{{ if player.participant.tasks_order }}
     {{ include "si_experiment/immoTask.html" }}
 {{ else }}
     {{ include "si_experiment/creditTask.html" }}

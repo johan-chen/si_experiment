@@ -1,16 +1,17 @@
 {{ extends "si_experiment/Page.html" }}
 {{ block title }}
-    Aufgabe {{ if player.participant.stage_order }}1{{ else }}2{{ endif }}: KI Entwickler/in
+    Fragen
 {{ endblock }}
 
 {{ block content }}
 <head>
 
 </head>
-Wir stellen Ihnen nun {{ if developer.gender == "weiblich" }}die <b>Entwicklerin</b>{{ else }}den <b>Entwickler</b>{{ endif }} der KI der <b>{{ if player.participant.stage_order }}ersten{{ else }}zweiten{{ endif }} Aufgabe zur Vorhersage {{ if player.participant.tasks_order }}des Kreditausfallrisikos{{ else }}der Immobilienpreise{{ endif }}</b> vor.
-<br> <br>
-{{ include "si_experiment/dev.html" }}
 
+<br>
+{{ include "si_experiment/Treatment_t2.html" }}
+
+{{ if player.participant.treatment in ["both", "dev"] }}
 <p>
     Bitte geben Sie Ihre persönliche Einstellung zu folgenden Aussagen an.
 </p>
@@ -50,6 +51,44 @@ Wir stellen Ihnen nun {{ if developer.gender == "weiblich" }}die <b>Entwicklerin
 {{ for field in ranks }}
     {{ formfield field }}
 {{ endfor }}
+
+<br>
+<hr style="border-top:3px dashed black; background: transparent; opacity: 1 ">
+<br>
+{{ endif }}
+
+<p>
+    Bitte geben Sie Ihre persönliche Einstellung zu folgenden Aussagen an.
+</p>
+<table class="likert">
+    <col span="1" class="wide">
+    <tr>
+        <th></th>
+        <th>Stimme <br> nicht zu</th>
+        <th>Stimme eher <br> nicht zu</th>
+        <th>Neutral</th>
+        <th>Stimme eher <br> zu</th>
+        <th>Stimme <br> zu</th>
+    </tr>
+
+    <tr>
+        <th></th>
+        {{for choice in form.anthro_t2_1.choices}}
+            <th>{{choice}}</th>
+        {{endfor}}
+    </tr>
+    {{ for field in form }}
+        {{ if player.participant.treatment in ["both", "dev"] && forloop.counter > 6 || player.participant.treatment in ["none", "acc"]}}
+            <tr>
+                <td class="likert_label">{{ field.label }}</td>
+                {{ for choice in field }}
+                    <td class="likert_choice">{{ choice }}</td>
+                {{ endfor }}
+            </tr>
+        {{ endif }}
+    {{ endfor }}
+</table>
+<br>
 
 <br>
 <button id="next-button" class="otree-btn-next btn btn-primary">
