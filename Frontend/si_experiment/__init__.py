@@ -70,11 +70,11 @@ def creating_session(subsession):
         # True -> Stage 3 (Processing) first
         # False -> Stage 2 (Demand) first
         participant.stage_order = random.choice([True, False])
-        # True -> Demand: Immo task, Processing: Credit task
-        # False -> Demand: Credit task, Processing: Immo task
+        # True -> Demand: Immo rel_task_name, Processing: Credit rel_task_name
+        # False -> Demand: Credit rel_task_name, Processing: Immo rel_task_name
         participant.tasks_order = random.choice([True, False])
 
-        # treatment and question/task order randomization
+        # treatment and question/rel_task_name order randomization
         treatments = ["none", "dev", "acc", "both"]
         pre_questions = [
             "soc_norms", "del_grat", "pers_inno1", "pers_inno2", "pers_inno3"]
@@ -93,10 +93,10 @@ def creating_session(subsession):
         participant.post_questions_order_t1 = post_questions_t1
         participant.post_questions_order_t2 = post_questions_t2
 
-        # task payment relevance (random)
+        # rel_task_name payment relevance (random)
         participant.task_payment_relevance = random.randint(1, 2)
 
-        # task object randomization
+        # rel_task_name object randomization
         participant.apartment_row = random.randint(0, 9)
         participant.lender_row = random.randint(0, 9)
 
@@ -113,7 +113,7 @@ def creating_session(subsession):
             info_first = "not_applicable"
         participant.info_first = info_first
 
-        # post question task adaption
+        # post question rel_task_name adaption
         # if tasks_order:
         #     t1_str = "Immobilienpreise"
         #     t2_str = "Kreditausfallrisiko"
@@ -161,7 +161,7 @@ class Player(BasePlayer):
     # Task 2 = Processing
     #####################
     
-    # social distance var -- task 1
+    # social distance var -- rel_task_name 1
     soc_distance_rank_t1_1 = make_rank_field("1. Platz")
     soc_distance_rank_t1_2 = make_rank_field("2. Platz")
     soc_distance_rank_t1_3 = make_rank_field("3. Platz")
@@ -171,7 +171,7 @@ class Player(BasePlayer):
     # soc_distance_t1_3 = make_field("Ich könnte zur gleichen Gruppe gehören wie der/die Entwickler/in.")
     soc_distance_t1_3 = make_field("Ich bin ein ähnlicher Mensch wie der/die Entwickler/in.")
 
-    # social distance var -- task 2
+    # social distance var -- rel_task_name 2
     soc_distance_rank_t2_1 = make_rank_field("1. Platz")
     soc_distance_rank_t2_2 = make_rank_field("2. Platz")
     soc_distance_rank_t2_3 = make_rank_field("3. Platz")
@@ -201,11 +201,11 @@ class Player(BasePlayer):
     task2Estimate = models.IntegerField()
     conf2Estimate = make_field("Ich bin von meiner Schätzung überzeugt.")
 
-    # perceived accuracy of AI -- task 1 and 2
+    # perceived accuracy of AI -- rel_task_name 1 and 2
     perc_acc = models.FloatField()
     perc_acc2 = models.FloatField()
 
-    # wtp -- task 1 and 2
+    # wtp -- rel_task_name 1 and 2
     wtp = models.FloatField()
     # wtp2 = models.FloatField()
 
@@ -316,14 +316,14 @@ class Task2_1(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-        # real estate task
+        # real estate rel_task_name
         apartments = pd.read_csv("Data/immonet_data_selected.csv")
         apartments = apartments[['garden', 'basement', 'elevator', 'balcony',
                                  'floor', 'n_rooms', 'sq_meters', 'construction_year',
                                  'unemployment', 'share_green']]
         apartment = dict(apartments.iloc[player.participant.apartment_row])
 
-        # lending task
+        # lending rel_task_name
         borrowers = pd.read_csv("Data/lending_data_selected.csv")
         for col in ['loan_amnt', 'annual_inc', 'installment']:
             borrowers[col] = [format_german_number(x, 0) for x in borrowers[col]]
@@ -444,14 +444,14 @@ class Task(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-        # real estate task
+        # real estate rel_task_name
         apartments = pd.read_csv("Data/immonet_data_selected.csv")
         apartments = apartments[['garden', 'basement', 'elevator', 'balcony',
                                  'floor', 'n_rooms', 'sq_meters', 'construction_year',
                                  'unemployment', 'share_green']]
         apartment = dict(apartments.iloc[player.participant.apartment_row])
 
-        # lending task
+        # lending rel_task_name
         borrowers = pd.read_csv("Data/lending_data_selected.csv")
         for col in ['loan_amnt', 'annual_inc', 'installment']:
             borrowers[col] = [format_german_number(x, 0) for x in borrowers[col]]
@@ -461,7 +461,6 @@ class Task(Page):
 
         return dict(apartment=apartment,
                     borrower=borrower)
-
 
 class PercAccuracy(Page):
     form_model = 'player'
@@ -594,14 +593,14 @@ class Task2(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-        # real estate task
+        # real estate rel_task_name
         apartments = pd.read_csv("Data/immonet_data_selected.csv")
         apartments = apartments[['garden', 'basement', 'elevator', 'balcony',
                                  'floor', 'n_rooms', 'sq_meters', 'construction_year',
                                  'unemployment', 'share_green']]
         apartment = dict(apartments.iloc[player.participant.apartment_row])
 
-        # lending task
+        # lending rel_task_name
         borrowers = pd.read_csv("Data/lending_data_selected.csv")
         for col in ['loan_amnt', 'annual_inc', 'installment']:
             borrowers[col] = [format_german_number(x, 0) for x in borrowers[col]]
@@ -814,12 +813,12 @@ class SocDist2(Page):
 
 class End(Page):
     def vars_for_template(player: Player):
-        # real estate task
+        # real estate rel_task_name
         apartments = pd.read_csv("Data/immonet_data_selected.csv")
         apartments = round((apartments['price'] - 300_000) / 40_000)*40_000 + 300_000
         apartment = int(apartments.iloc[player.participant.apartment_row])
 
-        # lending task
+        # lending rel_task_name
         borrowers = pd.read_csv("Data/lending_data_selected.csv")
         borrowers = borrowers['y_']
         borrower = int(borrowers.iloc[player.participant.lender_row])
@@ -827,7 +826,7 @@ class End(Page):
         fail_str, succ_str = "Sie lagen leider daneben.", "Sie haben richtig geschätzt!"
         apartment_res, borrower_res = fail_str, fail_str
         if player.participant.tasks_order:
-            # TODO: task estimate -> Revision
+            # TODO: rel_task_name estimate -> Revision
             t1_correct = player.revision == apartment
             apart_est, apart_correct = format_german_number(player.revision), format_german_number(apartment)
 
