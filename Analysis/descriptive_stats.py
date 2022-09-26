@@ -115,8 +115,6 @@ for distance_type in ["woa_dev_distance", "woa_dev_distance_weighted", "woa_soc_
 data_no_dev[["woa", "woa_dev_distance_weighted"]].corr()
 plt.show()
 
-
-
 # play around
 data[(data.treatment == "dev") | (data.treatment == "both")][["wtp_dev_distance_weighted", "wtp"]].corr()
 data[(data.treatment == "acc") | (data.treatment == "none")][["wtp_dev_distance_weighted", "wtp"]].corr()

@@ -9,6 +9,13 @@ print("number of participants: ", data.shape[0])
 data.columns = data.columns.str.replace("si_experiment.1.player.", "", regex=True)
 data.columns = data.columns.str.replace("participant.", "", regex=True)
 
+# read in prolific data
+prolific_data = pd.read_csv("Data/prolific_export_si1.csv").append(
+    pd.read_csv("Data/prolific_export_si2.csv"))
+
+# join prolific data
+data = data.join(other=prolific_data.set_index("Participant id", drop=True), on="label")
+
 # read in task instances
 immo_data = pd.read_csv("Frontend/Data/immonet_data_selected.csv")
 credit_data = pd.read_csv("Frontend/Data/lending_data_selected.csv")
@@ -19,6 +26,7 @@ dev_data = pd.read_csv("Frontend/Data/dev_profiles.csv")
 # clean some columns
 df = data.iloc[:, 13:len(data.columns)-2]
 df.drop(list(df.filter(regex='session')), axis=1, inplace=True)
+
 
 # get AI predictions for WTP and WOA stage
 # %% (if tasks_order = 1: credit is always WOA, immo only if WTP > ai_prob; o/w reverse)
@@ -81,8 +89,8 @@ df["woa_dev_distance_weighted"] = df["woa_dev_sex_dis"]*df["importance_sex"] + \
                                   df["woa_dev_migration_dis"]*df["importance_migration_bg"] + \
                                   df["woa_dev_pol_dis"]*df["importance_pol_views"]
 
-df["wtp_soc_dist_rank_t1"] = 15 - df["soc_distance_t1_1"] + df["soc_distance_t1_2"] + df["soc_distance_t1_3"]
-df["woa_soc_dist_rank_t2"] = 15 - df["soc_distance_t2_1"] + df["soc_distance_t2_2"] + df["soc_distance_t2_3"]
+df["wtp_soc_dist_rank_t1"] = 15 - (df["soc_distance_t1_1"] + df["soc_distance_t1_2"] + df["soc_distance_t1_3"])
+df["woa_soc_dist_rank_t2"] = 15 - (df["soc_distance_t2_1"] + df["soc_distance_t2_2"] + df["soc_distance_t2_3"])
 # ________________________________________________________________________________________________
 
 # create dummy treatment var dev, acc for analyses
