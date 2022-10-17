@@ -27,9 +27,6 @@ dev_data = pd.read_csv("Frontend/Data/dev_profiles.csv")
 df = data.iloc[:, 13:len(data.columns) - 2]
 df.drop(list(df.filter(regex='session')), axis=1, inplace=True)
 
-# create dummy treatment var dev, acc for analyses
-df["treat_dev"] = np.where((df["treatment"] == "dev") | (df["treatment"] == "both"), 1, 0)
-df["treat_acc"] = np.where((df["treatment"] == "acc") | (df["treatment"] == "both"), 1, 0)
 
 # define method for normalization
 def normalize_col(my_series):
@@ -113,6 +110,10 @@ df["soc_dis_wtp_rank_t1"] = normalize_col(df["soc_dis_wtp_rank_t1"])
 df["soc_dis_woa_rank_t2"] = normalize_col(df["soc_dis_woa_rank_t2"])
 
 # ________________________________________________________________________________________________
+
+# create dummy treatment var dev, acc for analyses
+df["treat_dev"] = np.where((df["treatment"] == "dev") | (df["treatment"] == "both"), 1, 0)
+df["treat_acc"] = np.where((df["treatment"] == "acc") | (df["treatment"] == "both"), 1, 0)
 
 # create dummy for dev = 1 / 0 while acc constant else not defined
 # create dummy for acc = 1 / 0 while dev constant else not defined
