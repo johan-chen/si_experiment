@@ -84,6 +84,11 @@ df["sex_dis_wtp"] = (df["wtp_dev_sex"] != df["sex"]).astype(int)
 df["mig_dis_wtp"] = (df["wtp_dev_migration"] != df["migration_bg"]).astype(int)
 pol_dis_wtp_abs = abs(df["wtp_dev_pol"] - df["pol_views"])
 df["pol_dis_wtp"] = normalize_col(pol_dis_wtp_abs)
+
+df["sexmig_dis_wtp"] = normalize_col(df["sex_dis_wtp"] + df["mig_dis_wtp"])
+df["sexpol_dis_wtp"] = normalize_col(df["sex_dis_wtp"] + df["pol_dis_wtp"])
+df["migpol_dis_wtp"] = normalize_col(df["mig_dis_wtp"] + df["pol_dis_wtp"])
+
 df["soc_dis_wtp"] = df["sex_dis_wtp"] + df["mig_dis_wtp"] + df["pol_dis_wtp"]
 df["soc_dis_wtp"] = normalize_col(df["soc_dis_wtp"])
 df["soc_dis_wtp_w"] = df["sex_dis_wtp"] * df["importance_sex"] + \
@@ -96,6 +101,11 @@ df["sex_dis_woa"] = (df["woa_dev_sex"] != df["sex"]).astype(int)
 df["mig_dis_woa"] = (df["woa_dev_migration"] != df["migration_bg"]).astype(int)
 pol_dis_woa_abs = abs(df["woa_dev_pol"] - df["pol_views"])
 df["pol_dis_woa"] = normalize_col(pol_dis_woa_abs)
+
+df["sexmig_dis_woa"] = normalize_col(df["sex_dis_woa"] + df["mig_dis_woa"])
+df["sexpol_dis_woa"] = normalize_col(df["sex_dis_woa"] + df["pol_dis_woa"])
+df["migpol_dis_woa"] = normalize_col(df["mig_dis_woa"] + df["pol_dis_woa"])
+
 df["soc_dis_woa"] = df["sex_dis_woa"] + df["mig_dis_woa"] + df["pol_dis_woa"]
 df["soc_dis_woa"] = normalize_col(df["soc_dis_woa"])
 df["soc_dis_woa_w"] = df["sex_dis_woa"] * df["importance_sex"] + \
