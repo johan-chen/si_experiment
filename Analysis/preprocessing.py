@@ -24,7 +24,7 @@ credit_data = pd.read_csv("Frontend/Data/lending_data_selected.csv")
 dev_data = pd.read_csv("Frontend/Data/dev_profiles.csv")
 
 # clean some columns
-df = data.iloc[:, 13:len(data.columns) - 2]
+df = data.iloc[:, 13:len(data.columns)]
 df.drop(list(df.filter(regex='session')), axis=1, inplace=True)
 
 
@@ -118,6 +118,12 @@ df["soc_dis_wtp_rank_t1"] = 15 - (df["soc_distance_t1_1"] + df["soc_distance_t1_
 df["soc_dis_woa_rank_t2"] = 15 - (df["soc_distance_t2_1"] + df["soc_distance_t2_2"] + df["soc_distance_t2_3"])
 df["soc_dis_wtp_rank_t1"] = normalize_col(df["soc_dis_wtp_rank_t1"])
 df["soc_dis_woa_rank_t2"] = normalize_col(df["soc_dis_woa_rank_t2"])
+
+# student, age, and gender binaries
+df["age"] = normalize_col(df["age"])
+df["sex"] = np.where((df["sex"] == 2), 1, 0)
+df["student"] = np.where(df["Student status"] == "Yes", 1, 0)
+
 
 # ________________________________________________________________________________________________
 
