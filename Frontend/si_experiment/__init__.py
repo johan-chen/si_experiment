@@ -126,6 +126,7 @@ def creating_session(subsession):
         # probability to see AI prediction
         participant.prob_ai = random.random()
 
+
 class Player(BasePlayer):
     # intro data
     is_mobile = models.BooleanField()
@@ -290,6 +291,7 @@ class Intro(Page):
     form_model = 'player'
     form_fields = ['is_mobile', 'consent']
 
+
 class PreQuestions(Page):
     form_model = "player"
 
@@ -338,6 +340,7 @@ class Task2_1(Page):
     def is_displayed(player: Player):
         return player.participant.stage_order
 
+
 class PercAccuracy2_1(Page):
     form_model = 'player'
     form_fields = ["perc_acc2"]
@@ -353,6 +356,7 @@ class PercAccuracy2_1(Page):
     @staticmethod
     def is_displayed(player: Player):
         return player.participant.stage_order
+
 
 class Revision2_1(Page):
     form_model = 'player'
@@ -393,6 +397,7 @@ class Revision2_1(Page):
     def is_displayed(player: Player):
         return player.participant.stage_order
 
+
 class PostQuestions2_1(Page):
     form_model = "player"
 
@@ -431,12 +436,14 @@ class PostQuestions2_1(Page):
     def is_displayed(player: Player):
         return player.participant.stage_order
 
+
 class Stage2_1(Page):
     form_model = 'player'
 
     @staticmethod
     def is_displayed(player: Player):
         return player.participant.stage_order
+
 
 class Task(Page):
     form_model = 'player'
@@ -461,6 +468,7 @@ class Task(Page):
 
         return dict(apartment=apartment,
                     borrower=borrower)
+
 
 class PercAccuracy(Page):
     form_model = 'player'
