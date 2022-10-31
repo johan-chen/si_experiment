@@ -58,6 +58,14 @@ for i, p in df.iterrows():
 df["ai_pred_woa_stage"], df["ai_pred_wtp_stage"] = ai_pred_woa_stage, ai_pred_wtp_stage
 df["woa_stage_step_size"], df["wtp_stage_step_size"] = woa_stage_step_size, wtp_stage_step_size
 
+# get WOA guesses normalized
+df["guess_1_woa"] = df["task2Estimate"].copy(deep=True)
+df.loc[df["guess_1_woa"] > 1000, "guess_1_woa"] = df["guess_1_woa"] - 300_000
+df["guess_1_woa"] = normalize_col(df["guess_1_woa"] / df["woa_stage_step_size"])
+df["guess_2_woa"] = df["revision2"].copy(deep=True)
+df.loc[df["guess_2_woa"] > 1000, "guess_2_woa"] = df["guess_2_woa"] - 300_000
+df["guess_2_woa"] = normalize_col(df["guess_2_woa"] / df["woa_stage_step_size"])
+
 # get WOA averages for treatment groups
 # WOA = (final estimation - initial estimation) / (advisor’s estimation - initial estimation)
 df["woa"] = (df.revision2 - df.task2Estimate) / (df.ai_pred_woa_stage - df.task2Estimate)
@@ -123,7 +131,6 @@ df["soc_dis_woa_rank_t2"] = normalize_col(df["soc_dis_woa_rank_t2"])
 df["age"] = normalize_col(df["age"])
 df["sex"] = np.where((df["sex"] == 2), 1, 0)
 df["student"] = np.where(df["Student status"] == "Yes", 1, 0)
-
 
 # ________________________________________________________________________________________________
 
