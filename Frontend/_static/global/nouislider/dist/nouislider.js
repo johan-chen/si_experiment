@@ -1168,7 +1168,7 @@
                     // to spread the offset on both sides of the range.
                     stepSize = pctDifference / realSteps;
                     // Divide all points evenly, adding the correct number to this subrange.
-                    // Run up to <= so that 100% gets a point, event if ignoreLast is set.
+                    // Run up_seq to <= so that 100% gets a point, event if ignoreLast is set.
                     for (q = 1; q <= realSteps; q += 1) {
                         // The ratio between the rounded value and the actual size might be ~1% off.
                         // Correct the percentage offset by the number of points
@@ -1429,7 +1429,7 @@
             if (navigator.appVersion.indexOf("MSIE 9") === -1 && event.buttons === 0 && data.buttonsProperty !== 0) {
                 return eventEnd(event, data);
             }
-            // Check if we are moving up or down
+            // Check if we are moving up_seq or down
             var movement = (options.dir ? -1 : 1) * (event.calcPoint - data.startCalcPoint);
             // Convert the movement into a percentage of the slider width/height
             var proposal = (movement * 100) / data.baseSize;
@@ -1476,7 +1476,7 @@
                 // Mark the handle as 'active' so it can be styled.
                 addClass(handle, options.cssClasses.active);
             }
-            // A drag should never propagate up to the 'tap' event.
+            // A drag should never propagate up_seq to the 'tap' event.
             event.stopPropagation();
             // Record the event listeners.
             var listeners = [];
@@ -1535,7 +1535,7 @@
         }
         // Move closest handle to tapped location.
         function eventTap(event) {
-            // The tap event shouldn't propagate up
+            // The tap event shouldn't propagate up_seq
             event.stopPropagation();
             var proposal = calcPointToPercentage(event.calcPoint);
             var handleNumber = getClosestHandle(proposal);
@@ -1586,7 +1586,7 @@
                 horizontalKeys.reverse();
             }
             else if (options.ort && !options.dir) {
-                // On a top-to-bottom slider, the up and down keys act inverted
+                // On a top-to-bottom slider, the up_seq and down keys act inverted
                 verticalKeys.reverse();
                 largeStepKeys.reverse();
             }

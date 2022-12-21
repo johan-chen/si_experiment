@@ -16,6 +16,16 @@ prolific_data = pd.read_csv("Data/prolific_export_si1.csv").append(
 # join prolific data
 data = data.join(other=prolific_data.set_index("Participant id", drop=True), on="label")
 
+# # preprocessing
+# data = data[data.sex != 0]  # drop non-binarys
+# sex_dic = {"Male": 2, "Female": 1}
+# data = data.replace({"Sex": sex_dic})
+# data["sex"] = data["Sex"]
+# data = data[~data.sex.isna()]
+data.loc[data['Country of birth'] != "Germany", "migration_bg"] = 1
+# data.loc[data['Country of birth'] == "Germany", "migration_bg"] = 0
+# data = data[data.wtp >= 50].copy(deep=True)
+
 # read in task instances
 immo_data = pd.read_csv("Frontend/Data/immonet_data_selected.csv")
 credit_data = pd.read_csv("Frontend/Data/lending_data_selected.csv")
@@ -39,36 +49,50 @@ def normalize_col(my_series):
 # %% (if tasks_order = 1: credit is always WOA, immo only if WTP > ai_prob; o/w reverse)
 ai_pred_woa_stage, ai_pred_wtp_stage, \
 woa_stage_step_size, wtp_stage_step_size, \
-    = [], [], [], []
+woa_task_case, wtp_task_case \
+    = [], [], [], [], [], []
 for i, p in df.iterrows():
     if p.tasks_order == 0:
         ai_pred_woa_stage.append(
             round((immo_data.iloc[p.apartment_row]["pred_price"] - 300_000) / 40_000) * 40_000 + 300_000)
         woa_stage_step_size.append(40_000)
+        woa_task_case.append(p.apartment_row)
         ai_pred_wtp_stage.append(credit_data.iloc[p.lender_row]["pred_"])
         wtp_stage_step_size.append(10)
+        wtp_task_case.append(p.lender_row + 10)
     elif p.tasks_order == 1:
         ai_pred_woa_stage.append(credit_data.iloc[p.lender_row]["pred_"])
         woa_stage_step_size.append(10)
+        woa_task_case.append(p.lender_row + 10)
         ai_pred_wtp_stage.append(
             round((immo_data.iloc[p.apartment_row]["pred_price"] - 300_000) / 40_000) * 40_000 + 300_000)
         wtp_stage_step_size.append(40_000)
+        wtp_task_case.append(p.apartment_row)
     else:
         raise Exception(f"Check tasks_order = {p.tasks_order} of index {p.index}.")
-df["ai_pred_woa_stage"], df["ai_pred_wtp_stage"] = ai_pred_woa_stage, ai_pred_wtp_stage
+df["ai_pred_woa_raw"], df["ai_pred_wtp_raw"] = ai_pred_woa_stage, ai_pred_wtp_stage
 df["woa_stage_step_size"], df["wtp_stage_step_size"] = woa_stage_step_size, wtp_stage_step_size
+df["woa_task_case"], df["wtp_task_case"] = woa_task_case, wtp_task_case
 
-# get WOA guesses normalized
+# get WOA guesses "normalized" (on steps)
 df["guess_1_woa"] = df["task2Estimate"].copy(deep=True)
-df.loc[df["guess_1_woa"] > 1000, "guess_1_woa"] = df["guess_1_woa"] - 300_000
-df["guess_1_woa"] = normalize_col(df["guess_1_woa"] / df["woa_stage_step_size"])
+df.loc[df["woa_stage_step_size"] == 40_000, "guess_1_woa"] = df["guess_1_woa"] - 300_000
+df["guess_1_woa"] = (df["guess_1_woa"] / df["woa_stage_step_size"]) / 10
 df["guess_2_woa"] = df["revision2"].copy(deep=True)
-df.loc[df["guess_2_woa"] > 1000, "guess_2_woa"] = df["guess_2_woa"] - 300_000
-df["guess_2_woa"] = normalize_col(df["guess_2_woa"] / df["woa_stage_step_size"])
+df.loc[df["woa_stage_step_size"] == 40_000, "guess_2_woa"] = df["guess_2_woa"] - 300_000
+df["guess_2_woa"] = (df["guess_2_woa"] / df["woa_stage_step_size"]) / 10
+
+# get predictions "normalized" (on steps)
+df["ai_pred_wtp"] = df["ai_pred_wtp_raw"].copy(deep=True)
+df.loc[df["wtp_stage_step_size"] == 40_000, "ai_pred_wtp"] = df["ai_pred_wtp"] - 300_000
+df["ai_pred_wtp"] = (df["ai_pred_wtp"] / df["wtp_stage_step_size"]) / 10
+df["ai_pred_woa"] = df["ai_pred_woa_raw"].copy(deep=True)
+df.loc[df["woa_stage_step_size"] == 40_000, "ai_pred_woa"] = df["ai_pred_woa"] - 300_000
+df["ai_pred_woa"] = (df["ai_pred_woa"] / df["woa_stage_step_size"]) / 10
 
 # get WOA averages for treatment groups
 # WOA = (final estimation - initial estimation) / (advisor’s estimation - initial estimation)
-df["woa"] = (df.revision2 - df.task2Estimate) / (df.ai_pred_woa_stage - df.task2Estimate)
+df["woa"] = (df.revision2 - df.task2Estimate) / (df.ai_pred_woa_raw - df.task2Estimate)
 df["woa"].replace([np.inf, -np.inf], np.nan, inplace=True)
 df["stage_woa_rel_adj"] = abs(df.revision2 - df.task2Estimate) / df.woa_stage_step_size
 df["stage_woa_rel_adj"].replace([np.inf, -np.inf], np.nan, inplace=True)
@@ -127,10 +151,37 @@ df["soc_dis_woa_rank_t2"] = 15 - (df["soc_distance_t2_1"] + df["soc_distance_t2_
 df["soc_dis_wtp_rank_t1"] = normalize_col(df["soc_dis_wtp_rank_t1"])
 df["soc_dis_woa_rank_t2"] = normalize_col(df["soc_dis_woa_rank_t2"])
 
+# social distance custom weighted
+importances = ["importance_sex", "importance_migration_bg", "importance_pol_views"]
+for i, singular_distance in enumerate(["sex_dis_wtp", "sex_dis_woa", "mig_dis_wtp", "mig_dis_woa",
+                                    "pol_median_dis_wtp", "pol_median_dis_woa"]):
+    if "pol" in singular_distance:
+        df["pol_median_dis_wtp"] = (df.pol_dis_wtp > df.pol_dis_wtp.quantile()).replace({True: 1, False: 0})
+        df["pol_median_dis_woa"] = (df.pol_dis_woa > df.pol_dis_woa.quantile()).replace({True: 1, False: 0})
+    df.loc[df[singular_distance] == 1, singular_distance + "_w2"] = df[singular_distance] - (5 - df[importances[int(i/2)]])/9
+    df.loc[df[singular_distance] == 0, singular_distance + "_w2"] = df[singular_distance] + (5 - df[importances[int(i/2)]])/9
+df["soc_dis_wtp_w2"] = normalize_col(df["sex_dis_wtp_w2"] + df["mig_dis_wtp_w2"] + df["pol_median_dis_wtp_w2"])
+df["soc_dis_woa_w2"] = normalize_col(df["sex_dis_woa_w2"] + df["mig_dis_woa_w2"] + df["pol_median_dis_woa_w2"])
+
 # student, age, and gender binaries
+# create custom migration background
 df["age"] = normalize_col(df["age"])
 df["sex"] = np.where((df["sex"] == 2), 1, 0)
 df["student"] = np.where(df["Student status"] == "Yes", 1, 0)
+
+# get ranking from page with self-reported distances
+soc_dist = {
+    "Geschlecht": 0,
+    "Migrationshintergrund": 1,
+    "Politische Ansichten": 2
+}
+
+# social distance chosen by self reported rank (use only rank 1)
+df = df.replace({"soc_distance_rank_t1_1": soc_dist})
+df["soc_dis_ranked_wtp"] = df["pol_dis_wtp"].copy(deep=True)
+df.loc[df["soc_distance_rank_t1_1"] == 0, "soc_dis_ranked_wtp"] = df[df["soc_distance_rank_t1_1"] == 0]["sex_dis_wtp"]
+df.loc[df["soc_distance_rank_t1_1"] == 1, "soc_dis_ranked_wtp"] = df[df["soc_distance_rank_t1_1"] == 1]["mig_dis_wtp"]
+
 
 # ________________________________________________________________________________________________
 
@@ -176,11 +227,12 @@ df["emo_trust_t2"] = (df["emo_trust_t2_1"] + df["emo_trust_t2_2"] + df["emo_trus
 df["anthro_t1"] = (df["anthro_t1_1"] + df["anthro_t1_2"] + df["anthro_t1_3"]) / 3
 df["anthro_t2"] = (df["anthro_t2_1"] + df["anthro_t2_2"] + df["anthro_t2_3"]) / 3
 
-# todo convert strings to ints
-soc_dist = {
-    "Geschlecht": 0,
-    "Migrationshintergrund": 1,
-    "Politische Ansichten": 2
-}
+# make wtp monetary, normalize perceived accuracy
+df.wtp = df.wtp/100 - 0.5
+df.perc_acc = normalize_col(df.perc_acc)
+df.perc_acc2 = normalize_col(df.perc_acc2)
 
-df.to_csv("Data/data.csv", sep=',')
+################################
+#   W R I T E  T O  F I L E    #
+################################
+df.to_csv("Data/data_all.csv", sep=',')
