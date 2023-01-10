@@ -9,6 +9,10 @@ print("number of participants: ", data.shape[0])
 data.columns = data.columns.str.replace("si_experiment.1.player.", "", regex=True)
 data.columns = data.columns.str.replace("participant.", "", regex=True)
 
+# read in immo and real estate data to compute ground truth
+immo_data = pd.read_csv("Frontend/Data/immonet_data_selected.csv")
+credit_data = pd.read_csv("Frontend/Data/lending_data_selected.csv")
+
 # read in prolific data
 prolific_data = pd.read_csv("Data/prolific_export_si1.csv").append(
     pd.read_csv("Data/prolific_export_si2.csv"))
@@ -49,30 +53,41 @@ def normalize_col(my_series):
 # %% (if tasks_order = 1: credit is always WOA, immo only if WTP > ai_prob; o/w reverse)
 ai_pred_woa_stage, ai_pred_wtp_stage, \
 woa_stage_step_size, wtp_stage_step_size, \
-woa_task_case, wtp_task_case \
-    = [], [], [], [], [], []
+woa_task_case, wtp_task_case, \
+woa_y_true, wtp_y_true \
+    = [], [], [], [], [], [], [], []
 for i, p in df.iterrows():
     if p.tasks_order == 0:
         ai_pred_woa_stage.append(
             round((immo_data.iloc[p.apartment_row]["pred_price"] - 300_000) / 40_000) * 40_000 + 300_000)
         woa_stage_step_size.append(40_000)
         woa_task_case.append(p.apartment_row)
+        woa_y_true.append(
+            (round((immo_data.iloc[p.apartment_row]["price"] - 300_000) / 40_000) / 10)
+        )
+
         ai_pred_wtp_stage.append(credit_data.iloc[p.lender_row]["pred_"])
         wtp_stage_step_size.append(10)
         wtp_task_case.append(p.lender_row + 10)
+        wtp_y_true.append(credit_data.iloc[p.lender_row]["y_"] / (10*10))
     elif p.tasks_order == 1:
         ai_pred_woa_stage.append(credit_data.iloc[p.lender_row]["pred_"])
         woa_stage_step_size.append(10)
         woa_task_case.append(p.lender_row + 10)
+        woa_y_true.append(credit_data.iloc[p.lender_row]["y_"] / (10*10))
+
         ai_pred_wtp_stage.append(
-            round((immo_data.iloc[p.apartment_row]["pred_price"] - 300_000) / 40_000) * 40_000 + 300_000)
+            round((immo_data.iloc[p.apartment_row]["pred_price"] - 300_000) / 40_000) * 40_000 + 300_000
+        )
         wtp_stage_step_size.append(40_000)
         wtp_task_case.append(p.apartment_row)
+        wtp_y_true.append(round((immo_data.iloc[p.apartment_row]["price"] - 300_000) / 40_000) / 10)
     else:
         raise Exception(f"Check tasks_order = {p.tasks_order} of index {p.index}.")
 df["ai_pred_woa_raw"], df["ai_pred_wtp_raw"] = ai_pred_woa_stage, ai_pred_wtp_stage
 df["woa_stage_step_size"], df["wtp_stage_step_size"] = woa_stage_step_size, wtp_stage_step_size
 df["woa_task_case"], df["wtp_task_case"] = woa_task_case, wtp_task_case
+df["woa_y_true"], df["wtp_y_true"] = woa_y_true, wtp_y_true
 
 # get WOA guesses "normalized" (on steps)
 df["guess_1_woa"] = df["task2Estimate"].copy(deep=True)
@@ -250,4 +265,4 @@ df.loc[df.tasks_order == 1, "expectation_gap_acc_woa"] = df.perc_acc2 - 0.45
 ################################
 #   W R I T E  T O  F I L E    #
 ################################
-df.to_csv("Data/data_all.csv", sep=',')
+df.to_csv("Data/data.csv", sep=',')
