@@ -229,8 +229,23 @@ df["anthro_t2"] = (df["anthro_t2_1"] + df["anthro_t2_2"] + df["anthro_t2_3"]) / 
 
 # make wtp monetary, normalize perceived accuracy
 df.wtp = df.wtp/100 - 0.5
-df.perc_acc = normalize_col(df.perc_acc)
-df.perc_acc2 = normalize_col(df.perc_acc2)
+df.perc_acc = df.perc_acc / 100
+df.perc_acc2 = df.perc_acc2 / 100
+
+# create custom accuracy (dev/none --> perc_acc, acc/both --> accuracy that was displayed)
+acc_treatments = df.treatment.isin(["acc", "both"])
+df["custom_acc_wtp"] = df.perc_acc
+df.loc[acc_treatments & (df.tasks_order == 1), "custom_acc_wtp"] = 0.4
+df.loc[acc_treatments & (df.tasks_order == 0), "custom_acc_wtp"] = 0.45
+df["custom_acc_woa"] = df.perc_acc2
+df.loc[acc_treatments & (df.tasks_order == 1), "custom_acc_woa"] = 0.45
+df.loc[acc_treatments & (df.tasks_order == 0), "custom_acc_woa"] = 0.4
+
+# expectation gap
+df.loc[df.tasks_order == 0, "expectation_gap_acc_wtp"] = df.perc_acc - 0.45
+df.loc[df.tasks_order == 1, "expectation_gap_acc_wtp"] = df.perc_acc - 0.4
+df.loc[df.tasks_order == 0, "expectation_gap_acc_woa"] = df.perc_acc2 - 0.4
+df.loc[df.tasks_order == 1, "expectation_gap_acc_woa"] = df.perc_acc2 - 0.45
 
 ################################
 #   W R I T E  T O  F I L E    #
