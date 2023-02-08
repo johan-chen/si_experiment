@@ -107,8 +107,15 @@ df["ai_pred_woa"] = (df["ai_pred_woa"] / df["woa_stage_step_size"]) / 10
 
 # get WOA averages for treatment groups
 # WOA = (final estimation - initial estimation) / (advisor’s estimation - initial estimation)
+# WOA_abs = abs(final estimation - initial estimation) / abs(advisor’s estimation - initial estimation)
 df["woa"] = (df.revision2 - df.task2Estimate) / (df.ai_pred_woa_raw - df.task2Estimate)
 df["woa"].replace([np.inf, -np.inf], np.nan, inplace=True)
+df["woa_abs"] = abs(df.revision2 - df.task2Estimate) / abs(df.ai_pred_woa_raw - df.task2Estimate)
+df["woa_abs"].replace([np.inf, -np.inf], np.nan, inplace=True)
+
+df["woe"] = abs(df.ai_pred_woa_raw - df.revision2) / abs(df.ai_pred_woa_raw - df.task2Estimate)
+df["woe"].replace([np.inf, -np.inf], np.nan, inplace=True)
+
 df["stage_woa_rel_adj"] = abs(df.revision2 - df.task2Estimate) / df.woa_stage_step_size
 df["stage_woa_rel_adj"].replace([np.inf, -np.inf], np.nan, inplace=True)
 
@@ -275,4 +282,4 @@ df.loc[df.tasks_order == 1, "expectation_gap_acc_woa"] = df.perc_acc2 - 0.45
 ################################
 #   W R I T E  T O  F I L E    #
 ################################
-df.to_csv("Data/data.csv", sep=',')
+df.to_csv("Data/data_all.csv", sep=',')
