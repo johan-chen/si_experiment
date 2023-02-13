@@ -26,7 +26,7 @@ data = data.join(other=prolific_data.set_index("Participant id", drop=True), on=
 # data = data.replace({"Sex": sex_dic})
 # data["sex"] = data["Sex"]
 # data = data[~data.sex.isna()]
-data.loc[data['Country of birth'] != "Germany", "migration_bg"] = 1
+# data.loc[data['Country of birth'] != "Germany", "migration_bg"] = 1
 # data.loc[data['Country of birth'] == "Germany", "migration_bg"] = 0
 # data = data[data.wtp >= 50].copy(deep=True)
 
@@ -134,8 +134,10 @@ df["woa_dev_pol"] = [social_char_dict[woa_dev[i]["politics"]] for i in range(0, 
 
 # social distance to dev
 # ...wtp
+# df["sex_dis_wtp"] = (~(((df["wtp_dev_sex"] == 1) & (df["sex"].isin([0, 1]))) | ((df["wtp_dev_sex"] == 2) & (df["sex"].isin([0, 2]))))).astype(int)
 df["sex_dis_wtp"] = (df["wtp_dev_sex"] != df["sex"]).astype(int)
 df["mig_dis_wtp"] = (df["wtp_dev_migration"] != df["migration_bg"]).astype(int)
+
 pol_dis_wtp_abs = abs(df["wtp_dev_pol"] - df["pol_views"])
 df["pol_dis_wtp"] = normalize_col(pol_dis_wtp_abs)
 
@@ -154,6 +156,13 @@ df["soc_dis_wtp_w"] = df["sex_dis_wtp"] * df["importance_sex"] + \
                        df["mig_dis_wtp"] * df["importance_migration_bg"] + \
                        df["pol_dis_wtp"] * df["importance_pol_views"]
 df["soc_dis_wtp_w"] = normalize_col(df["soc_dis_wtp_w"])
+
+# single weighted relative
+df["w_sd_sum"] = df["importance_sex"] + df["importance_migration_bg"] + df["importance_pol_views"]
+
+df["w_sex_wtp"] = df["sex_dis_wtp"] * df["importance_sex"] / df["w_sd_sum"]
+df["w_mig_wtp"] = df["mig_dis_wtp"] * df["importance_migration_bg"] / df["w_sd_sum"]
+df["w_pol_wtp"] = df["pol_dis_wtp"] * df["importance_pol_views"] / df["w_sd_sum"]
 
 # ...woa
 df["sex_dis_woa"] = (df["woa_dev_sex"] != df["sex"]).astype(int)
@@ -176,6 +185,11 @@ df["soc_dis_woa_w"] = df["sex_dis_woa"] * df["importance_sex"] + \
                        df["mig_dis_woa"] * df["importance_migration_bg"] + \
                        df["pol_dis_woa"] * df["importance_pol_views"]
 df["soc_dis_woa_w"] = normalize_col(df["soc_dis_woa_w"])
+
+# single weighted relative
+df["w_sex_woa"] = df["sex_dis_woa"] * df["importance_sex"] / df["w_sd_sum"]
+df["w_mig_woa"] = df["mig_dis_woa"] * df["importance_migration_bg"] / df["w_sd_sum"]
+df["w_pol_woa"] = df["pol_dis_woa"] * df["importance_pol_views"] / df["w_sd_sum"]
 
 # social distance ranks
 df["soc_dis_wtp_rank_t1"] = 15 - (df["soc_distance_t1_1"] + df["soc_distance_t1_2"] + df["soc_distance_t1_3"])
@@ -282,4 +296,4 @@ df.loc[df.tasks_order == 1, "expectation_gap_acc_woa"] = df.perc_acc2 - 0.45
 ################################
 #   W R I T E  T O  F I L E    #
 ################################
-df.to_csv("Data/data_all.csv", sep=',')
+df.to_csv("Data/data_raw.csv", sep=',')
