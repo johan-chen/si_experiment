@@ -20,15 +20,23 @@ prolific_data = pd.read_csv("Data/prolific_export_si1.csv").append(
 # join prolific data
 data = data.join(other=prolific_data.set_index("Participant id", drop=True), on="label")
 
-# # preprocessing
+# # preprocessing ______________________________
+# ______________________________________________
+#
 # data = data[data.sex != 0]  # drop non-binarys
+#
 # sex_dic = {"Male": 2, "Female": 1}
 # data = data.replace({"Sex": sex_dic})
 # data["sex"] = data["Sex"]
 # data = data[~data.sex.isna()]
+#
 # data.loc[data['Country of birth'] != "Germany", "migration_bg"] = 1
+#
 # data.loc[data['Country of birth'] == "Germany", "migration_bg"] = 0
+#
 # data = data[data.wtp >= 50].copy(deep=True)
+#
+# _____________________________________________
 
 # read in task instances
 immo_data = pd.read_csv("Frontend/Data/immonet_data_selected.csv")
@@ -296,4 +304,5 @@ df.loc[df.tasks_order == 1, "expectation_gap_acc_woa"] = df.perc_acc2 - 0.45
 ################################
 #   W R I T E  T O  F I L E    #
 ################################
-df.to_csv("Data/data_raw.csv", sep=',')
+# df.to_csv("Data/Versions/data_sex_mig_prolific.csv", sep=',')
+df.to_csv("Data/data_all.csv", sep=',')
