@@ -5,8 +5,8 @@ import warnings
 warnings.filterwarnings("ignore", message="In a future version of pandas all arguments of concat except for the argument 'objs' will be keyword-only")
 
 # Range of values for the parameters of our search
-data_preproc = ["raw", "mig_prolific", "sex_prolific", "sex_only_bin", "sex_mig_prolific", "sexonlybin_mig_prolific",
-               "sexonlybin_sex_prolific", "sexonlybin_sex_mig_prolific"]
+data_preproc = ["sex_mig_prolific", "raw", "mig_prolific", "sex_prolific", "sex_only_bin", "sex_mig_prolific", "sexonlybin_mig_prolific",
+                "sexonlybin_sex_prolific", "sexonlybin_sex_mig_prolific"]
 soc_dis_measure = ["aggregated", "aggregated weighted", "single", "single weighted rel", "single weighted abs"]
 reg_errors = ["robust", "dev_cluster", "task_cluster", "dev_task_cluster", "stage_cluster", "dev_stage_cluster"]
 reg_equation = ["wtp", "woa", "guess_2_sticky_pred", "guess_2_pred_only"]
@@ -55,7 +55,7 @@ for params_row in row_combinations:
 
         # Define the dependent variable
         if "guess_2" in params_col[0]:
-            y = data["revision2"]
+            y = data["guess_2_woa"]
         else:
             y = data[params_col[0]]
 
@@ -76,6 +76,7 @@ for params_row in row_combinations:
                 X["x_dev_" + soc_dis_meas] = data["treat_dev"] * data[soc_dis_meas]
             # for reg eq based on guess 2
             if "guess_2" in params_col[0]:
+                X["pred"], X["prior"] = data["ai_pred_woa"], data["guess_1_woa"]
                 X["x_pred_" + soc_dis_meas] = data["ai_pred_woa"] * data[soc_dis_meas]
                 if len(params_col[1]) == 2:
                     X["x_dev_pred_" + soc_dis_meas] = data["treat_dev"] * X["x_pred_" + soc_dis_meas]
@@ -99,6 +100,15 @@ for params_row in row_combinations:
         X["dev_1"], X["dev_2"] = dev_dummies[1], dev_dummies[2]
         # ...task and stage fixed effects
         X["tasks_order"], X["stage_order"] = data["tasks_order"], data["stage_order"]
+        # importances controls
+        if params_row[1] in ["aggregated weighted", "single weighted rel", "single weighted abs"]:
+            X["importance_sex"], X["importance_migration_bg"], X["importance_pol_views"] = \
+                data["importance_sex"], data["importance_migration_bg"], data["importance_pol_views"]
+
+
+        ## marker for debug
+        #if params_col[0] == "guess_2_pred_only":
+        #    print("Here")
 
         # Fit OLS regression
         if params_row[2] == "robust":
@@ -127,9 +137,19 @@ for params_row in row_combinations:
         all_rel_p_val = []
         for soc_dis_meas in focal_social_distance:
             if len(params_col[1]) == 1:  # none or dev
-                all_rel_p_val.append(all_p_val[soc_dis_meas])
+                if "guess_2" not in params_col[0]:
+                    all_rel_p_val.append(all_p_val[soc_dis_meas])
+                if "guess_2" in params_col[0]:
+                    all_rel_p_val.append(all_p_val["x_pred_" + soc_dis_meas])
+                if "sticky" in params_col[0]:
+                    all_rel_p_val.append(all_p_val["x_prior_" + soc_dis_meas])
             else:  # treatment effect
-                all_rel_p_val.append(all_p_val["x_dev_" + soc_dis_meas])
+                if "guess_2" not in params_col[0]:
+                    all_rel_p_val.append(all_p_val["x_dev_" + soc_dis_meas])
+                if "guess_2" in params_col[0]:
+                    all_rel_p_val.append(all_p_val["x_dev_pred_" + soc_dis_meas])
+                if "sticky" in params_col[0]:
+                    all_rel_p_val.append(all_p_val["x_dev_prior_" + soc_dis_meas])
 
         # None and dev: get smallest; Treatment effect: get smallest interaction
         smallest_p_val = min(all_rel_p_val)
@@ -142,5 +162,6 @@ for params_row in row_combinations:
 
 
 
-
-
+# results = results[(results.wtp_none > 0.1) & (results.wtp_dev < 0.1) & (results.wtp_treateff < 0.1)]
+# len(results)
+results.to_csv("Data/results_reg_search.csv")
