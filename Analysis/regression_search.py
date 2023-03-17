@@ -88,7 +88,7 @@ for params_row in row_combinations:
 
         # Define the remaining independent variables (controls)
         # ...participant attributes
-        X["sex"], X["migration_bg"], X["pol_views"] = data["sex"], data["migration_bg"], data["pol_views"]
+        X["sex"], X["migration_bg"], X["pol_views"], X["age"] = data["sex"], data["migration_bg"], data["pol_views"], data["age"]
         # ...developer fixed effects
         if focal_stage == "wtp":
             data['dev_row'] = data['dev_row1']
@@ -105,10 +105,11 @@ for params_row in row_combinations:
             X["importance_sex"], X["importance_migration_bg"], X["importance_pol_views"] = \
                 data["importance_sex"], data["importance_migration_bg"], data["importance_pol_views"]
 
-
-        ## marker for debug
-        #if params_col[0] == "guess_2_pred_only":
-        #    print("Here")
+        # marker for debug
+        # if params_col[0] == "guess_2_pred_only":
+            # print("Here")
+        if (params_col[0] == "woa") and ("none" in params_col[1]) and ("dev" in params_col[1]) and (params_row[0] == "sex_mig_prolific") and (params_row[1] == "single weighted abs") and (params_row[2] == "dev_task_cluster"):
+            print("Our current version!")
 
         # Fit OLS regression
         if params_row[2] == "robust":
