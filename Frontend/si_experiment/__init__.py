@@ -855,8 +855,20 @@ class End(Page):
             if t2_correct:
                 apartment_res = succ_str
 
+        # Stage_order
+        # True -> Stage 3 (Processing) first
+        # False -> Stage 2 (Demand) first
+
+        # Tasks_order + Stage_order
+        # True -> Demand: Immo rel_task_name, Processing: Credit rel_task_name
+        # False -> Demand: Credit rel_task_name, Processing: Immo rel_task_name
+
+        # t1 = apartment, t2 = borrower
+
+        # processing first + apartment
         if player.participant.stage_order and player.participant.task_payment_relevance == 1:
             task_str = player.participant.task_payment_relevance + 1
+        # processing first + borrower
         elif player.participant.stage_order and player.participant.task_payment_relevance == 2:
             task_str = player.participant.task_payment_relevance - 1
         else:
