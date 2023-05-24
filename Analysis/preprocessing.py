@@ -25,12 +25,12 @@ data = data.join(other=prolific_data.set_index("Participant id", drop=True), on=
 #
 # data = data[data.sex != 0]  # drop non-binarys
 #
-# sex_dic = {"Male": 2, "Female": 1}
-# data = data.replace({"Sex": sex_dic})
-# data["sex"] = data["Sex"]
-# data = data[~data.sex.isna()]
+sex_dic = {"Male": 2, "Female": 1}
+data = data.replace({"Sex": sex_dic})
+data["sex"] = data["Sex"]
+data = data[~data.sex.isna()]
 #
-# data.loc[data['Country of birth'] != "Germany", "migration_bg"] = 1
+data.loc[data['Country of birth'] != "Germany", "migration_bg"] = 1
 #
 # data.loc[data['Country of birth'] == "Germany", "migration_bg"] = 0
 #
@@ -96,6 +96,14 @@ df["ai_pred_woa_raw"], df["ai_pred_wtp_raw"] = ai_pred_woa_stage, ai_pred_wtp_st
 df["woa_stage_step_size"], df["wtp_stage_step_size"] = woa_stage_step_size, wtp_stage_step_size
 df["woa_task_case"], df["wtp_task_case"] = woa_task_case, wtp_task_case
 df["woa_y_true"], df["wtp_y_true"] = woa_y_true, wtp_y_true
+
+# get WTP guesses "normalized" (on steps) [addition by MZ 24 May 2023]
+df["guess_1_wtp"] = df["task1Estimate"].copy(deep=True)
+df.loc[df["wtp_stage_step_size"] == 40_000, "guess_1_wtp"] = df["guess_1_wtp"] - 300_000
+df["guess_1_wtp"] = (df["guess_1_wtp"] / df["wtp_stage_step_size"]) / 10
+df["guess_2_wtp"] = df["revision"].copy(deep=True)
+df.loc[df["wtp_stage_step_size"] == 40_000, "guess_2_wtp"] = df["guess_2_wtp"] - 300_000
+df["guess_2_wtp"] = (df["guess_2_wtp"] / df["wtp_stage_step_size"]) / 10
 
 # get WOA guesses "normalized" (on steps)
 df["guess_1_woa"] = df["task2Estimate"].copy(deep=True)
@@ -305,4 +313,6 @@ df.loc[df.tasks_order == 1, "expectation_gap_acc_woa"] = df.perc_acc2 - 0.45
 #   W R I T E  T O  F I L E    #
 ################################
 # df.to_csv("Data/Versions/data_sex_mig_prolific.csv", sep=',')
-df.to_csv("Data/data_all.csv", sep=',')
+df.to_csv("Data/Versions/data_sex_mig_prolific.csv", sep=',')
+
+
