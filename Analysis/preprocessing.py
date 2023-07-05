@@ -56,6 +56,10 @@ def normalize_col(my_series):
                         (my_series.max() - my_series.min())
     return normalized_series
 
+# define method for standardization
+def stand_col(my_series):
+    stand_series = (my_series - my_series.mean()) / my_series.std()
+    return stand_series
 
 # get AI predictions for WTP and WOA stage
 # %% (if tasks_order = 1: credit is always WOA, immo only if WTP > ai_prob; o/w reverse)
@@ -157,6 +161,11 @@ df["mig_dis_wtp"] = (df["wtp_dev_migration"] != df["migration_bg"]).astype(int)
 pol_dis_wtp_abs = abs(df["wtp_dev_pol"] - df["pol_views"])
 df["pol_dis_wtp"] = normalize_col(pol_dis_wtp_abs)
 
+# standardized
+df["sex_dis_wtp_std"] = stand_col(df["sex_dis_wtp"])
+df["mig_dis_wtp_std"] = stand_col(df["mig_dis_wtp"])
+df["pol_dis_wtp_std"] = stand_col(df["pol_dis_wtp"])
+
 # weighted
 df["sex_dis_wtp_w"] = normalize_col(df["sex_dis_wtp"] * df["importance_sex"])
 df["mig_dis_wtp_w"] = normalize_col(df["mig_dis_wtp"] * df["importance_migration_bg"])
@@ -173,6 +182,11 @@ df["soc_dis_wtp_w"] = df["sex_dis_wtp"] * df["importance_sex"] + \
                        df["pol_dis_wtp"] * df["importance_pol_views"]
 df["soc_dis_wtp_w"] = normalize_col(df["soc_dis_wtp_w"])
 
+# standardized weighted
+df["sex_dis_wtp_w_std"] = stand_col(df["sex_dis_wtp_w"])
+df["mig_dis_wtp_w_std"] = stand_col(df["mig_dis_wtp_w"])
+df["pol_dis_wtp_w_std"] = stand_col(df["pol_dis_wtp_w"])
+
 # single weighted relative
 df["w_sd_sum"] = df["importance_sex"] + df["importance_migration_bg"] + df["importance_pol_views"]
 
@@ -185,6 +199,11 @@ df["sex_dis_woa"] = (df["woa_dev_sex"] != df["sex"]).astype(int)
 df["mig_dis_woa"] = (df["woa_dev_migration"] != df["migration_bg"]).astype(int)
 pol_dis_woa_abs = abs(df["woa_dev_pol"] - df["pol_views"])
 df["pol_dis_woa"] = normalize_col(pol_dis_woa_abs)
+
+# standardized
+df["sex_dis_woa_std"] = stand_col(df["sex_dis_woa"])
+df["mig_dis_woa_std"] = stand_col(df["mig_dis_woa"])
+df["pol_dis_woa_std"] = stand_col(df["pol_dis_woa"])
 
 # weighted
 df["sex_dis_woa_w"] = normalize_col(df["sex_dis_woa"] * df["importance_sex"])
@@ -201,6 +220,11 @@ df["soc_dis_woa_w"] = df["sex_dis_woa"] * df["importance_sex"] + \
                        df["mig_dis_woa"] * df["importance_migration_bg"] + \
                        df["pol_dis_woa"] * df["importance_pol_views"]
 df["soc_dis_woa_w"] = normalize_col(df["soc_dis_woa_w"])
+
+# standardized weighted
+df["sex_dis_woa_w_std"] = stand_col(df["sex_dis_woa"] * df["importance_sex"])
+df["mig_dis_woa_w_std"] = stand_col(df["mig_dis_woa"] * df["importance_migration_bg"])
+df["pol_dis_woa_w_std"] = stand_col(df["pol_dis_woa"] * df["importance_pol_views"])
 
 # single weighted relative
 df["w_sex_woa"] = df["sex_dis_woa"] * df["importance_sex"] / df["w_sd_sum"]
@@ -289,10 +313,12 @@ df["emo_trust_t2"] = (df["emo_trust_t2_1"] + df["emo_trust_t2_2"] + df["emo_trus
 df["anthro_t1"] = (df["anthro_t1_1"] + df["anthro_t1_2"] + df["anthro_t1_3"]) / 3
 df["anthro_t2"] = (df["anthro_t2_1"] + df["anthro_t2_2"] + df["anthro_t2_3"]) / 3
 
-# make wtp monetary, normalize perceived accuracy
+# make wtp monetary, normalize and standardize perceived accuracy
 df.wtp = df.wtp/100 - 0.5
 df.perc_acc = df.perc_acc / 100
 df.perc_acc2 = df.perc_acc2 / 100
+df["perc_acc_std"] = stand_col(df.perc_acc)
+df["perc_acc2_std"] = stand_col(df.perc_acc2)
 
 # create custom accuracy (dev/none --> perc_acc, acc/both --> accuracy that was displayed)
 acc_treatments = df.treatment.isin(["acc", "both"])
@@ -314,5 +340,3 @@ df.loc[df.tasks_order == 1, "expectation_gap_acc_woa"] = df.perc_acc2 - 0.45
 ################################
 # df.to_csv("Data/Versions/data_sex_mig_prolific.csv", sep=',')
 df.to_csv("Data/Versions/data_sex_mig_prolific.csv", sep=',')
-
-
